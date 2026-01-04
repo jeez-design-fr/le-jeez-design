@@ -13,7 +13,7 @@
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
-            --neon-blue: #00f3ff; /* Nouveau bleu pour le mail */
+            --neon-blue: #00f3ff;
             --black: #000000;
             --white: #ffffff;
         }
@@ -47,6 +47,8 @@
             80% { transform: translate(5px, -5px); clip-path: inset(10% 0 60% 0); }
             100% { transform: translate(0); }
         }
+        
+        /* Intro Container & Images */
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
@@ -66,10 +68,14 @@
             top: 50%; left: 50%; transform: translateX(-50%) translateY(35px);
             filter: url(#liquid-wave); pointer-events: none;
         }
+
+        /* --- BOUTON INTRO (MODIFIÉ - PLUS DE VIOLET) --- */
         .center-box {
             position: relative; z-index: 10; width: 100%; height: 100%;
-            background-color: var(--neon-purple); border: 3px solid var(--white);
-            box-shadow: 8px 8px 0px var(--neon-green);
+            background-color: transparent; /* Fond transparent */
+            border: 2px solid var(--white); /* Bordure blanche fine */
+            /* Suppression de l'ombre portée verte par défaut */
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; text-decoration: none;
             -webkit-tap-highlight-color: transparent;
@@ -77,12 +83,15 @@
         .center-text {
             color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
             letter-spacing: 2px; margin: 0; pointer-events: none;
+            transition: 0.3s;
         }
+        /* Hover Bouton Intro */
         .center-box:hover {
-            background-color: var(--neon-green);
-            box-shadow: 12px 12px 0px var(--white);
+            border-color: var(--neon-green);
+            background-color: rgba(57, 255, 20, 0.1); /* Légère teinte verte */
+            box-shadow: 0 0 20px var(--neon-green);
         }
-        .center-box:hover .center-text { color: var(--black); }
+        .center-box:hover .center-text { color: var(--neon-green); }
 
 
         /* --- FEED --- */
@@ -129,6 +138,8 @@
             position: fixed; z-index: 1000; right: 15px; bottom: 35%;
             display: flex; flex-direction: column; gap: 25px; align-items: center;
         }
+
+        /* --- BOUTONS LATÉRAUX (STYLES DE BASE) --- */
         .side-btn {
             width: 55px; height: 55px; border-radius: 50%;
             background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
@@ -137,45 +148,59 @@
             backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
-        .side-btn:hover { transform: scale(1.15); background: var(--neon-purple); border-color: var(--neon-green); }
 
-
-        /* --- GESTION DES GLOWS (AU CLIC) --- */
-        .glow-active-red {
-            background: var(--neon-pink) !important;
-            border-color: var(--neon-pink) !important;
-            color: white !important;
-            box-shadow: 0 0 20px var(--neon-pink), inset 0 0 10px white !important;
+        /* --- HOVER SPÉCIFIQUE (COULEURS CORRECTES) --- */
+        /* Téléphone -> Vert */
+        #phone-btn:hover {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            background: rgba(57, 255, 20, 0.2);
+            box-shadow: 0 0 15px var(--neon-green);
+            transform: scale(1.15);
         }
+        /* Mail -> Bleu */
+        #mail-btn:hover {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+            background: rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 15px var(--neon-blue);
+            transform: scale(1.15);
+        }
+        /* Cœur -> Rouge/Pink */
+        #heart-btn:hover {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+            background: rgba(255, 0, 127, 0.2);
+            box-shadow: 0 0 15px var(--neon-pink);
+            transform: scale(1.15);
+        }
+
+        /* Classes actives pour le clic (Glow intense) */
         .glow-active-green {
             background: var(--neon-green) !important;
-            border-color: var(--neon-green) !important;
             color: black !important;
-            box-shadow: 0 0 20px var(--neon-green), inset 0 0 10px white !important;
+            box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important;
         }
         .glow-active-blue {
             background: var(--neon-blue) !important;
-            border-color: var(--neon-blue) !important;
-            color: black !important; /* Texte noir pour contraste sur cyan */
-            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px white !important;
+            color: black !important;
+            box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important;
+        }
+        .glow-active-red {
+            background: var(--neon-pink) !important;
+            color: white !important;
+            box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important;
         }
 
 
         /* --- ANIMATIONS AUTOMATIQUES --- */
-        
-        /* 1. Téléphone qui sonne (vibration icône uniquement) */
         @keyframes ring-icon {
-            0% { transform: rotate(0); }
-            10% { transform: rotate(15deg) scale(1.1); }
-            20% { transform: rotate(-15deg) scale(1.1); }
-            30% { transform: rotate(15deg) scale(1.1); }
-            40% { transform: rotate(-15deg) scale(1.1); }
-            50% { transform: rotate(0) scale(1); }
-            100% { transform: rotate(0) scale(1); }
+            0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 
+            20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); }
+            40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); }
         }
         .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
 
-        /* 2. Mail qui saute */
         @keyframes hop-icon {
             0%, 100% { transform: translateY(0); }
             25% { transform: translateY(-5px) scale(1.1); }
@@ -184,14 +209,14 @@
         }
         .icon-hopping svg { animation: hop-icon 0.6s ease; }
 
-        /* 3. Œil qui cligne */
+        /* Clignement Œil */
         @keyframes blink-eye {
             0% { transform: scaleY(1); }
             40% { transform: scaleY(0.1); } /* Fermé */
             80% { transform: scaleY(1); }
             100% { transform: scaleY(1); }
         }
-        .eye-blinking svg { animation: blink-eye 0.3s ease-in-out; }
+        .eye-blinking svg { animation: blink-eye 0.4s ease-in-out; }
 
 
         /* --- BOUTON SON --- */
@@ -223,33 +248,31 @@
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
 
 
-        /* --- TEXTE FLOTTANT (Commun à tout le monde) --- */
+        /* --- MESSAGES FLOTTANTS --- */
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
             font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
         }
-        /* Variante pour l'œil (monte plus haut) */
+        
+        /* STYLE SPÉCIFIQUE DU MESSAGE ŒIL (Blanc) */
         .floating-eye-msg {
-            color: var(--white); background: var(--neon-green); color: black;
-            padding: 2px 8px; border-radius: 4px;
+            color: var(--white); 
+            background: rgba(0,0,0,0.6); /* Fond noir semi-transparent */
+            padding: 4px 10px; border-radius: 4px; border: 1px solid var(--white);
+            font-size: 1.2rem; letter-spacing: 2px;
+            opacity: 0; /* Caché par défaut, géré par JS */
+            transition: opacity 0.5s ease;
         }
 
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
             100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
-        /* Animation pour l'œil (centre vers haut) */
-        @keyframes floatUp {
-            0% { opacity: 1; transform: translate(-50%, -80px) scale(0.8); }
-            100% { opacity: 0; transform: translate(-50%, -150px) scale(1.2); }
-        }
 
         @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(10deg) scale(1.1); }
-            75% { transform: rotate(-10deg) scale(1.1); }
-            100% { transform: rotate(0deg) scale(1.1); }
+            0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); }
         }
         .shaking { animation: shake 0.4s ease-in-out; }
 
@@ -295,17 +318,18 @@
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
             
-            <!-- CŒUR (Rouge + Shake) -->
+            <!-- CŒUR (Rouge) -->
             <button class="side-btn heart-btn" id="heart-btn" onclick="triggerHeart(this)">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
 
         <!-- ŒIL CENTRAL -->
-        <div class="fixed-eye-container">
+        <div class="fixed-eye-container" id="eye-container">
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </a>
+            <!-- Le message sera injecté ici par JS -->
         </div>
     </div>
 
@@ -342,9 +366,9 @@
     </main>
 
     <script>
-        // --- ANIMATIONS AUTOMATIQUES (BOUCLES) ---
+        // --- ANIMATIONS AUTOMATIQUES ---
         
-        // 1. TÉLÉPHONE : Vibre toutes les 8 secondes
+        // 1. TÉLÉPHONE (8s)
         setInterval(() => {
             const phone = document.getElementById('phone-btn');
             if(phone) {
@@ -353,7 +377,7 @@
             }
         }, 8000);
 
-        // 2. MAIL : Saute toutes les 10 secondes
+        // 2. MAIL (10s)
         setInterval(() => {
             const mail = document.getElementById('mail-btn');
             if(mail) {
@@ -362,55 +386,68 @@
             }
         }, 10000);
 
-        // 3. ŒIL : Cligne toutes les 6 secondes + Texte
-        setInterval(() => {
+        // 3. ŒIL & TEXTE (SÉQUENCE COMPLÈTE)
+        // Scénario : Cligne -> Texte Apparaît -> Reste -> Cligne -> Texte Disparaît
+        function runEyeSequence() {
             const eye = document.getElementById('dynamic-eye-btn');
-            if(eye) {
-                // Animation Clignement
+            const container = document.getElementById('eye-container');
+            
+            if(!eye || !container) return;
+
+            // Etape 1 : Clignement (T=0)
+            eye.classList.add('eye-blinking');
+            setTimeout(() => eye.classList.remove('eye-blinking'), 400);
+
+            // Etape 2 : Texte apparait (T=400ms)
+            setTimeout(() => {
+                let msg = document.getElementById('hd-msg');
+                if(!msg) {
+                    msg = document.createElement('span');
+                    msg.id = 'hd-msg';
+                    msg.innerText = "VOIR EN HD";
+                    msg.classList.add('floating-msg', 'floating-eye-msg');
+                    // Positionnement statique au dessus
+                    msg.style.position = "absolute";
+                    msg.style.bottom = "85px"; // Au dessus du bouton
+                    msg.style.left = "50%";
+                    msg.style.transform = "translateX(-50%)";
+                    container.appendChild(msg);
+                }
+                msg.style.opacity = '1';
+            }, 400);
+
+            // Etape 3 : Reste affiché... puis Clignement de fin (T=3000ms)
+            setTimeout(() => {
                 eye.classList.add('eye-blinking');
                 setTimeout(() => eye.classList.remove('eye-blinking'), 400);
+            }, 3000);
 
-                // Texte "VOIR EN HD"
-                const msgEl = document.createElement('span');
-                msgEl.innerText = "VOIR EN HD";
-                msgEl.classList.add('floating-msg', 'floating-eye-msg');
-                msgEl.style.animation = "floatUp 1.2s forwards";
-                
-                // Positionnement au dessus de l'œil
-                const rect = eye.getBoundingClientRect();
-                msgEl.style.left = (rect.left + rect.width/2) + 'px'; 
-                msgEl.style.top = rect.top + 'px';
-                
-                document.body.appendChild(msgEl);
-                setTimeout(() => { msgEl.remove(); }, 1200);
-            }
-        }, 6000);
+            // Etape 4 : Texte disparaît (T=3400ms)
+            setTimeout(() => {
+                const msg = document.getElementById('hd-msg');
+                if(msg) msg.style.opacity = '0';
+            }, 3400);
+        }
+
+        // Lancer la séquence toutes les 6 secondes
+        setInterval(runEyeSequence, 6000);
 
 
-        // --- GESTION DES CLICS BOUTONS (GLOW) ---
+        // --- GESTION DES CLICS (GLOW) ---
         function animateBtn(btn, glowClass) {
-            // Ajoute l'effet glow
             btn.classList.add(glowClass);
-            // Retire l'effet après 1 seconde
             setTimeout(() => {
                 btn.classList.remove(glowClass);
             }, 1000);
         }
 
-
-        // --- LOGIQUE CŒUR (MODIFIÉE) ---
+        // --- LOGIQUE CŒUR ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
-            // 1. Animation Shake
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
-            
-            // 2. Glow Rouge (Temporaire)
             btn.classList.add('glow-active-red');
-            setTimeout(() => {
-                btn.classList.remove('glow-active-red');
-            }, 1000); // S'éteint après 1s
+            setTimeout(() => { btn.classList.remove('glow-active-red'); }, 1000);
 
-            // 3. Messages
             heartClickCount++;
             const cycleIndex = heartClickCount % 10;
             let message = ""; let duration = 1200;
@@ -427,7 +464,6 @@
             msgEl.innerText = message;
             msgEl.classList.add('floating-msg');
             msgEl.style.animationDuration = (duration/1000) + "s";
-            
             const rect = btn.getBoundingClientRect();
             msgEl.style.left = (rect.left - 20) + 'px'; 
             msgEl.style.top = rect.top + (rect.height / 2) + 'px';
