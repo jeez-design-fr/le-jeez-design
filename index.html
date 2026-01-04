@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeez Portfolio // Stream</title>
+    <title>Le Work du Jeez</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
@@ -15,6 +15,7 @@
             --neon-pink: #ff007f;
             --black: #000;
             --white: #fff;
+            --stack-width: 320px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,174 +25,193 @@
             color: var(--white);
             font-family: 'Rajdhani', sans-serif;
             overflow: hidden; 
+            width: 100vw; height: 100vh;
         }
 
-        /* --- CONTENEUR PRINCIPAL (Le "Feed") --- */
-        .feed-container {
-            height: 100vh;
-            width: 100vw;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory; 
-            scroll-behavior: smooth;
-        }
-
-        /* --- CHAQUE SECTION VIDÉO --- */
-        .video-section {
-            height: 100vh;
-            width: 100vw;
-            scroll-snap-align: start;
-            position: relative;
+        /* =========================================
+           PARTIE 1 : L'INTRO (Style Précédent)
+           ========================================= */
+        
+        .intro-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2000; /* Au dessus de tout */
+            background-color: var(--black);
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* Texture de fond Intro */
+        .intro-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('lightning.png'); /* Assure-toi d'avoir cette image */
+            background-size: cover; background-position: center;
+            opacity: 0.4; pointer-events: none;
+        }
+
+        /* Images Flottantes */
+        .hero-image {
+            position: absolute; z-index: 2005; bottom: 55%; 
+            width: 300px; max-width: 70vw;
+            animation: levitation 4s ease-in-out infinite;
+        }
+
+        .glitch-image {
+            position: absolute; z-index: 2005; top: 45%;
+            width: 320px; max-width: 70vw; 
+            opacity: 0.8;
+            filter: url(#liquid-wave); /* Filtre SVG défini plus bas */
+        }
+
+        @keyframes levitation {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Bouton Central Intro */
+        .center-box {
+            position: absolute; z-index: 2010;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 320px; max-width: 80vw; height: 80px;
+            background-color: var(--neon-purple);
+            border: 3px solid var(--white);
+            box-shadow: 8px 8px 0px var(--neon-green);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .center-text {
+            color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
+            letter-spacing: 2px; margin: 0;
+        }
+
+        .center-box:hover {
+            background-color: var(--neon-green);
+            box-shadow: 12px 12px 0px var(--white);
+        }
+        .center-box:hover .center-text { color: var(--black); }
+
+
+        /* =========================================
+           PARTIE 2 : LE FEED TIKTOK (Caché au début)
+           ========================================= */
+        
+        .feed-container {
+            position: fixed; top: 0; left: 0;
+            height: 100vh; width: 100vw;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; 
+            scroll-behavior: smooth;
+            opacity: 0; /* Caché au début */
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+
+        /* Quand on active le feed */
+        .feed-active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .video-section {
+            height: 100vh; width: 100vw;
+            scroll-snap-align: start;
+            position: relative;
+            display: flex; justify-content: center; align-items: center;
             background: #111;
             border-bottom: 1px solid #222;
         }
 
-        /* VIDÉO EN ARRIÈRE PLAN */
         video {
-            position: absolute;
-            top: 0; left: 0;
+            position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
             object-fit: cover; 
-            z-index: 1;
-            opacity: 0.6; 
-            transition: opacity 0.3s;
+            z-index: 1; opacity: 0.6; transition: opacity 0.3s;
         }
 
         .video-section.active video { opacity: 1; }
 
-        /* --- OVERLAY D'INFORMATIONS (Texte en bas à gauche) --- */
+        /* Overlay Infos */
         .info-overlay {
-            position: absolute;
-            z-index: 10;
+            position: absolute; z-index: 10;
             bottom: 0; left: 0; width: 100%;
-            /* Padding à droite pour ne pas passer sous les boutons */
             padding: 20px 80px 40px 20px; 
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             pointer-events: none; 
         }
 
         h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 3rem;
-            color: var(--neon-green);
-            text-shadow: 2px 2px 0px var(--neon-purple);
-            margin-bottom: 5px;
-            transform: skew(-5deg);
+            font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+            color: var(--neon-green); text-shadow: 2px 2px 0px var(--neon-purple);
+            margin-bottom: 5px; transform: skew(-5deg);
         }
 
         p {
-            font-size: 1.1rem;
-            max-width: 600px;
-            line-height: 1.3;
-            text-shadow: 1px 1px 2px black;
-            font-weight: 500;
+            font-size: 1.1rem; max-width: 600px;
+            line-height: 1.3; text-shadow: 1px 1px 2px black; font-weight: 500;
         }
 
-        /* --- BARRE LATÉRALE FIXE (LES 3 BOUTONS) --- */
+
+        /* =========================================
+           PARTIE 3 : UI (Sidebar + Son)
+           ========================================= */
+
+        /* Caché au début */
+        .ui-layer {
+            opacity: 0; pointer-events: none; transition: opacity 1s 0.5s;
+        }
+        .ui-visible { opacity: 1; pointer-events: auto; }
+
         .fixed-sidebar {
-            position: fixed;
-            z-index: 1000; /* Toujours au dessus */
-            right: 15px;
-            bottom: 35%; /* Position verticale comme TikTok */
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            align-items: center;
+            position: fixed; z-index: 1000; right: 15px; bottom: 35%;
+            display: flex; flex-direction: column; gap: 25px; align-items: center;
         }
 
         .side-btn {
-            width: 55px; height: 55px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid var(--white);
-            color: var(--white);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: 0.2s;
-            text-decoration: none;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 55px; height: 55px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
+            color: var(--white); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.2s; text-decoration: none;
+            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
+        .side-btn:hover { transform: scale(1.15); background: var(--neon-purple); border-color: var(--neon-green); }
+        .heart-btn:hover { background: var(--neon-pink); border-color: var(--neon-pink); }
 
-        .side-btn:hover {
-            transform: scale(1.15);
-            background: var(--neon-purple);
-            border-color: var(--neon-green);
-            box-shadow: 0 0 15px var(--neon-purple);
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: 'Bebas Neue'; font-size: 1.5rem;
+            text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
+            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
-        /* Spécifique au bouton Cœur */
-        .heart-btn:hover {
-            background: var(--neon-pink);
-            border-color: var(--neon-pink);
-            color: white;
-            box-shadow: 0 0 15px var(--neon-pink);
-        }
-
-        /* Animation Cœur Shake */
+        /* Animations diverses (Shake, Float) */
         @keyframes shake {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(10deg) scale(1.1); }
-            50% { transform: rotate(-10deg) scale(1.1); }
-            75% { transform: rotate(10deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.1); }
             100% { transform: rotate(0deg) scale(1.1); }
         }
         .shaking { animation: shake 0.4s ease-in-out; }
 
-        /* Animation Texte Flottant du Cœur */
         .floating-msg {
-            position: fixed;
-            color: var(--neon-green);
-            font-size: 1.5rem;
-            font-weight: bold;
-            pointer-events: none;
-            animation: floatAndFade 1.2s forwards;
-            white-space: nowrap;
-            z-index: 2000;
-            text-shadow: 2px 2px 0px black;
-            font-family: 'Bebas Neue';
+            position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
+            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 2000;
+            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black;
         }
-
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
-            10% { opacity: 1; transform: translate(-150%, -50%) scale(1.0); }
             100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
 
-
-        /* --- BOUTON SON --- */
-        .sound-toggle {
-            position: fixed;
-            top: 20px; right: 20px;
-            z-index: 100;
-            background: rgba(0,0,0,0.5);
-            color: var(--neon-green);
-            cursor: pointer;
-            font-family: 'Bebas Neue';
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 5px 15px;
-            border: 1px solid var(--neon-green);
-            backdrop-filter: blur(4px);
-        }
-
-        /* --- SCROLL INDICATOR --- */
         .scroll-indicator {
-            position: absolute;
-            bottom: 10px; left: 50%;
-            transform: translateX(-50%);
-            z-index: 20;
-            animation: bounce 2s infinite;
-            opacity: 0.5;
-            font-size: 1.2rem;
-            pointer-events: none;
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            z-index: 20; animation: bounce 2s infinite; opacity: 0.5; font-size: 1.2rem; pointer-events: none;
         }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
@@ -199,199 +219,129 @@
             60% {transform: translateX(-50%) translateY(-5px);}
         }
 
-        /* --- PAGE DE CONTACT FINALE --- */
-        .contact-section {
-            background: url('lightning.png') center/cover no-repeat;
-            flex-direction: column;
-            text-align: center;
-        }
     </style>
 </head>
 <body>
 
-    <!-- BOUTON SON FIXE -->
-    <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
+    <!-- FILTRES SVG (Pour l'effet glitch) -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="liquid-wave">
+                <feTurbulence type="turbulence" baseFrequency="0 0.02" numOctaves="2" result="turbulence">
+                    <animate attributeName="baseFrequency" values="0 0.01; 0 0.03; 0 0.01" dur="30s" repeatCount="indefinite"/>
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="4" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+        </defs>
+    </svg>
 
-    <!-- BARRE LATÉRALE FIXE (CONTACT) -->
-    <div class="fixed-sidebar">
+    <!-- ========================
+         INTRO LAYER
+         ======================== -->
+    <div class="intro-layer" id="intro-layer">
+        <div class="intro-bg"></div>
         
-        <!-- TÉLÉPHONE (Change le numéro ici) -->
-        <a href="tel:0635256900" class="side-btn">
-            <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
+        <!-- Images Intro (Surfer et Glitch) -->
+        <img src="surfer.png" class="hero-image">
+        <img src="glitch.png" class="glitch-image">
+
+        <!-- BOUTON ENTRER -->
+        <a href="#" class="center-box" onclick="enterSite(event)">
+            <h1 class="center-text">le-Work-du-Jeez</h1>
         </a>
-
-        <!-- EMAIL (Change le mail ici) -->
-        <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn">
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        </a>
-
-        <!-- CŒUR INTERACTIF -->
-        <button class="side-btn heart-btn" onclick="triggerHeart(this)">
-            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        </button>
-
     </div>
 
-    <main class="feed-container" id="feed">
+    <!-- ========================
+         UI LAYER (Son + Contact)
+         ======================== -->
+    <div class="ui-layer" id="ui-layer">
+        <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
+        
+        <div class="fixed-sidebar">
+            <a href="tel:0635256900" class="side-btn">
+                <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
+            </a>
+            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            <button class="side-btn heart-btn" onclick="triggerHeart(this)">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+        </div>
+    </div>
 
+    <!-- ========================
+         FEED VIDEO
+         ======================== -->
+    <main class="feed-container" id="feed">
+        <!-- Ajoutez "playsinline" et "preload=auto" c'est important -->
+        
         <!-- VIDEO 1 -->
         <section class="video-section">
-            <video src="video1.mp4" loop muted playsinline poster="p1.png"></video>
+            <video src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
             <div class="info-overlay">
                 <h2>Showreel 2025</h2>
-                <p>Compilation des meilleurs moments. Production audiovisuelle.</p>
+                <p>Compilation des meilleurs moments.</p>
             </div>
             <div class="scroll-indicator">⬇</div>
         </section>
 
         <!-- VIDEO 2 -->
         <section class="video-section">
-            <video src="video2.mp4" loop muted playsinline poster="p2.png"></video>
+            <video src="video2.mp4" loop muted playsinline preload="auto" poster="p2.png"></video>
             <div class="info-overlay">
                 <h2>Shooting IA</h2>
-                <p>Génération Midjourney v6 + Retouche Photoshop.</p>
+                <p>Génération Midjourney v6 + Retouche.</p>
             </div>
         </section>
 
         <!-- VIDEO 3 -->
         <section class="video-section">
-            <video src="video3.mp4" loop muted playsinline poster="p3.png"></video>
+            <video src="video3.mp4" loop muted playsinline preload="auto" poster="p3.png"></video>
             <div class="info-overlay">
                 <h2>Motion Design</h2>
-                <p>Animation logo et typographie cinétique.</p>
+                <p>Animation logo & Typographie.</p>
             </div>
         </section>
 
         <!-- VIDEO 4 -->
         <section class="video-section">
-            <video src="video4.mp4" loop muted playsinline poster="p4.png"></video>
+            <video src="video4.mp4" loop muted playsinline preload="auto" poster="p4.png"></video>
             <div class="info-overlay">
                 <h2>Event / Festival</h2>
-                <p>Aftermovie dynamique et colorimétrie vibrante.</p>
+                <p>Aftermovie dynamique.</p>
             </div>
         </section>
 
         <!-- VIDEO 5 -->
         <section class="video-section">
-            <video src="video5.mp4" loop muted playsinline poster="p5.png"></video>
+            <video src="video5.mp4" loop muted playsinline preload="auto" poster="p5.png"></video>
             <div class="info-overlay">
-                <h2>Publicité Produit</h2>
-                <p>Packshot vidéo 4K & Sound Design.</p>
+                <h2>Packshot Produit</h2>
+                <p>Lumière studio et Sound Design.</p>
             </div>
         </section>
 
         <!-- VIDEO 6 -->
         <section class="video-section">
-            <video src="video6.mp4" loop muted playsinline poster="p6.png"></video>
+            <video src="video6.mp4" loop muted playsinline preload="auto" poster="p6.png"></video>
             <div class="info-overlay">
                 <h2>Lifestyle</h2>
-                <p>Format Reels/TikTok pour campagne influenceur.</p>
+                <p>Format Reels/TikTok.</p>
             </div>
         </section>
 
         <!-- VIDEO 7 -->
         <section class="video-section">
-            <video src="video7.mp4" loop muted playsinline poster="p7.png"></video>
+            <video src="video7.mp4" loop muted playsinline preload="auto" poster="p7.png"></video>
             <div class="info-overlay">
                 <h2>Cinematic Drone</h2>
-                <p>Prise de vue aérienne & Stabilisation.</p>
+                <p>Prise de vue aérienne.</p>
             </div>
         </section>
 
         <!-- CONTACT FINAL -->
-        <section class="video-section contact-section">
-            <!-- (Vide car les boutons sont maintenant à droite, mais on garde le fond) -->
-            <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple);">
+        <section class="video-section" style="background: url('lightning.png') center/cover;">
+             <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple); text-align: center;">
                 <h2 style="font-size: 3rem;">THE END</h2>
-                <p>Swipe up pour revoir ou clique à droite pour appeler.</p>
-            </div>
-        </section>
-
-    </main>
-
-    <script>
-        // --- 1. GESTION DES VIDÉOS (SCROLL) ---
-        document.addEventListener("DOMContentLoaded", function() {
-            const sections = document.querySelectorAll('.video-section');
-            const observerOptions = {
-                root: document.querySelector('.feed-container'),
-                threshold: 0.6 
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (!video) return;
-
-                    if (entry.isIntersecting) {
-                        video.play().catch(e => console.log("Auto-play bloqué"));
-                        entry.target.classList.add('active');
-                    } else {
-                        video.pause();
-                        video.currentTime = 0;
-                        entry.target.classList.remove('active');
-                    }
-                });
-            }, observerOptions);
-
-            sections.forEach(section => { observer.observe(section); });
-        });
-
-        // --- 2. GESTION DU SON ---
-        let isMuted = true;
-        function toggleMute() {
-            const videos = document.querySelectorAll('video');
-            const btn = document.querySelector('.sound-toggle');
-            isMuted = !isMuted;
-
-            videos.forEach(v => { v.muted = isMuted; });
-
-            if (isMuted) {
-                btn.innerText = "🔇 SON OFF";
-                btn.style.color = "var(--neon-green)";
-                btn.style.borderColor = "var(--neon-green)";
-            } else {
-                btn.innerText = "🔊 SON ON";
-                btn.style.color = "var(--neon-purple)";
-                btn.style.borderColor = "var(--neon-purple)";
-            }
-        }
-
-        // --- 3. LOGIQUE DU CŒUR (FUN) ---
-        let heartClickCount = 0;
-        function triggerHeart(btn) {
-            // Animation Shake
-            btn.classList.remove('shaking');
-            void btn.offsetWidth; // Force reflow
-            btn.classList.add('shaking');
-
-            heartClickCount++;
-            const cycleIndex = heartClickCount % 10;
-            let message = "";
-            let duration = 1200;
-
-            if (cycleIndex === 1) message = "Merci !!";
-            else if (cycleIndex === 2) message = "🔥 Force !";
-            else if (cycleIndex === 3) message = "Call me 🤙";
-            else if (cycleIndex === 4) message = "🤩🤩";
-            else if (cycleIndex === 5) { message = "Stop, bosse !"; duration = 2000; }
-            else if (cycleIndex === 0) message = "🤠";
-            else return;
-
-            // Création Bulle
-            const msgEl = document.createElement('span');
-            msgEl.innerText = message;
-            msgEl.classList.add('floating-msg');
-            msgEl.style.animationDuration = (duration / 1000) + "s";
-
-            // Positionnement (A gauche du bouton)
-            const rect = btn.getBoundingClientRect();
-            msgEl.style.left = rect.left + 'px'; 
-            msgEl.style.top = rect.top + (rect.height / 2) + 'px';
-
-            document.body.appendChild(msgEl);
-            setTimeout(() => { msgEl.remove(); }, duration);
-        }
-    </script>
-</body>
-</html>
+                <p>Swipe up pour revoir ou clique à
