@@ -28,55 +28,81 @@
         }
 
         /* =========================================
-           PARTIE 1 : L'INTRO (FOND NOIR PUR)
+           PARTIE 1 : L'INTRO (CONTRAINTE)
            ========================================= */
         
         .intro-layer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000; /* Très haut pour être sûr */
-            background-color: #000000; /* NOIR TOTAL */
+            z-index: 5000;
+            background-color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        /* Images Flottantes */
+        /* Conteneur du bouton et des images pour tout centrer */
+        .intro-container {
+            position: relative;
+            width: 320px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Images Flottantes (Derrière le bouton) */
         .hero-image {
-            position: absolute; z-index: 5001; bottom: 55%; 
-            width: 300px; max-width: 70vw;
-            animation: levitation 4s ease-in-out infinite;
-            pointer-events: none; /* Laisse passer le clic */
+            position: absolute; 
+            z-index: 5001; 
+            width: 280px; /* Un peu plus petit que le bouton */
+            max-width: 90%;
+            pointer-events: none;
+            /* Position initiale : cachée derrière */
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: levitationTop 4s ease-in-out infinite;
         }
 
         .glitch-image {
-            position: absolute; z-index: 5001; top: 45%;
-            width: 320px; max-width: 70vw; 
-            opacity: 0.8;
-            filter: url(#liquid-wave);
-            pointer-events: none; /* Laisse passer le clic */
-        }
-
-        @keyframes levitation {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* BOUTON CENTRAL INTRO (Réparé) */
-        .center-box {
             position: absolute; 
-            z-index: 6000; /* Au dessus de TOUT */
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 320px; max-width: 80vw; height: 80px;
+            z-index: 5001; 
+            width: 280px;
+            max-width: 90%;
+            pointer-events: none;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            filter: url(#liquid-wave);
+            animation: levitationBottom 4s ease-in-out infinite;
+        }
+
+        /* Animation Haut : Ne dépasse pas le haut du bouton */
+        @keyframes levitationTop {
+            0% { transform: translate(-50%, -50%); } 
+            50% { transform: translate(-50%, -80%); } /* Monte un peu mais reste connecté */
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        /* Animation Bas */
+        @keyframes levitationBottom {
+            0% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -20%); } /* Descend un peu */
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        /* BOUTON CENTRAL */
+        .center-box {
+            position: relative; /* Pour être au dessus des images */
+            z-index: 6000; 
+            width: 100%; height: 100%;
             background-color: var(--neon-purple);
             border: 3px solid var(--white);
             box-shadow: 8px 8px 0px var(--neon-green);
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s;
             text-decoration: none;
-            -webkit-tap-highlight-color: transparent; /* Fix mobile */
+            -webkit-tap-highlight-color: transparent;
         }
 
         .center-text {
@@ -101,15 +127,12 @@
             overflow-y: scroll;
             scroll-snap-type: y mandatory; 
             scroll-behavior: smooth;
-            opacity: 0; /* Caché au début */
+            opacity: 0; 
             pointer-events: none;
             transition: opacity 1s ease;
         }
 
-        .feed-active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .feed-active { opacity: 1; pointer-events: auto; }
 
         .video-section {
             height: 100vh; width: 100vw;
@@ -190,7 +213,6 @@
             60% {transform: translateX(-50%) translateY(-5px);}
         }
         
-        /* Floating MSG */
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 2000;
@@ -217,16 +239,17 @@
         </defs>
     </svg>
 
-    <!-- INTRO LAYER (NOIR) -->
+    <!-- INTRO LAYER -->
     <div class="intro-layer" id="intro-layer">
-        
-        <!-- Tes images -->
-        <img src="surfer.png" class="hero-image">
-        <img src="glitch.png" class="glitch-image">
+        <div class="intro-container">
+            <!-- Images contraintes derrière le bouton -->
+            <img src="surfer.png" class="hero-image">
+            <img src="glitch.png" class="glitch-image">
 
-        <!-- LE BOUTON CRITIQUE -->
-        <div class="center-box" id="enter-btn">
-            <h1 class="center-text">le-Work-du-Jeez</h1>
+            <!-- BOUTON CENTRAL -->
+            <div class="center-box" id="enter-btn">
+                <h1 class="center-text">le-Work-du-Jeez</h1>
+            </div>
         </div>
     </div>
 
@@ -251,6 +274,7 @@
     <main class="feed-container" id="feed">
         <!-- VIDEO 1 -->
         <section class="video-section">
+            <!-- muted est OBLIGATOIRE pour l'autoplay -->
             <video src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
             <div class="info-overlay">
                 <h2>Showreel 2025</h2>
@@ -313,7 +337,7 @@
             </div>
         </section>
 
-        <!-- CONTACT -->
+        <!-- FIN -->
         <section class="video-section">
              <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple); text-align: center;">
                 <h2 style="font-size: 3rem;">THE END</h2>
@@ -323,73 +347,80 @@
     </main>
 
     <script>
-        // --- SCRIPT SÉCURISÉ POUR LE BOUTON ---
+        // --- GESTION DU CLIC ENTRÉE ---
         document.getElementById('enter-btn').addEventListener('click', function() {
-            console.log("BOUTON CLIQUÉ !"); // Debug
-
-            // 1. On vire l'intro immédiatement
+            // 1. Animation de sortie de l'intro
             const intro = document.getElementById('intro-layer');
             intro.style.opacity = '0';
             intro.style.transform = "scale(1.1)";
             setTimeout(() => { intro.style.display = 'none'; }, 800);
 
-            // 2. On affiche le reste
+            // 2. Affichage du site
             document.getElementById('ui-layer').classList.add('ui-visible');
             const feed = document.getElementById('feed');
             feed.classList.add('feed-active');
 
-            // 3. On essaie de lancer le son (si dispo)
-            try {
-                const clickSound = new Audio('click.mp3'); 
-                clickSound.volume = 0.5;
-                clickSound.play().catch(e => console.log("Pas de son"));
-            } catch (e) { console.log("Erreur son"); }
-
-            // 4. On lance la vidéo et l'observateur
+            // 3. LANCEMENT FORCÉ DE LA VIDÉO
             setTimeout(() => {
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
-                    firstVideo.play().catch(e => console.log("Play error"));
-                    firstVideo.parentElement.classList.add('active');
+                    // On essaie de jouer (forcément en muet d'abord pour que ça marche)
+                    firstVideo.muted = true; 
+                    var playPromise = firstVideo.play();
+
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            // Lecture commencée !
+                            firstVideo.parentElement.classList.add('active');
+                            // On tente de mettre le son si le navigateur laisse faire
+                            // (Souvent bloqué, l'utilisateur devra cliquer sur le bouton SON)
+                            // firstVideo.muted = false; 
+                        })
+                        .catch(error => {
+                            console.log("Lecture auto bloquée : ", error);
+                        });
+                    }
                 }
+                // On active l'observateur de scroll
                 initObserver();
             }, 500);
         });
 
-        // --- OBSERVATEUR ---
+        // --- OBSERVATEUR DE SCROLL ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
-            const observerOptions = {
-                root: document.querySelector('.feed-container'),
-                threshold: 0.6
-            };
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const video = entry.target.querySelector('video');
                     if (!video) return;
 
                     if (entry.isIntersecting) {
-                        video.play().catch(e => console.log("Auto-play blocked"));
+                        // Quand la vidéo arrive à l'écran
+                        video.play().catch(e => console.log("Play error"));
                         entry.target.classList.add('active');
                     } else {
+                        // Quand elle part
                         video.pause();
                         video.currentTime = 0;
                         entry.target.classList.remove('active');
                     }
                 });
-            }, observerOptions);
+            }, { threshold: 0.6 });
 
             sections.forEach(section => { observer.observe(section); });
         }
 
-        // --- GESTION SON ---
+        // --- GESTION DU SON ---
+        // Par défaut, tout est muet (obligatoire pour autoplay).
+        // L'utilisateur DOIT cliquer sur le bouton pour activer le son.
         let isMuted = true;
         function toggleMute() {
             const videos = document.querySelectorAll('video');
             const btn = document.querySelector('.sound-toggle');
             isMuted = !isMuted;
+            
             videos.forEach(v => { v.muted = isMuted; });
+
             if (isMuted) {
                 btn.innerText = "🔇 SON OFF";
                 btn.style.color = "var(--neon-green)";
@@ -401,32 +432,36 @@
             }
         }
 
-        // --- CŒUR ---
+        // --- MESSAGES DU CŒUR (ORIGINAUX) ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking');
             void btn.offsetWidth; 
             btn.classList.add('shaking');
+            
             heartClickCount++;
             const cycleIndex = heartClickCount % 10;
             let message = "";
             let duration = 1200;
 
-            if (cycleIndex === 1) message = "Merci !!";
-            else if (cycleIndex === 2) message = "🔥 Force !";
-            else if (cycleIndex === 3) message = "Call me 🤙";
-            else if (cycleIndex === 4) message = "🤩🤩";
-            else if (cycleIndex === 5) { message = "Stop, bosse !"; duration = 2000; }
+            // TES MESSAGES PERSONNALISÉS
+            if (cycleIndex === 1) message = "merci !!";
+            else if (cycleIndex === 2) message = "💃 Owyeaaa";
+            else if (cycleIndex === 3) message = "🤩🤩🤩";
+            else if (cycleIndex === 4) message = "hmmm... 😒";
+            else if (cycleIndex === 5) { message = "😴💤"; duration = 3000; }
             else if (cycleIndex === 0) message = "🤠";
-            else return;
+            else return; // Pas de message pour les autres clics
 
             const msgEl = document.createElement('span');
             msgEl.innerText = message;
             msgEl.classList.add('floating-msg');
             msgEl.style.animationDuration = (duration / 1000) + "s";
+            
             const rect = btn.getBoundingClientRect();
             msgEl.style.left = (rect.left - 20) + 'px'; 
             msgEl.style.top = rect.top + (rect.height / 2) + 'px';
+            
             document.body.appendChild(msgEl);
             setTimeout(() => { msgEl.remove(); }, duration);
         }
