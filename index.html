@@ -3,321 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>le-Work-du-Jeez</title>
+    <title>Le Work du Jeez</title>
     
-    <!-- IMPORT DES POLICES GOOGLE -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #000000;
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
+            --black: #000000;
             --white: #ffffff;
-            --font-stack: 'Bebas Neue', sans-serif;
-            --stack-width: 320px;
         }
 
-        /* RESET */
-        * { box-sizing: border-box; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: var(--bg);
+            background-color: var(--black);
             color: var(--white);
-            font-family: var(--font-stack);
-            width: 100vw;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-            overscroll-behavior: none;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden; 
+            width: 100vw; height: 100vh;
         }
 
-        /* --- TEXTURE D'ARRIÈRE PLAN --- */
-        .background-texture {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            background-image: url('lightning.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            pointer-events: none;
-        }
-        body.menu-open .background-texture { opacity: 0.4; }
-
-        /* --- 1. INTRO LAYER --- */
+        /* =========================================
+           PARTIE 1 : L'INTRO (CONTRAINTE)
+           ========================================= */
+        
         .intro-layer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
+            z-index: 5000;
+            background-color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            transition: opacity 0.5s ease-in; 
-            opacity: 1;
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
+        /* Conteneur du bouton et des images pour tout centrer */
+        .intro-container {
+            position: relative;
+            width: 320px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Images Flottantes (Derrière le bouton) */
         .hero-image {
-            position: absolute;
-            z-index: 5;
-            bottom: 50%; 
-            width: 300px;
-            max-width: 80vw;
-            animation: levitation 4s ease-in-out infinite;
-            transition: transform 0.1s;
+            position: absolute; 
+            z-index: 5001; 
+            width: 280px; /* Un peu plus petit que le bouton */
+            max-width: 90%;
+            pointer-events: none;
+            /* Position initiale : cachée derrière */
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            animation: levitationTop 4s ease-in-out infinite;
         }
 
         .glitch-image {
-            position: absolute;
-            z-index: 5;
-            top: 50%;
-            width: var(--stack-width);
-            max-width: 80vw; 
-            opacity: 0.8;
-            filter: url(#liquid-wave);
-            transition: transform 0.1s;
-        }
-
-        @keyframes levitation {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .pixel-explode {
-            filter: url(#shred-filter) contrast(200%);
-            opacity: 0;
-            transform: scale(4) !important; 
-            transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-        }
-
-        /* --- 2. BOUTON CENTRAL --- */
-        .center-box {
-            position: fixed; 
-            z-index: 100;
+            position: absolute; 
+            z-index: 5001; 
+            width: 280px;
+            max-width: 90%;
+            pointer-events: none;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: var(--stack-width);
-            max-width: 80vw;
+            filter: url(#liquid-wave);
+            animation: levitationBottom 4s ease-in-out infinite;
+        }
+
+        /* Animation Haut : Ne dépasse pas le haut du bouton */
+        @keyframes levitationTop {
+            0% { transform: translate(-50%, -50%); } 
+            50% { transform: translate(-50%, -80%); } /* Monte un peu mais reste connecté */
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        /* Animation Bas */
+        @keyframes levitationBottom {
+            0% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -20%); } /* Descend un peu */
+            100% { transform: translate(-50%, -50%); }
+        }
+
+        /* BOUTON CENTRAL */
+        .center-box {
+            position: relative; /* Pour être au dessus des images */
+            z-index: 6000; 
+            width: 100%; height: 100%;
             background-color: var(--neon-purple);
-            padding: 15px 0; 
-            text-align: center;
-            text-decoration: none;
             border: 3px solid var(--white);
             box-shadow: 8px 8px 0px var(--neon-green);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80px; 
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .center-text {
-            color: var(--white);
-            font-size: 2.2rem; 
-            line-height: 0.9;
-            text-transform: uppercase;
-            margin: 0;
-            letter-spacing: 1px; 
-            user-select: none;
-            transition: color 0.2s;
-            width: 100%; 
+            color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
+            letter-spacing: 2px; margin: 0; pointer-events: none;
         }
 
-        @media (min-width: 901px) {
-            .center-box:hover {
-                background-color: var(--neon-green);
-                box-shadow: 12px 12px 0px var(--white);
-            }
-            .center-box:hover .center-text { color: var(--bg); }
+        .center-box:hover {
+            background-color: var(--neon-green);
+            box-shadow: 12px 12px 0px var(--white);
         }
+        .center-box:hover .center-text { color: var(--black); }
 
-        /* --- 3. GRILLE DES PROJETS --- */
-        .grid-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; min-height: 100%;
-            z-index: 50;
+
+        /* =========================================
+           PARTIE 2 : LE FEED TIKTOK
+           ========================================= */
+        
+        .feed-container {
+            position: fixed; top: 0; left: 0;
+            height: 100vh; width: 100vw;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; 
+            scroll-behavior: smooth;
+            opacity: 0; 
             pointer-events: none;
-            display: grid;
-            grid-template-columns: 1fr var(--stack-width) 1fr;
-            grid-template-rows: 1fr auto 1fr;
-            gap: 20px;
-            padding: 20px;
-            place-items: center;
-            opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 1s ease;
         }
 
-        .grid-item {
-            display: block;
-            text-decoration: none;
-            opacity: 0;
-            transform: scale(0);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: auto;
-            max-width: 250px; max-height: 30vh; 
-        }
+        .feed-active { opacity: 1; pointer-events: auto; }
 
-        .grid-item img {
-            display: block;
-            width: 100%; height: auto;
-            border: 3px solid var(--white);
-            filter: grayscale(100%) contrast(120%);
-            transition: 0.3s;
-            box-shadow: 5px 5px 0px black;
-        }
-
-        .grid-item:hover { z-index: 60; transform: scale(1.1) rotate(-2deg); }
-        .grid-item:hover img {
-            filter: grayscale(0%) contrast(100%);
-            border-color: var(--neon-green);
-            box-shadow: 10px 10px 0px var(--neon-purple);
-        }
-
-        .show-grid { opacity: 1; pointer-events: auto; }
-        .show-grid .grid-item { opacity: 1; transform: scale(1); }
-
-        .pos-1 { grid-column: 1; grid-row: 1; align-self: end; justify-self: end; }
-        .pos-2 { grid-column: 2; grid-row: 1; align-self: end; }
-        .pos-3 { grid-column: 3; grid-row: 1; align-self: end; justify-self: start; }
-        .pos-4 { grid-column: 1; grid-row: 3; align-self: start; justify-self: end; }
-        .pos-5 { grid-column: 2; grid-row: 3; align-self: start; }
-        .pos-6 { grid-column: 3; grid-row: 3; align-self: start; justify-self: start; }
-
-        /* --- 4. CONTACT OVERLAY --- */
-        .contact-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 300;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 40px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .contact-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .contact-actions {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap; 
-            justify-content: center;
-        }
-
-        .contact-btn {
+        .video-section {
+            height: 100vh; width: 100vw;
+            scroll-snap-align: start;
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100px; height: 100px;
-            border: 3px solid var(--white);
-            background: transparent;
-            color: var(--white);
-            text-decoration: none;
-            transition: 0.2s;
-            box-shadow: 5px 5px 0px var(--neon-purple);
-            cursor: pointer;
+            display: flex; justify-content: center; align-items: center;
+            background: #000;
+            border-bottom: 1px solid #222;
         }
 
-        .contact-btn svg { width: 40px; height: 40px; fill: currentColor; }
-
-        .contact-btn:hover {
-            background: var(--neon-green);
-            border-color: var(--neon-green);
-            color: var(--bg);
-            transform: scale(1.1);
-            box-shadow: 8px 8px 0px var(--white);
+        video {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; 
+            z-index: 1; opacity: 0.6; transition: opacity 0.3s;
         }
 
-        .heart-btn:hover {
-            background: var(--neon-pink);
-            border-color: var(--neon-pink);
-            color: var(--white);
+        .video-section.active video { opacity: 1; }
+
+        .info-overlay {
+            position: absolute; z-index: 10;
+            bottom: 0; left: 0; width: 100%;
+            padding: 20px 80px 40px 20px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            pointer-events: none; 
         }
 
-        /* Animation SHAKE */
-        @keyframes shake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg) scale(1.1); }
-            50% { transform: rotate(-5deg) scale(1.1); }
-            75% { transform: rotate(5deg) scale(1.1); }
-            100% { transform: rotate(0deg) scale(1.1); }
+        h2 {
+            font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
+            color: var(--neon-green); text-shadow: 2px 2px 0px var(--neon-purple);
+            margin-bottom: 5px; transform: skew(-5deg);
         }
-        .shaking { animation: shake 0.4s ease-in-out; }
+        p {
+            font-size: 1.1rem; max-width: 600px;
+            line-height: 1.3; text-shadow: 1px 1px 2px black; font-weight: 500;
+        }
 
-        /* Animation TEXTE FLOTTANT */
+        /* =========================================
+           PARTIE 3 : UI (Sidebar)
+           ========================================= */
+
+        .ui-layer {
+            opacity: 0; pointer-events: none; transition: opacity 1s 0.5s;
+        }
+        .ui-visible { opacity: 1; pointer-events: auto; }
+
+        .fixed-sidebar {
+            position: fixed; z-index: 1000; right: 15px; bottom: 35%;
+            display: flex; flex-direction: column; gap: 25px; align-items: center;
+        }
+
+        .side-btn {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
+            color: var(--white); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.2s; text-decoration: none;
+            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
+        .side-btn:hover { transform: scale(1.15); background: var(--neon-purple); border-color: var(--neon-green); }
+        .heart-btn:hover { background: var(--neon-pink); border-color: var(--neon-pink); }
+
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: 'Bebas Neue'; font-size: 1.5rem;
+            text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
+            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
+        }
+
+        .scroll-indicator {
+            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+            z-index: 20; animation: bounce 2s infinite; opacity: 0.5; font-size: 1.2rem; pointer-events: none;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
+        
         .floating-msg {
-            position: fixed;
-            color: var(--neon-green);
-            font-size: 1.5rem;
-            font-weight: bold;
-            pointer-events: none;
-            animation: floatAndFade 1.2s forwards;
-            white-space: nowrap;
-            z-index: 400;
-            text-shadow: 2px 2px 0px black;
+            position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
+            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 2000;
+            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black;
         }
-
         @keyframes floatAndFade {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-            10% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
-            80% { opacity: 1; transform: translate(-50%, -150%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -200%) scale(1.5); }
+            0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
+            100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
 
-        /* Bouton Fermer */
-        .close-contact {
-            position: absolute;
-            top: 40px; right: 40px;
-            font-size: 3rem;
-            color: var(--white);
-            cursor: pointer;
-            user-select: none;
-        }
-        .close-contact:hover { color: var(--neon-green); }
-
-
-        /* --- MOBILE --- */
-        @media (max-width: 900px) {
-            body.menu-open { overflow-y: auto; display: block; }
-            body.menu-open .center-box {
-                top: auto; bottom: 20px; transform: translateX(-50%);
-                width: 90%; background-color: var(--bg); border-color: var(--neon-green);
-            }
-            body.menu-open .center-box .center-text { color: var(--neon-green) !important; }
-            
-            .grid-layer {
-                display: flex; flex-direction: column; position: relative; height: auto;
-                padding-top: 50px; padding-bottom: 120px; gap: 40px;
-            }
-            .pos-1, .pos-2, .pos-3, .pos-4, .pos-5, .pos-6 { grid-column: auto; grid-row: auto; }
-            .grid-item { width: 85%; max-width: 400px; max-height: none; margin: 0 auto; }
-            .grid-item img { filter: grayscale(0%); }
-            
-            .contact-actions { flex-direction: row; flex-wrap: wrap; }
-            .contact-btn { width: 80px; height: 80px; }
-            .close-contact { top: 20px; right: 20px; }
-        }
     </style>
 </head>
 <body>
-
-    <!-- TEXTURE -->
-    <div class="background-texture"></div>
 
     <!-- FILTRES SVG -->
     <svg style="position: absolute; width: 0; height: 0;">
@@ -328,197 +236,235 @@
                 </feTurbulence>
                 <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="4" xChannelSelector="R" yChannelSelector="G" />
             </filter>
-            <filter id="shred-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="1" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="500" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
         </defs>
     </svg>
 
-    <!-- INTRO -->
+    <!-- INTRO LAYER -->
     <div class="intro-layer" id="intro-layer">
-        <img src="surfer.png" class="hero-image">
-        <img src="glitch.png" class="glitch-image">
+        <div class="intro-container">
+            <!-- Images contraintes derrière le bouton -->
+            <img src="surfer.png" class="hero-image">
+            <img src="glitch.png" class="glitch-image">
+
+            <!-- BOUTON CENTRAL -->
+            <div class="center-box" id="enter-btn">
+                <h1 class="center-text">le-Work-du-Jeez</h1>
+            </div>
+        </div>
     </div>
 
-    <!-- BOUTON CENTRAL -->
-    <a href="#" class="center-box" id="main-btn" onclick="handleMainClick(event)">
-        <h1 class="center-text" id="btn-text">le-Work-du-Jeez</h1>
-    </a>
-
-    <!-- GRILLE -->
-    <div class="grid-layer" id="grid-layer">
-        <a href="https://youtu.be/9zjvYZG_kUc?si=xr88vQ5_Oa-Y40GB" target="_blank" class="grid-item pos-1"><img src="p1.png"></a>
-        <a href="https://www.instagram.com/reel/DKcU3Iko4uw/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-2"><img src="p2.png"></a>
-        <a href="https://www.instagram.com/reel/DLSoJ7HIvjq/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-3"><img src="p3.png"></a>
-        <a href="https://www.instagram.com/reel/DJbWJ4PoPsY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-4"><img src="p4.png"></a>
-        <a href="https://youtu.be/q47H3s7y_C4?si=2ysvS3TiG_A3mYHB" target="_blank" class="grid-item pos-5"><img src="p5.png"></a>
-        <a href="https://youtu.be/BrlSj83gMP4" target="_blank" class="grid-item pos-6"><img src="p6.png"></a>
-    </div>
-
-    <!-- OVERLAY CONTACT -->
-    <div class="contact-overlay" id="contact-overlay">
-        <div class="close-contact" onclick="closeContactOverlay()">X</div>
+    <!-- UI LAYER -->
+    <div class="ui-layer" id="ui-layer">
+        <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
-        <div class="contact-actions">
-            <!-- TÉLÉPHONE -->
-            <a href="tel:0635256900" class="contact-btn">
+        <div class="fixed-sidebar">
+            <a href="tel:0635256900" class="side-btn">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
             </a>
-
-            <!-- MAIL -->
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="contact-btn">
+            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
-
-            <!-- COEUR (Interactif) -->
-            <button class="contact-btn heart-btn" onclick="triggerHeart(this)">
+            <button class="side-btn heart-btn" onclick="triggerHeart(this)">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
-        <h2 style="font-size: 2rem; text-transform: uppercase; letter-spacing: 2px;">Contactez-moi</h2>
     </div>
 
+    <!-- FEED VIDEO -->
+    <main class="feed-container" id="feed">
+        <!-- VIDEO 1 -->
+        <section class="video-section">
+            <!-- muted est OBLIGATOIRE pour l'autoplay -->
+            <video src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
+            <div class="info-overlay">
+                <h2>Showreel 2025</h2>
+                <p>Compilation des meilleurs moments.</p>
+            </div>
+            <div class="scroll-indicator">⬇</div>
+        </section>
+
+        <!-- VIDEO 2 -->
+        <section class="video-section">
+            <video src="video2.mp4" loop muted playsinline preload="auto" poster="p2.png"></video>
+            <div class="info-overlay">
+                <h2>Shooting IA</h2>
+                <p>Génération Midjourney v6.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 3 -->
+        <section class="video-section">
+            <video src="video3.mp4" loop muted playsinline preload="auto" poster="p3.png"></video>
+            <div class="info-overlay">
+                <h2>Motion Design</h2>
+                <p>Animation logo & Typo.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 4 -->
+        <section class="video-section">
+            <video src="video4.mp4" loop muted playsinline preload="auto" poster="p4.png"></video>
+            <div class="info-overlay">
+                <h2>Event / Festival</h2>
+                <p>Aftermovie dynamique.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 5 -->
+        <section class="video-section">
+            <video src="video5.mp4" loop muted playsinline preload="auto" poster="p5.png"></video>
+            <div class="info-overlay">
+                <h2>Packshot</h2>
+                <p>Lumière studio et Sound Design.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 6 -->
+        <section class="video-section">
+            <video src="video6.mp4" loop muted playsinline preload="auto" poster="p6.png"></video>
+            <div class="info-overlay">
+                <h2>Lifestyle</h2>
+                <p>Format Reels/TikTok.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 7 -->
+        <section class="video-section">
+            <video src="video7.mp4" loop muted playsinline preload="auto" poster="p7.png"></video>
+            <div class="info-overlay">
+                <h2>Cinematic Drone</h2>
+                <p>Prise de vue aérienne.</p>
+            </div>
+        </section>
+
+        <!-- FIN -->
+        <section class="video-section">
+             <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple); text-align: center;">
+                <h2 style="font-size: 3rem;">THE END</h2>
+                <p>Swipe up pour revoir ou clique à droite.</p>
+            </div>
+        </section>
+    </main>
+
     <script>
-        // AUDIO
-        const clickSound = new Audio('click.mp3');
-        clickSound.volume = 0.5; 
+        // --- GESTION DU CLIC ENTRÉE ---
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            // 1. Animation de sortie de l'intro
+            const intro = document.getElementById('intro-layer');
+            intro.style.opacity = '0';
+            intro.style.transform = "scale(1.1)";
+            setTimeout(() => { intro.style.display = 'none'; }, 800);
 
-        // GESTION CŒUR (SCÉNARIO COMPLEXE)
-        let heartClickCount = 0;
+            // 2. Affichage du site
+            document.getElementById('ui-layer').classList.add('ui-visible');
+            const feed = document.getElementById('feed');
+            feed.classList.add('feed-active');
 
-        function triggerHeart(btn) {
-            // 1. On secoue le bouton DANS TOUS LES CAS (pour le feedback tactile)
-            shakeButton(btn);
+            // 3. LANCEMENT FORCÉ DE LA VIDÉO
+            setTimeout(() => {
+                const firstVideo = feed.querySelector('video');
+                if(firstVideo) {
+                    // On essaie de jouer (forcément en muet d'abord pour que ça marche)
+                    firstVideo.muted = true; 
+                    var playPromise = firstVideo.play();
 
-            // 2. On incrémente le compteur
-            heartClickCount++;
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            // Lecture commencée !
+                            firstVideo.parentElement.classList.add('active');
+                            // On tente de mettre le son si le navigateur laisse faire
+                            // (Souvent bloqué, l'utilisateur devra cliquer sur le bouton SON)
+                            // firstVideo.muted = false; 
+                        })
+                        .catch(error => {
+                            console.log("Lecture auto bloquée : ", error);
+                        });
+                    }
+                }
+                // On active l'observateur de scroll
+                initObserver();
+            }, 500);
+        });
+
+        // --- OBSERVATEUR DE SCROLL ---
+        function initObserver() {
+            const sections = document.querySelectorAll('.video-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
+
+                    if (entry.isIntersecting) {
+                        // Quand la vidéo arrive à l'écran
+                        video.play().catch(e => console.log("Play error"));
+                        entry.target.classList.add('active');
+                    } else {
+                        // Quand elle part
+                        video.pause();
+                        video.currentTime = 0;
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            sections.forEach(section => { observer.observe(section); });
+        }
+
+        // --- GESTION DU SON ---
+        // Par défaut, tout est muet (obligatoire pour autoplay).
+        // L'utilisateur DOIT cliquer sur le bouton pour activer le son.
+        let isMuted = true;
+        function toggleMute() {
+            const videos = document.querySelectorAll('video');
+            const btn = document.querySelector('.sound-toggle');
+            isMuted = !isMuted;
             
-            // Calcul du cycle sur 10 clics (1 à 10)
-            const cycleIndex = heartClickCount % 10;
+            videos.forEach(v => { v.muted = isMuted; });
 
-            let message = "";
-            let duration = 1200; // Durée par défaut
-
-            // SCÉNARIO
-            if (cycleIndex === 1) {
-                message = "merci !!";
-            } else if (cycleIndex === 2) {
-                message = "💃 Owyeaaa";
-            } else if (cycleIndex === 3) {
-                message = "🤩🤩🤩";
-            } else if (cycleIndex === 4) {
-                message = "hmmm... 😒";
-            } else if (cycleIndex === 5) {
-                message = "😴💤";
-                duration = 3000; // Dure plus longtemps
-            } else if (cycleIndex === 0) { // Clic n°10 (car modulo 10 de 10 = 0)
-                message = "🤠";
+            if (isMuted) {
+                btn.innerText = "🔇 SON OFF";
+                btn.style.color = "var(--neon-green)";
+                btn.style.borderColor = "var(--neon-green)";
             } else {
-                // Clics 6, 7, 8, 9
-                // Le bouton a secoué (étape 1), mais on ne crée pas de texte
-                return;
+                btn.innerText = "🔊 SON ON";
+                btn.style.color = "var(--neon-purple)";
+                btn.style.borderColor = "var(--neon-purple)";
             }
+        }
 
-            // CRÉATION DU TEXTE VOLANT
+        // --- MESSAGES DU CŒUR (ORIGINAUX) ---
+        let heartClickCount = 0;
+        function triggerHeart(btn) {
+            btn.classList.remove('shaking');
+            void btn.offsetWidth; 
+            btn.classList.add('shaking');
+            
+            heartClickCount++;
+            const cycleIndex = heartClickCount % 10;
+            let message = "";
+            let duration = 1200;
+
+            // TES MESSAGES PERSONNALISÉS
+            if (cycleIndex === 1) message = "merci !!";
+            else if (cycleIndex === 2) message = "💃 Owyeaaa";
+            else if (cycleIndex === 3) message = "🤩🤩🤩";
+            else if (cycleIndex === 4) message = "hmmm... 😒";
+            else if (cycleIndex === 5) { message = "😴💤"; duration = 3000; }
+            else if (cycleIndex === 0) message = "🤠";
+            else return; // Pas de message pour les autres clics
+
             const msgEl = document.createElement('span');
             msgEl.innerText = message;
             msgEl.classList.add('floating-msg');
+            msgEl.style.animationDuration = (duration / 1000) + "s";
             
-            if (duration !== 1200) {
-                msgEl.style.animationDuration = (duration / 1000) + "s";
-            }
-
-            // Positionnement
             const rect = btn.getBoundingClientRect();
-            msgEl.style.left = rect.left + (rect.width / 2) + 'px'; 
+            msgEl.style.left = (rect.left - 20) + 'px'; 
             msgEl.style.top = rect.top + (rect.height / 2) + 'px';
-
+            
             document.body.appendChild(msgEl);
-
-            // Suppression après l'animation
-            setTimeout(() => {
-                msgEl.remove();
-            }, duration);
-        }
-
-        // Fonction pour secouer le bouton
-        function shakeButton(btn) {
-            btn.classList.remove('shaking');
-            void btn.offsetWidth; // Force reflow
-            btn.classList.add('shaking');
-        }
-
-
-        // LOGIQUE PRINCIPALE
-        window.addEventListener('popstate', function(event) {
-            if (event.state === null) {
-                resetState();
-            }
-        });
-
-        function handleMainClick(e) {
-            e.preventDefault();
-
-            const btnText = document.getElementById('btn-text');
-
-            if (!document.body.classList.contains('menu-open')) {
-                
-                clickSound.currentTime = 0; 
-                clickSound.play().catch(e => console.log("Audio bloqué"));
-
-                history.pushState({menu: 'open'}, "", ""); 
-                document.body.classList.add('menu-open');
-
-                const introLayer = document.getElementById('intro-layer');
-                const images = introLayer.querySelectorAll('img');
-                images.forEach(img => img.classList.add('pixel-explode'));
-
-                const gridLayer = document.getElementById('grid-layer');
-                gridLayer.classList.add('show-grid');
-                const items = gridLayer.querySelectorAll('.grid-item');
-                items.forEach((item, index) => {
-                    item.style.transitionDelay = (index * 0.1) + "s";
-                });
-
-                setTimeout(() => {
-                    btnText.innerText = "CONTACT";
-                }, 300);
-
-            } else {
-                openContactOverlay();
-            }
-        }
-
-        function openContactOverlay() {
-            document.getElementById('contact-overlay').classList.add('active');
-        }
-
-        function closeContactOverlay() {
-            document.getElementById('contact-overlay').classList.remove('active');
-        }
-
-        function resetState() {
-            closeContactOverlay();
-            document.body.classList.remove('menu-open');
-
-            const introLayer = document.getElementById('intro-layer');
-            const images = introLayer.querySelectorAll('img');
-            images.forEach(img => img.classList.remove('pixel-explode'));
-
-            const gridLayer = document.getElementById('grid-layer');
-            gridLayer.classList.remove('show-grid');
-            const items = gridLayer.querySelectorAll('.grid-item');
-            items.forEach((item) => {
-                item.style.transitionDelay = "0s";
-            });
-
-            const btnText = document.getElementById('btn-text');
-            setTimeout(() => {
-                btnText.innerText = "le-Work-du-Jeez";
-            }, 300);
+            setTimeout(() => { msgEl.remove(); }, duration);
         }
     </script>
 </body>
-
-</html> 
+</html>
