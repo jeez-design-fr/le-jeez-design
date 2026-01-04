@@ -28,18 +28,17 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- ANIMATION TV OFF (L'Effet Eteindre) --- */
+        /* --- ANIMATION TV OFF --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
-            40% { transform: scale(1, 0.002); filter: brightness(3); } /* Écrase verticalement */
-            80% { transform: scale(0, 0.002); } /* Écrase horizontalement */
+            40% { transform: scale(1, 0.002); filter: brightness(3); }
+            80% { transform: scale(0, 0.002); }
             100% { transform: scale(0, 0); }
         }
         .turn-off-anim {
             animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            pointer-events: none; /* Empêche de cliquer pendant l'anim */
+            pointer-events: none;
         }
-
 
         /* --- INTRO & GLITCH --- */
         .intro-layer {
@@ -81,10 +80,10 @@
             filter: url(#liquid-wave); pointer-events: none;
         }
 
-        /* --- STYLE DES BOUTONS "CADRE" (Intro + Fin) --- */
+        /* BOUTON INTRO */
         .center-box {
             position: relative; z-index: 10; 
-            width: 100%; height: 100%; /* Par défaut rempli le conteneur */
+            width: 100%; height: 100%;
             background-color: transparent;
             border: 2px solid var(--white);
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
@@ -186,12 +185,29 @@
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
-        /* --- BOUTON ŒIL (Fixe & Vivant) --- */
+        /* --- CONTENEUR ŒIL ET TEXTE (Fixe) --- */
         .fixed-eye-container {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 1s 1s;
+            z-index: 2000; 
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 1s 1s;
         }
+        /* Classe pour cacher l'œil sur la dernière page */
+        .fixed-eye-container.hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transition: opacity 0.3s ease;
+        }
+
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
+
+        /* Texte "VOIR EN HD" fixe */
+        .static-hd-text {
+            color: var(--white);
+            font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
+            margin-bottom: 8px; /* Espace entre le texte et le bouton */
+            text-shadow: 2px 2px 0px #000;
+        }
 
         .eye-btn-main {
             width: 70px; height: 70px; border-radius: 50%;
@@ -200,17 +216,9 @@
             text-decoration: none; backdrop-filter: blur(8px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
-            overflow: hidden; /* Important pour cacher la pupille si elle bouge trop */
         }
+        .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
-
-        /* SVG Œil personnalisé avec Pupille séparée */
-        .eye-svg { width: 35px; height: 35px; fill: none; stroke: currentColor; stroke-width: 2; overflow: visible; }
-        .eye-pupil { fill: currentColor; stroke: none; transition: transform 0.4s ease-out; }
-        
-        /* Anim Clignement */
-        .blink { animation: eye-blink 0.3s forwards; }
-        @keyframes eye-blink { 0% { transform: scaleY(1); } 50% { transform: scaleY(0.1); } 100% { transform: scaleY(1); } }
 
 
         /* --- MESSAGES FLOTTANTS --- */
@@ -241,12 +249,8 @@
             width: 100%; max-width: 320px;
         }
         
-        /* Bouton Devis (Style Intro) */
-        .btn-final-devis {
-            width: 300px; height: 80px;
-        }
+        .btn-final-devis { width: 300px; height: 80px; }
         
-        /* Bouton Power (Rond mais même style) */
         .btn-final-off {
             width: 80px; height: 80px;
             border-radius: 50%;
@@ -255,8 +259,7 @@
             cursor: pointer; transition: 0.3s;
         }
         .btn-final-off:hover {
-            border-color: red; /* Rouge pour éteindre */
-            box-shadow: 0 0 20px red;
+            border-color: red; box-shadow: 0 0 20px red;
             background: rgba(255,0,0,0.1);
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: var(--white); transition: 0.3s; }
@@ -294,40 +297,38 @@
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
         <div class="fixed-sidebar">
+            <!-- TÉLÉPHONE -->
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
             </a>
+            <!-- MAIL -->
             <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn" id="mail-btn" onclick="animateBtn(this, 'glow-active-blue')">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
+            <!-- CŒUR -->
             <button class="side-btn heart-btn" id="heart-btn" onclick="triggerHeart(this)">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
 
-        <!-- ŒIL CENTRAL (NOUVEAU SVG AVEC PUPILLE) -->
+        <!-- ŒIL CENTRAL (FIXE AVEC TEXTE) -->
         <div class="fixed-eye-container" id="eye-container">
+            <span class="static-hd-text">VOIR EN HD</span>
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
-                <svg class="eye-svg" viewBox="0 0 24 24">
-                    <!-- Forme de l'œil -->
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                    <!-- La Pupille (Indépendante) -->
-                    <circle class="eye-pupil" cx="12" cy="12" r="2.5" />
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
             </a>
         </div>
     </div>
 
     <!-- FEED VIDEO -->
     <main class="feed-container" id="feed">
-        <!-- AJOUTE TES LIENS DANS "data-link" pour CHAQUE vidéo -->
         
         <!-- VIDEO 1 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
             <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 2 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <!-- VIDEO 2 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
         </section>
@@ -337,7 +338,7 @@
             <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 4 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <!-- VIDEO 4 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
         </section>
@@ -347,7 +348,7 @@
             <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 6 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <!-- VIDEO 6 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
         </section>
@@ -374,36 +375,6 @@
     </main>
 
     <script>
-        // --- ANIMATION ŒIL VIVANT (ALÉATOIRE) ---
-        function animateEyeRandomly() {
-            const pupil = document.querySelector('.eye-pupil');
-            const svg = document.querySelector('.eye-svg');
-            if(!pupil || !svg) return;
-
-            // 1. Clignement (Une chance sur 2 à chaque cycle)
-            if(Math.random() > 0.5) {
-                svg.classList.add('blink');
-                setTimeout(() => svg.classList.remove('blink'), 300);
-            }
-
-            // 2. Mouvement Pupille (Haut, Gauche, Droite, Centre)
-            const r = Math.random();
-            let x = 0, y = 0;
-            
-            if(r < 0.2) { x = -4; y = 0; } // Gauche
-            else if(r < 0.4) { x = 4; y = 0; } // Droite
-            else if(r < 0.6) { x = 0; y = -3; } // Haut
-            else { x = 0; y = 0; } // Centre
-
-            pupil.style.transform = `translate(${x}px, ${y}px)`;
-
-            // Relancer aléatoirement entre 1s et 4s
-            setTimeout(animateEyeRandomly, 1000 + Math.random() * 3000);
-        }
-        // Démarrage de l'œil
-        animateEyeRandomly();
-
-
         // --- ANIMATIONS UI AUTO ---
         setInterval(() => {
             const phone = document.getElementById('phone-btn');
@@ -450,7 +421,7 @@
             setTimeout(() => { msgEl.remove(); }, duration);
         }
 
-        // --- ENTRER SITE ---
+        // --- ENTRER ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
@@ -460,7 +431,6 @@
                 const feed = document.getElementById('feed');
                 feed.classList.add('feed-active');
                 
-                // Lancement vidéo
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
                     firstVideo.muted = true;
@@ -468,51 +438,57 @@
                 }
                 initObserver();
                 intro.style.display = 'none';
-                intro.classList.remove('glitch-out'); // Reset pour plus tard
+                intro.classList.remove('glitch-out'); 
             }, 400);
         });
 
-        // --- FONCTION TV OFF (RESET) ---
+        // --- TV OFF ---
         function turnOffTv() {
-            // 1. Ajouter la classe d'animation au BODY pour tout écraser
             document.body.classList.add('turn-off-anim');
-
             setTimeout(() => {
-                // 2. Reset de l'état du site (pendant que c'est noir)
                 const feed = document.getElementById('feed');
                 const ui = document.getElementById('ui-layer');
                 const intro = document.getElementById('intro-layer');
 
-                feed.scrollTo(0, 0); // Rembobiner
+                feed.scrollTo(0, 0); 
                 feed.classList.remove('feed-active');
                 ui.classList.remove('ui-visible');
                 intro.style.display = 'flex';
                 intro.style.opacity = '1';
 
-                // Remettre les vidéos à zéro
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 
-                // 3. Enlever l'animation pour réouvrir "normalement"
                 setTimeout(() => {
                     document.body.classList.remove('turn-off-anim');
                 }, 100); 
 
-            }, 600); // Attendre la fin de l'anim TV Off
+            }, 600); 
         }
 
-        // --- OBSERVER & UPDATE LIENS ---
+        // --- OBSERVER & UPDATE LIENS & HIDE EYE ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
+            const eyeContainer = document.getElementById('eye-container');
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // GESTION DE LA DERNIÈRE SECTION (Masquer l'œil)
+                    if (entry.target.classList.contains('final-section')) {
+                        if(entry.isIntersecting) {
+                            eyeContainer.classList.add('hidden');
+                        }
+                        return; // On arrête là pour la section finale
+                    }
+
+                    // GESTION DES VIDÉOS
                     const video = entry.target.querySelector('video');
-                    // On ne traite pas la section finale car elle n'a pas de vidéo
-                    if (entry.target.classList.contains('final-section')) return;
                     if (!video) return;
 
                     if (entry.isIntersecting) {
+                        // Si ce n'est pas la section finale, on affiche l'œil
+                        eyeContainer.classList.remove('hidden');
+
                         video.play().catch(e => {});
                         entry.target.classList.add('active');
                         
