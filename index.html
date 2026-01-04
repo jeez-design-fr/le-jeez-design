@@ -13,6 +13,7 @@
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
+            --neon-blue: #00f3ff; /* Nouveau bleu pour le mail */
             --black: #000000;
             --white: #ffffff;
         }
@@ -27,15 +28,13 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- INTRO --- */
+        /* --- INTRO & GLITCH --- */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5000; background-color: #000;
             display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease; /* Plus rapide */
+            transition: opacity 0.5s ease;
         }
-
-        /* EFFET GLITCH SUR L'INTRO (Au clic) */
         .glitch-out {
             animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
             filter: contrast(200%) brightness(150%);
@@ -48,7 +47,6 @@
             80% { transform: translate(5px, -5px); clip-path: inset(10% 0 60% 0); }
             100% { transform: translate(0); }
         }
-
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
@@ -87,7 +85,7 @@
         .center-box:hover .center-text { color: var(--black); }
 
 
-        /* --- FEED TIKTOK --- */
+        /* --- FEED --- */
         .feed-container {
             position: fixed; top: 0; left: 0;
             height: 100vh; width: 100vw;
@@ -95,10 +93,9 @@
             scroll-snap-type: y mandatory; 
             scroll-behavior: smooth;
             opacity: 0; pointer-events: none;
-            transition: opacity 0.5s ease; /* Transition rapide */
+            transition: opacity 0.5s ease;
         }
         .feed-active { opacity: 1; pointer-events: auto; }
-
         .video-section {
             height: 100vh; width: 100vw;
             scroll-snap-align: start;
@@ -108,15 +105,12 @@
             border-bottom: 1px solid #111;
             overflow: hidden;
         }
-
-        /* Format Vidéos */
         video {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: 1; opacity: 0; transition: opacity 0.5s; /* Fade in vidéo */
+            z-index: 1; opacity: 0; transition: opacity 0.5s;
         }
         .video-section.active video { opacity: 1; }
-
         @media (orientation: portrait) {
             video.vertical { object-fit: cover; }
             video.horizontal { object-fit: contain; }
@@ -126,11 +120,11 @@
             video.horizontal { object-fit: cover; }
         }
 
-        /* --- UI LAYER (Fixe) --- */
+
+        /* --- UI LAYER --- */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
 
-        /* Sidebar Droite */
         .fixed-sidebar {
             position: fixed; z-index: 1000; right: 15px; bottom: 35%;
             display: flex; flex-direction: column; gap: 25px; align-items: center;
@@ -142,18 +136,65 @@
             cursor: pointer; transition: 0.2s; text-decoration: none;
             backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
+        .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
         .side-btn:hover { transform: scale(1.15); background: var(--neon-purple); border-color: var(--neon-green); }
-        
-        /* Style Spécial Cœur Activé */
-        .heart-btn.heart-active {
+
+
+        /* --- GESTION DES GLOWS (AU CLIC) --- */
+        .glow-active-red {
             background: var(--neon-pink) !important;
             border-color: var(--neon-pink) !important;
             color: white !important;
-            box-shadow: 0 0 20px var(--neon-pink), inset 0 0 10px white;
+            box-shadow: 0 0 20px var(--neon-pink), inset 0 0 10px white !important;
         }
+        .glow-active-green {
+            background: var(--neon-green) !important;
+            border-color: var(--neon-green) !important;
+            color: black !important;
+            box-shadow: 0 0 20px var(--neon-green), inset 0 0 10px white !important;
+        }
+        .glow-active-blue {
+            background: var(--neon-blue) !important;
+            border-color: var(--neon-blue) !important;
+            color: black !important; /* Texte noir pour contraste sur cyan */
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 10px white !important;
+        }
+
+
+        /* --- ANIMATIONS AUTOMATIQUES --- */
         
-        /* Bouton Son */
+        /* 1. Téléphone qui sonne (vibration icône uniquement) */
+        @keyframes ring-icon {
+            0% { transform: rotate(0); }
+            10% { transform: rotate(15deg) scale(1.1); }
+            20% { transform: rotate(-15deg) scale(1.1); }
+            30% { transform: rotate(15deg) scale(1.1); }
+            40% { transform: rotate(-15deg) scale(1.1); }
+            50% { transform: rotate(0) scale(1); }
+            100% { transform: rotate(0) scale(1); }
+        }
+        .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
+
+        /* 2. Mail qui saute */
+        @keyframes hop-icon {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-5px) scale(1.1); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(-3px) scale(1.05); }
+        }
+        .icon-hopping svg { animation: hop-icon 0.6s ease; }
+
+        /* 3. Œil qui cligne */
+        @keyframes blink-eye {
+            0% { transform: scaleY(1); }
+            40% { transform: scaleY(0.1); } /* Fermé */
+            80% { transform: scaleY(1); }
+            100% { transform: scaleY(1); }
+        }
+        .eye-blinking svg { animation: blink-eye 0.3s ease-in-out; }
+
+
+        /* --- BOUTON SON --- */
         .sound-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
@@ -162,51 +203,48 @@
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
-        /* --- LE BOUTON ŒIL FIXE (NOUVEAU) --- */
+        /* --- BOUTON ŒIL (Fixe) --- */
         .fixed-eye-container {
-            position: fixed;
-            bottom: 40px; /* Position "Empreinte digitale" */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000; /* Au dessus des vidéos */
-            display: flex; flex-direction: column; align-items: center;
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; display: flex; flex-direction: column; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 1s 1s;
         }
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
         .eye-btn-main {
-            width: 70px; height: 70px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.5);
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            display: flex; justify-content: center; align-items: center;
-            text-decoration: none;
-            backdrop-filter: blur(8px);
+            width: 70px; height: 70px; border-radius: 50%;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green);
+            color: var(--neon-green); display: flex; justify-content: center; align-items: center;
+            text-decoration: none; backdrop-filter: blur(8px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
         }
-        
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
+        .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
 
-        .eye-btn-main:hover, .eye-btn-main:active {
-            transform: scale(1.2);
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-green);
-        }
 
-        /* Messages flottants */
+        /* --- TEXTE FLOTTANT (Commun à tout le monde) --- */
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
-            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black;
+            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
         }
+        /* Variante pour l'œil (monte plus haut) */
+        .floating-eye-msg {
+            color: var(--white); background: var(--neon-green); color: black;
+            padding: 2px 8px; border-radius: 4px;
+        }
+
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
             100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
-        /* Shake animation */
+        /* Animation pour l'œil (centre vers haut) */
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, -80px) scale(0.8); }
+            100% { opacity: 0; transform: translate(-50%, -150px) scale(1.2); }
+        }
+
         @keyframes shake {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(10deg) scale(1.1); }
@@ -242,25 +280,28 @@
         </div>
     </div>
 
-    <!-- UI LAYER (FIXE) -->
+    <!-- UI LAYER -->
     <div class="ui-layer" id="ui-layer">
-        <!-- SON -->
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
-        <!-- SIDEBAR DROITE -->
         <div class="fixed-sidebar">
-            <a href="tel:0635256900" class="side-btn">
+            <!-- TÉLÉPHONE (Vert) -->
+            <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
             </a>
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn">
+            
+            <!-- MAIL (Bleu) -->
+            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn" id="mail-btn" onclick="animateBtn(this, 'glow-active-blue')">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
-            <button class="side-btn heart-btn" onclick="triggerHeart(this)">
+            
+            <!-- CŒUR (Rouge + Shake) -->
+            <button class="side-btn heart-btn" id="heart-btn" onclick="triggerHeart(this)">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
 
-        <!-- LE BOUTON ŒIL (FIXE EN BAS AU CENTRE) -->
+        <!-- ŒIL CENTRAL -->
         <div class="fixed-eye-container">
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
@@ -270,37 +311,30 @@
 
     <!-- FEED VIDEO -->
     <main class="feed-container" id="feed">
-        
         <!-- VIDEO 1 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
             <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 2 -->
         <section class="video-section" data-link="https://instagram.com">
             <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 3 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
             <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 4 -->
         <section class="video-section" data-link="https://instagram.com">
             <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 5 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
             <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 6 -->
         <section class="video-section" data-link="https://instagram.com">
             <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 7 -->
         <section class="video-section last-video" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
@@ -308,111 +342,73 @@
     </main>
 
     <script>
-        // --- BOUTON ENTRER AVEC EFFET GLITCH ---
-        document.getElementById('enter-btn').addEventListener('click', function() {
-            const intro = document.getElementById('intro-layer');
-            
-            // 1. Ajouter la classe Glitch
-            intro.classList.add('glitch-out');
+        // --- ANIMATIONS AUTOMATIQUES (BOUCLES) ---
+        
+        // 1. TÉLÉPHONE : Vibre toutes les 8 secondes
+        setInterval(() => {
+            const phone = document.getElementById('phone-btn');
+            if(phone) {
+                phone.classList.add('icon-ringing');
+                setTimeout(() => phone.classList.remove('icon-ringing'), 1000);
+            }
+        }, 8000);
 
-            // 2. Montrer l'UI
-            document.getElementById('ui-layer').classList.add('ui-visible');
-            const feed = document.getElementById('feed');
-            feed.classList.add('feed-active');
+        // 2. MAIL : Saute toutes les 10 secondes
+        setInterval(() => {
+            const mail = document.getElementById('mail-btn');
+            if(mail) {
+                mail.classList.add('icon-hopping');
+                setTimeout(() => mail.classList.remove('icon-hopping'), 1000);
+            }
+        }, 10000);
 
-            // 3. Lancer la vidéo immédiatement (sous le glitch)
-            setTimeout(() => {
-                const firstVideo = feed.querySelector('video');
-                if(firstVideo) {
-                    firstVideo.muted = true;
-                    var playPromise = firstVideo.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(_ => { firstVideo.parentElement.classList.add('active'); })
-                        .catch(error => { console.log("Erreur lecture:", error); });
-                    }
-                }
+        // 3. ŒIL : Cligne toutes les 6 secondes + Texte
+        setInterval(() => {
+            const eye = document.getElementById('dynamic-eye-btn');
+            if(eye) {
+                // Animation Clignement
+                eye.classList.add('eye-blinking');
+                setTimeout(() => eye.classList.remove('eye-blinking'), 400);
+
+                // Texte "VOIR EN HD"
+                const msgEl = document.createElement('span');
+                msgEl.innerText = "VOIR EN HD";
+                msgEl.classList.add('floating-msg', 'floating-eye-msg');
+                msgEl.style.animation = "floatUp 1.2s forwards";
                 
-                // Initialiser l'observateur pour le bouton Œil et le scroll
-                initObserver();
-                setupLoop();
-
-                // Supprimer l'intro du DOM après l'animation
-                setTimeout(() => { intro.style.display = 'none'; }, 500);
-            }, 100); // Délai très court pour laisser le glitch commencer
-        });
-
-        // --- OBSERVATEUR DE SCROLL & BOUTON ŒIL DYNAMIQUE ---
-        function initObserver() {
-            const sections = document.querySelectorAll('.video-section');
-            const eyeBtn = document.getElementById('dynamic-eye-btn');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    const video = entry.target.querySelector('video');
-                    if (!video) return;
-
-                    if (entry.isIntersecting) {
-                        // 1. Play Video
-                        video.play().catch(e => {});
-                        entry.target.classList.add('active');
-
-                        // 2. METTRE À JOUR LE LIEN DE L'ŒIL FIXE
-                        // On récupère le lien dans l'attribut "data-link" de la section
-                        const link = entry.target.getAttribute('data-link');
-                        if (link) {
-                            eyeBtn.href = link;
-                        } else {
-                            eyeBtn.href = "#"; // Fallback
-                        }
-
-                    } else {
-                        // Pause Video
-                        video.pause();
-                        video.currentTime = 0;
-                        entry.target.classList.remove('active');
-                    }
-                });
-            }, { threshold: 0.6 });
-
-            sections.forEach(section => { observer.observe(section); });
-        }
-
-        // --- BOUCLE ---
-        function setupLoop() {
-            const lastVideo = document.querySelector('.last-video video');
-            if(lastVideo) {
-                lastVideo.addEventListener('ended', function() {
-                    document.getElementById('feed').scrollTo({top: 0, behavior: 'smooth'});
-                });
+                // Positionnement au dessus de l'œil
+                const rect = eye.getBoundingClientRect();
+                msgEl.style.left = (rect.left + rect.width/2) + 'px'; 
+                msgEl.style.top = rect.top + 'px';
+                
+                document.body.appendChild(msgEl);
+                setTimeout(() => { msgEl.remove(); }, 1200);
             }
+        }, 6000);
+
+
+        // --- GESTION DES CLICS BOUTONS (GLOW) ---
+        function animateBtn(btn, glowClass) {
+            // Ajoute l'effet glow
+            btn.classList.add(glowClass);
+            // Retire l'effet après 1 seconde
+            setTimeout(() => {
+                btn.classList.remove(glowClass);
+            }, 1000);
         }
 
-        // --- SON ---
-        let isMuted = true;
-        function toggleMute() {
-            const videos = document.querySelectorAll('video');
-            const btn = document.querySelector('.sound-toggle');
-            isMuted = !isMuted;
-            videos.forEach(v => { v.muted = isMuted; });
-            if (isMuted) {
-                btn.innerText = "🔇 SON OFF";
-                btn.style.color = "var(--neon-green)";
-                btn.style.borderColor = "var(--neon-green)";
-            } else {
-                btn.innerText = "🔊 SON ON";
-                btn.style.color = "var(--neon-purple)";
-                btn.style.borderColor = "var(--neon-purple)";
-            }
-        }
 
-        // --- CŒUR (SHAKE + GLOW ROUGE) ---
+        // --- LOGIQUE CŒUR (MODIFIÉE) ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
             // 1. Animation Shake
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
             
-            // 2. Ajout de la classe GLOW (Rouge)
-            btn.classList.add('heart-active');
+            // 2. Glow Rouge (Temporaire)
+            btn.classList.add('glow-active-red');
+            setTimeout(() => {
+                btn.classList.remove('glow-active-red');
+            }, 1000); // S'éteint après 1s
 
             // 3. Messages
             heartClickCount++;
@@ -437,6 +433,81 @@
             msgEl.style.top = rect.top + (rect.height / 2) + 'px';
             document.body.appendChild(msgEl);
             setTimeout(() => { msgEl.remove(); }, duration);
+        }
+
+        // --- ENTRER ---
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            const intro = document.getElementById('intro-layer');
+            intro.classList.add('glitch-out');
+            document.getElementById('ui-layer').classList.add('ui-visible');
+            const feed = document.getElementById('feed');
+            feed.classList.add('feed-active');
+
+            setTimeout(() => {
+                const firstVideo = feed.querySelector('video');
+                if(firstVideo) {
+                    firstVideo.muted = true;
+                    var playPromise = firstVideo.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => { firstVideo.parentElement.classList.add('active'); })
+                        .catch(error => { console.log("Erreur lecture:", error); });
+                    }
+                }
+                initObserver();
+                setupLoop();
+                setTimeout(() => { intro.style.display = 'none'; }, 500);
+            }, 100);
+        });
+
+        // --- OBSERVER ---
+        function initObserver() {
+            const sections = document.querySelectorAll('.video-section');
+            const eyeBtn = document.getElementById('dynamic-eye-btn');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
+
+                    if (entry.isIntersecting) {
+                        video.play().catch(e => {});
+                        entry.target.classList.add('active');
+                        const link = entry.target.getAttribute('data-link');
+                        eyeBtn.href = link ? link : "#";
+                    } else {
+                        video.pause();
+                        video.currentTime = 0;
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, { threshold: 0.6 });
+            sections.forEach(section => { observer.observe(section); });
+        }
+
+        function setupLoop() {
+            const lastVideo = document.querySelector('.last-video video');
+            if(lastVideo) {
+                lastVideo.addEventListener('ended', function() {
+                    document.getElementById('feed').scrollTo({top: 0, behavior: 'smooth'});
+                });
+            }
+        }
+
+        let isMuted = true;
+        function toggleMute() {
+            const videos = document.querySelectorAll('video');
+            const btn = document.querySelector('.sound-toggle');
+            isMuted = !isMuted;
+            videos.forEach(v => { v.muted = isMuted; });
+            if (isMuted) {
+                btn.innerText = "🔇 SON OFF";
+                btn.style.color = "var(--neon-green)";
+                btn.style.borderColor = "var(--neon-green)";
+            } else {
+                btn.innerText = "🔊 SON ON";
+                btn.style.color = "var(--neon-purple)";
+                btn.style.borderColor = "var(--neon-purple)";
+            }
         }
     </script>
 </body>
