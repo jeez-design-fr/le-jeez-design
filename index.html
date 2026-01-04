@@ -3,263 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>le-Work-du-Jeez</title>
+    <title>Jeez Portfolio // Stream</title>
     
-    <!-- IMPORT DES POLICES GOOGLE -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #000000;
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
-            --white: #ffffff;
-            --font-stack: 'Bebas Neue', sans-serif;
-            --stack-width: 320px;
+            --black: #000;
+            --white: #fff;
         }
 
-        /* RESET */
-        * { box-sizing: border-box; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background-color: var(--bg);
+            background: var(--black);
             color: var(--white);
-            font-family: var(--font-stack);
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden; 
+        }
+
+        /* --- CONTENEUR PRINCIPAL (Le "Feed") --- */
+        .feed-container {
+            height: 100vh;
             width: 100vw;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory; 
+            scroll-behavior: smooth;
+        }
+
+        /* --- CHAQUE SECTION VIDÉO --- */
+        .video-section {
+            height: 100vh;
+            width: 100vw;
+            scroll-snap-align: start;
             position: relative;
-            overscroll-behavior: none;
-        }
-
-        /* --- TEXTURE D'ARRIÈRE PLAN --- */
-        .background-texture {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
-            background-image: url('lightning.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            pointer-events: none;
-        }
-        body.menu-open .background-texture { opacity: 0.4; }
-
-        /* --- 1. INTRO LAYER --- */
-        .intro-layer {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            transition: opacity 0.5s ease-in; 
-            opacity: 1;
+            background: #111;
+            border-bottom: 1px solid #222;
         }
 
-        .hero-image {
+        /* VIDÉO EN ARRIÈRE PLAN */
+        video {
             position: absolute;
-            z-index: 5;
-            bottom: 50%; 
-            width: 300px;
-            max-width: 80vw;
-            animation: levitation 4s ease-in-out infinite;
-            transition: transform 0.1s;
-        }
-
-        .glitch-image {
-            position: absolute;
-            z-index: 5;
-            top: 50%;
-            width: var(--stack-width);
-            max-width: 80vw; 
-            opacity: 0.8;
-            filter: url(#liquid-wave);
-            transition: transform 0.1s;
-        }
-
-        @keyframes levitation {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-30px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .pixel-explode {
-            filter: url(#shred-filter) contrast(200%);
-            opacity: 0;
-            transform: scale(4) !important; 
-            transition: all 0.6s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-        }
-
-        /* --- 2. BOUTON CENTRAL --- */
-        .center-box {
-            position: fixed; 
-            z-index: 100;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: var(--stack-width);
-            max-width: 80vw;
-            background-color: var(--neon-purple);
-            padding: 15px 0; 
-            text-align: center;
-            text-decoration: none;
-            border: 3px solid var(--white);
-            box-shadow: 8px 8px 0px var(--neon-green);
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 80px; 
-        }
-
-        .center-text {
-            color: var(--white);
-            font-size: 2.2rem; 
-            line-height: 0.9;
-            text-transform: uppercase;
-            margin: 0;
-            letter-spacing: 1px; 
-            user-select: none;
-            transition: color 0.2s;
-            width: 100%; 
-        }
-
-        @media (min-width: 901px) {
-            .center-box:hover {
-                background-color: var(--neon-green);
-                box-shadow: 12px 12px 0px var(--white);
-            }
-            .center-box:hover .center-text { color: var(--bg); }
-        }
-
-        /* --- 3. GRILLE DES PROJETS --- */
-        .grid-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; min-height: 100%;
-            z-index: 50;
-            pointer-events: none;
-            display: grid;
-            grid-template-columns: 1fr var(--stack-width) 1fr;
-            grid-template-rows: 1fr auto 1fr;
-            gap: 20px;
-            padding: 20px;
-            place-items: center;
-            opacity: 0;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; 
+            z-index: 1;
+            opacity: 0.6; 
             transition: opacity 0.3s;
         }
 
-        .grid-item {
-            display: block;
-            text-decoration: none;
-            opacity: 0;
-            transform: scale(0);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            pointer-events: auto;
-            max-width: 250px; max-height: 30vh; 
+        .video-section.active video { opacity: 1; }
+
+        /* --- OVERLAY D'INFORMATIONS (Texte en bas à gauche) --- */
+        .info-overlay {
+            position: absolute;
+            z-index: 10;
+            bottom: 0; left: 0; width: 100%;
+            /* Padding à droite pour ne pas passer sous les boutons */
+            padding: 20px 80px 40px 20px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            pointer-events: none; 
         }
 
-        .grid-item img {
-            display: block;
-            width: 100%; height: auto;
-            border: 3px solid var(--white);
-            filter: grayscale(100%) contrast(120%);
-            transition: 0.3s;
-            box-shadow: 5px 5px 0px black;
+        h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            color: var(--neon-green);
+            text-shadow: 2px 2px 0px var(--neon-purple);
+            margin-bottom: 5px;
+            transform: skew(-5deg);
         }
 
-        .grid-item:hover { z-index: 60; transform: scale(1.1) rotate(-2deg); }
-        .grid-item:hover img {
-            filter: grayscale(0%) contrast(100%);
-            border-color: var(--neon-green);
-            box-shadow: 10px 10px 0px var(--neon-purple);
+        p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            line-height: 1.3;
+            text-shadow: 1px 1px 2px black;
+            font-weight: 500;
         }
 
-        .show-grid { opacity: 1; pointer-events: auto; }
-        .show-grid .grid-item { opacity: 1; transform: scale(1); }
-
-        .pos-1 { grid-column: 1; grid-row: 1; align-self: end; justify-self: end; }
-        .pos-2 { grid-column: 2; grid-row: 1; align-self: end; }
-        .pos-3 { grid-column: 3; grid-row: 1; align-self: end; justify-self: start; }
-        .pos-4 { grid-column: 1; grid-row: 3; align-self: start; justify-self: end; }
-        .pos-5 { grid-column: 2; grid-row: 3; align-self: start; }
-        .pos-6 { grid-column: 3; grid-row: 3; align-self: start; justify-self: start; }
-
-        /* --- 4. CONTACT OVERLAY --- */
-        .contact-overlay {
+        /* --- BARRE LATÉRALE FIXE (LES 3 BOUTONS) --- */
+        .fixed-sidebar {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 300;
+            z-index: 1000; /* Toujours au dessus */
+            right: 15px;
+            bottom: 35%; /* Position verticale comme TikTok */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 25px;
             align-items: center;
-            gap: 40px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            backdrop-filter: blur(5px);
         }
 
-        .contact-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .contact-actions {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap; 
-            justify-content: center;
-        }
-
-        .contact-btn {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100px; height: 100px;
-            border: 3px solid var(--white);
-            background: transparent;
+        .side-btn {
+            width: 55px; height: 55px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--white);
             color: var(--white);
-            text-decoration: none;
-            transition: 0.2s;
-            box-shadow: 5px 5px 0px var(--neon-purple);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        .contact-btn svg { width: 40px; height: 40px; fill: currentColor; }
+        .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
 
-        .contact-btn:hover {
-            background: var(--neon-green);
+        .side-btn:hover {
+            transform: scale(1.15);
+            background: var(--neon-purple);
             border-color: var(--neon-green);
-            color: var(--bg);
-            transform: scale(1.1);
-            box-shadow: 8px 8px 0px var(--white);
+            box-shadow: 0 0 15px var(--neon-purple);
         }
 
+        /* Spécifique au bouton Cœur */
         .heart-btn:hover {
             background: var(--neon-pink);
             border-color: var(--neon-pink);
-            color: var(--white);
+            color: white;
+            box-shadow: 0 0 15px var(--neon-pink);
         }
 
-        /* Animation SHAKE */
+        /* Animation Cœur Shake */
         @keyframes shake {
             0% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg) scale(1.1); }
-            50% { transform: rotate(-5deg) scale(1.1); }
-            75% { transform: rotate(5deg) scale(1.1); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            50% { transform: rotate(-10deg) scale(1.1); }
+            75% { transform: rotate(10deg) scale(1.1); }
             100% { transform: rotate(0deg) scale(1.1); }
         }
         .shaking { animation: shake 0.4s ease-in-out; }
 
-        /* Animation TEXTE FLOTTANT */
+        /* Animation Texte Flottant du Cœur */
         .floating-msg {
             position: fixed;
             color: var(--neon-green);
@@ -268,257 +153,245 @@
             pointer-events: none;
             animation: floatAndFade 1.2s forwards;
             white-space: nowrap;
-            z-index: 400;
+            z-index: 2000;
             text-shadow: 2px 2px 0px black;
+            font-family: 'Bebas Neue';
         }
 
         @keyframes floatAndFade {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
-            10% { opacity: 1; transform: translate(-50%, -50%) scale(1.0); }
-            80% { opacity: 1; transform: translate(-50%, -150%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -200%) scale(1.5); }
+            0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
+            10% { opacity: 1; transform: translate(-150%, -50%) scale(1.0); }
+            100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
 
-        /* Bouton Fermer */
-        .close-contact {
-            position: absolute;
-            top: 40px; right: 40px;
-            font-size: 3rem;
-            color: var(--white);
+
+        /* --- BOUTON SON --- */
+        .sound-toggle {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            color: var(--neon-green);
             cursor: pointer;
-            user-select: none;
+            font-family: 'Bebas Neue';
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 5px 15px;
+            border: 1px solid var(--neon-green);
+            backdrop-filter: blur(4px);
         }
-        .close-contact:hover { color: var(--neon-green); }
 
+        /* --- SCROLL INDICATOR --- */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 10px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            animation: bounce 2s infinite;
+            opacity: 0.5;
+            font-size: 1.2rem;
+            pointer-events: none;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+            40% {transform: translateX(-50%) translateY(-10px);}
+            60% {transform: translateX(-50%) translateY(-5px);}
+        }
 
-        /* --- MOBILE --- */
-        @media (max-width: 900px) {
-            body.menu-open { overflow-y: auto; display: block; }
-            body.menu-open .center-box {
-                top: auto; bottom: 20px; transform: translateX(-50%);
-                width: 90%; background-color: var(--bg); border-color: var(--neon-green);
-            }
-            body.menu-open .center-box .center-text { color: var(--neon-green) !important; }
-            
-            .grid-layer {
-                display: flex; flex-direction: column; position: relative; height: auto;
-                padding-top: 50px; padding-bottom: 120px; gap: 40px;
-            }
-            .pos-1, .pos-2, .pos-3, .pos-4, .pos-5, .pos-6 { grid-column: auto; grid-row: auto; }
-            .grid-item { width: 85%; max-width: 400px; max-height: none; margin: 0 auto; }
-            .grid-item img { filter: grayscale(0%); }
-            
-            .contact-actions { flex-direction: row; flex-wrap: wrap; }
-            .contact-btn { width: 80px; height: 80px; }
-            .close-contact { top: 20px; right: 20px; }
+        /* --- PAGE DE CONTACT FINALE --- */
+        .contact-section {
+            background: url('lightning.png') center/cover no-repeat;
+            flex-direction: column;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- TEXTURE -->
-    <div class="background-texture"></div>
+    <!-- BOUTON SON FIXE -->
+    <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
 
-    <!-- FILTRES SVG -->
-    <svg style="position: absolute; width: 0; height: 0;">
-        <defs>
-            <filter id="liquid-wave">
-                <feTurbulence type="turbulence" baseFrequency="0 0.02" numOctaves="2" result="turbulence">
-                    <animate attributeName="baseFrequency" values="0 0.01; 0 0.03; 0 0.01" dur="30s" repeatCount="indefinite"/>
-                </feTurbulence>
-                <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="4" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-            <filter id="shred-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="1" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="500" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-        </defs>
-    </svg>
-
-    <!-- INTRO -->
-    <div class="intro-layer" id="intro-layer">
-        <img src="surfer.png" class="hero-image">
-        <img src="glitch.png" class="glitch-image">
-    </div>
-
-    <!-- BOUTON CENTRAL -->
-    <a href="#" class="center-box" id="main-btn" onclick="handleMainClick(event)">
-        <h1 class="center-text" id="btn-text">le-Work-du-Jeez</h1>
-    </a>
-
-    <!-- GRILLE -->
-    <div class="grid-layer" id="grid-layer">
-        <a href="https://youtu.be/9zjvYZG_kUc?si=xr88vQ5_Oa-Y40GB" target="_blank" class="grid-item pos-1"><img src="p1.png"></a>
-        <a href="https://www.instagram.com/reel/DKcU3Iko4uw/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-2"><img src="p2.png"></a>
-        <a href="https://www.instagram.com/reel/DLSoJ7HIvjq/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-3"><img src="p3.png"></a>
-        <a href="https://www.instagram.com/reel/DJbWJ4PoPsY/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" target="_blank" class="grid-item pos-4"><img src="p4.png"></a>
-        <a href="https://youtu.be/q47H3s7y_C4?si=2ysvS3TiG_A3mYHB" target="_blank" class="grid-item pos-5"><img src="p5.png"></a>
-        <a href="https://youtu.be/BrlSj83gMP4" target="_blank" class="grid-item pos-6"><img src="p6.png"></a>
-    </div>
-
-    <!-- OVERLAY CONTACT -->
-    <div class="contact-overlay" id="contact-overlay">
-        <div class="close-contact" onclick="closeContactOverlay()">X</div>
+    <!-- BARRE LATÉRALE FIXE (CONTACT) -->
+    <div class="fixed-sidebar">
         
-        <div class="contact-actions">
-            <!-- TÉLÉPHONE -->
-            <a href="tel:0635256900" class="contact-btn">
-                <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
-            </a>
+        <!-- TÉLÉPHONE (Change le numéro ici) -->
+        <a href="tel:0635256900" class="side-btn">
+            <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
+        </a>
 
-            <!-- MAIL -->
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="contact-btn">
-                <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            </a>
+        <!-- EMAIL (Change le mail ici) -->
+        <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
 
-            <!-- COEUR (Interactif) -->
-            <button class="contact-btn heart-btn" onclick="triggerHeart(this)">
-                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-            </button>
-        </div>
-        <h2 style="font-size: 2rem; text-transform: uppercase; letter-spacing: 2px;">Contactez-moi</h2>
+        <!-- CŒUR INTERACTIF -->
+        <button class="side-btn heart-btn" onclick="triggerHeart(this)">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+
     </div>
+
+    <main class="feed-container" id="feed">
+
+        <!-- VIDEO 1 -->
+        <section class="video-section">
+            <video src="video1.mp4" loop muted playsinline poster="p1.png"></video>
+            <div class="info-overlay">
+                <h2>Showreel 2025</h2>
+                <p>Compilation des meilleurs moments. Production audiovisuelle.</p>
+            </div>
+            <div class="scroll-indicator">⬇</div>
+        </section>
+
+        <!-- VIDEO 2 -->
+        <section class="video-section">
+            <video src="video2.mp4" loop muted playsinline poster="p2.png"></video>
+            <div class="info-overlay">
+                <h2>Shooting IA</h2>
+                <p>Génération Midjourney v6 + Retouche Photoshop.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 3 -->
+        <section class="video-section">
+            <video src="video3.mp4" loop muted playsinline poster="p3.png"></video>
+            <div class="info-overlay">
+                <h2>Motion Design</h2>
+                <p>Animation logo et typographie cinétique.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 4 -->
+        <section class="video-section">
+            <video src="video4.mp4" loop muted playsinline poster="p4.png"></video>
+            <div class="info-overlay">
+                <h2>Event / Festival</h2>
+                <p>Aftermovie dynamique et colorimétrie vibrante.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 5 -->
+        <section class="video-section">
+            <video src="video5.mp4" loop muted playsinline poster="p5.png"></video>
+            <div class="info-overlay">
+                <h2>Publicité Produit</h2>
+                <p>Packshot vidéo 4K & Sound Design.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 6 -->
+        <section class="video-section">
+            <video src="video6.mp4" loop muted playsinline poster="p6.png"></video>
+            <div class="info-overlay">
+                <h2>Lifestyle</h2>
+                <p>Format Reels/TikTok pour campagne influenceur.</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 7 -->
+        <section class="video-section">
+            <video src="video7.mp4" loop muted playsinline poster="p7.png"></video>
+            <div class="info-overlay">
+                <h2>Cinematic Drone</h2>
+                <p>Prise de vue aérienne & Stabilisation.</p>
+            </div>
+        </section>
+
+        <!-- CONTACT FINAL -->
+        <section class="video-section contact-section">
+            <!-- (Vide car les boutons sont maintenant à droite, mais on garde le fond) -->
+            <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple);">
+                <h2 style="font-size: 3rem;">THE END</h2>
+                <p>Swipe up pour revoir ou clique à droite pour appeler.</p>
+            </div>
+        </section>
+
+    </main>
 
     <script>
-        // AUDIO
-        const clickSound = new Audio('click.mp3');
-        clickSound.volume = 0.5; 
+        // --- 1. GESTION DES VIDÉOS (SCROLL) ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const sections = document.querySelectorAll('.video-section');
+            const observerOptions = {
+                root: document.querySelector('.feed-container'),
+                threshold: 0.6 
+            };
 
-        // GESTION CŒUR (SCÉNARIO COMPLEXE)
-        let heartClickCount = 0;
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const video = entry.target.querySelector('video');
+                    if (!video) return;
 
-        function triggerHeart(btn) {
-            // 1. On secoue le bouton DANS TOUS LES CAS (pour le feedback tactile)
-            shakeButton(btn);
+                    if (entry.isIntersecting) {
+                        video.play().catch(e => console.log("Auto-play bloqué"));
+                        entry.target.classList.add('active');
+                    } else {
+                        video.pause();
+                        video.currentTime = 0;
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, observerOptions);
 
-            // 2. On incrémente le compteur
-            heartClickCount++;
-            
-            // Calcul du cycle sur 10 clics (1 à 10)
-            const cycleIndex = heartClickCount % 10;
+            sections.forEach(section => { observer.observe(section); });
+        });
 
-            let message = "";
-            let duration = 1200; // Durée par défaut
+        // --- 2. GESTION DU SON ---
+        let isMuted = true;
+        function toggleMute() {
+            const videos = document.querySelectorAll('video');
+            const btn = document.querySelector('.sound-toggle');
+            isMuted = !isMuted;
 
-            // SCÉNARIO
-            if (cycleIndex === 1) {
-                message = "merci !!";
-            } else if (cycleIndex === 2) {
-                message = "💃 Owyeaaa";
-            } else if (cycleIndex === 3) {
-                message = "🤩🤩🤩";
-            } else if (cycleIndex === 4) {
-                message = "hmmm... 😒";
-            } else if (cycleIndex === 5) {
-                message = "😴💤";
-                duration = 3000; // Dure plus longtemps
-            } else if (cycleIndex === 0) { // Clic n°10 (car modulo 10 de 10 = 0)
-                message = "🤠";
+            videos.forEach(v => { v.muted = isMuted; });
+
+            if (isMuted) {
+                btn.innerText = "🔇 SON OFF";
+                btn.style.color = "var(--neon-green)";
+                btn.style.borderColor = "var(--neon-green)";
             } else {
-                // Clics 6, 7, 8, 9
-                // Le bouton a secoué (étape 1), mais on ne crée pas de texte
-                return;
+                btn.innerText = "🔊 SON ON";
+                btn.style.color = "var(--neon-purple)";
+                btn.style.borderColor = "var(--neon-purple)";
             }
-
-            // CRÉATION DU TEXTE VOLANT
-            const msgEl = document.createElement('span');
-            msgEl.innerText = message;
-            msgEl.classList.add('floating-msg');
-            
-            if (duration !== 1200) {
-                msgEl.style.animationDuration = (duration / 1000) + "s";
-            }
-
-            // Positionnement
-            const rect = btn.getBoundingClientRect();
-            msgEl.style.left = rect.left + (rect.width / 2) + 'px'; 
-            msgEl.style.top = rect.top + (rect.height / 2) + 'px';
-
-            document.body.appendChild(msgEl);
-
-            // Suppression après l'animation
-            setTimeout(() => {
-                msgEl.remove();
-            }, duration);
         }
 
-        // Fonction pour secouer le bouton
-        function shakeButton(btn) {
+        // --- 3. LOGIQUE DU CŒUR (FUN) ---
+        let heartClickCount = 0;
+        function triggerHeart(btn) {
+            // Animation Shake
             btn.classList.remove('shaking');
             void btn.offsetWidth; // Force reflow
             btn.classList.add('shaking');
-        }
 
+            heartClickCount++;
+            const cycleIndex = heartClickCount % 10;
+            let message = "";
+            let duration = 1200;
 
-        // LOGIQUE PRINCIPALE
-        window.addEventListener('popstate', function(event) {
-            if (event.state === null) {
-                resetState();
-            }
-        });
+            if (cycleIndex === 1) message = "Merci !!";
+            else if (cycleIndex === 2) message = "🔥 Force !";
+            else if (cycleIndex === 3) message = "Call me 🤙";
+            else if (cycleIndex === 4) message = "🤩🤩";
+            else if (cycleIndex === 5) { message = "Stop, bosse !"; duration = 2000; }
+            else if (cycleIndex === 0) message = "🤠";
+            else return;
 
-        function handleMainClick(e) {
-            e.preventDefault();
+            // Création Bulle
+            const msgEl = document.createElement('span');
+            msgEl.innerText = message;
+            msgEl.classList.add('floating-msg');
+            msgEl.style.animationDuration = (duration / 1000) + "s";
 
-            const btnText = document.getElementById('btn-text');
+            // Positionnement (A gauche du bouton)
+            const rect = btn.getBoundingClientRect();
+            msgEl.style.left = rect.left + 'px'; 
+            msgEl.style.top = rect.top + (rect.height / 2) + 'px';
 
-            if (!document.body.classList.contains('menu-open')) {
-                
-                clickSound.currentTime = 0; 
-                clickSound.play().catch(e => console.log("Audio bloqué"));
-
-                history.pushState({menu: 'open'}, "", ""); 
-                document.body.classList.add('menu-open');
-
-                const introLayer = document.getElementById('intro-layer');
-                const images = introLayer.querySelectorAll('img');
-                images.forEach(img => img.classList.add('pixel-explode'));
-
-                const gridLayer = document.getElementById('grid-layer');
-                gridLayer.classList.add('show-grid');
-                const items = gridLayer.querySelectorAll('.grid-item');
-                items.forEach((item, index) => {
-                    item.style.transitionDelay = (index * 0.1) + "s";
-                });
-
-                setTimeout(() => {
-                    btnText.innerText = "CONTACT";
-                }, 300);
-
-            } else {
-                openContactOverlay();
-            }
-        }
-
-        function openContactOverlay() {
-            document.getElementById('contact-overlay').classList.add('active');
-        }
-
-        function closeContactOverlay() {
-            document.getElementById('contact-overlay').classList.remove('active');
-        }
-
-        function resetState() {
-            closeContactOverlay();
-            document.body.classList.remove('menu-open');
-
-            const introLayer = document.getElementById('intro-layer');
-            const images = introLayer.querySelectorAll('img');
-            images.forEach(img => img.classList.remove('pixel-explode'));
-
-            const gridLayer = document.getElementById('grid-layer');
-            gridLayer.classList.remove('show-grid');
-            const items = gridLayer.querySelectorAll('.grid-item');
-            items.forEach((item) => {
-                item.style.transitionDelay = "0s";
-            });
-
-            const btnText = document.getElementById('btn-text');
-            setTimeout(() => {
-                btnText.innerText = "le-Work-du-Jeez";
-            }, 300);
+            document.body.appendChild(msgEl);
+            setTimeout(() => { msgEl.remove(); }, duration);
         }
     </script>
 </body>
-
-</html> 
+</html>
