@@ -28,6 +28,19 @@
             width: 100vw; height: 100vh;
         }
 
+        /* --- ANIMATION TV OFF (L'Effet Eteindre) --- */
+        @keyframes tv-turn-off {
+            0% { transform: scale(1, 1); filter: brightness(1); }
+            40% { transform: scale(1, 0.002); filter: brightness(3); } /* Écrase verticalement */
+            80% { transform: scale(0, 0.002); } /* Écrase horizontalement */
+            100% { transform: scale(0, 0); }
+        }
+        .turn-off-anim {
+            animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            pointer-events: none; /* Empêche de cliquer pendant l'anim */
+        }
+
+
         /* --- INTRO & GLITCH --- */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -48,7 +61,6 @@
             100% { transform: translate(0); }
         }
         
-        /* Intro Container & Images */
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
@@ -69,12 +81,12 @@
             filter: url(#liquid-wave); pointer-events: none;
         }
 
-        /* --- BOUTON INTRO (MODIFIÉ - PLUS DE VIOLET) --- */
+        /* --- STYLE DES BOUTONS "CADRE" (Intro + Fin) --- */
         .center-box {
-            position: relative; z-index: 10; width: 100%; height: 100%;
-            background-color: transparent; /* Fond transparent */
-            border: 2px solid var(--white); /* Bordure blanche fine */
-            /* Suppression de l'ombre portée verte par défaut */
+            position: relative; z-index: 10; 
+            width: 100%; height: 100%; /* Par défaut rempli le conteneur */
+            background-color: transparent;
+            border: 2px solid var(--white);
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; text-decoration: none;
@@ -82,16 +94,14 @@
         }
         .center-text {
             color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
-            letter-spacing: 2px; margin: 0; pointer-events: none;
-            transition: 0.3s;
+            letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
         }
-        /* Hover Bouton Intro */
         .center-box:hover {
             border-color: var(--neon-green);
-            background-color: rgba(57, 255, 20, 0.1); /* Légère teinte verte */
+            background-color: rgba(57, 255, 20, 0.1);
             box-shadow: 0 0 20px var(--neon-green);
         }
-        .center-box:hover .center-text { color: var(--neon-green); }
+        .center-box:hover .center-text, .center-box:hover svg { color: var(--neon-green); fill: var(--neon-green); }
 
 
         /* --- FEED --- */
@@ -139,7 +149,7 @@
             display: flex; flex-direction: column; gap: 25px; align-items: center;
         }
 
-        /* --- BOUTONS LATÉRAUX (STYLES DE BASE) --- */
+        /* --- BOUTONS LATÉRAUX --- */
         .side-btn {
             width: 55px; height: 55px; border-radius: 50%;
             background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
@@ -149,74 +159,22 @@
         }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
 
-        /* --- HOVER SPÉCIFIQUE (COULEURS CORRECTES) --- */
-        /* Téléphone -> Vert */
-        #phone-btn:hover {
-            border-color: var(--neon-green);
-            color: var(--neon-green);
-            background: rgba(57, 255, 20, 0.2);
-            box-shadow: 0 0 15px var(--neon-green);
-            transform: scale(1.15);
-        }
-        /* Mail -> Bleu */
-        #mail-btn:hover {
-            border-color: var(--neon-blue);
-            color: var(--neon-blue);
-            background: rgba(0, 243, 255, 0.2);
-            box-shadow: 0 0 15px var(--neon-blue);
-            transform: scale(1.15);
-        }
-        /* Cœur -> Rouge/Pink */
-        #heart-btn:hover {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-            background: rgba(255, 0, 127, 0.2);
-            box-shadow: 0 0 15px var(--neon-pink);
-            transform: scale(1.15);
-        }
+        /* Hover Styles */
+        #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(57, 255, 20, 0.2); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
+        #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
+        #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
 
-        /* Classes actives pour le clic (Glow intense) */
-        .glow-active-green {
-            background: var(--neon-green) !important;
-            color: black !important;
-            box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important;
-        }
-        .glow-active-blue {
-            background: var(--neon-blue) !important;
-            color: black !important;
-            box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important;
-        }
-        .glow-active-red {
-            background: var(--neon-pink) !important;
-            color: white !important;
-            box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important;
-        }
+        /* Glow Active */
+        .glow-active-green { background: var(--neon-green) !important; color: black !important; box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important; }
+        .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important; }
+        .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important; }
 
 
         /* --- ANIMATIONS AUTOMATIQUES --- */
-        @keyframes ring-icon {
-            0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 
-            20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); }
-            40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); }
-        }
+        @keyframes ring-icon { 0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); } 40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); } }
         .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
-
-        @keyframes hop-icon {
-            0%, 100% { transform: translateY(0); }
-            25% { transform: translateY(-5px) scale(1.1); }
-            50% { transform: translateY(0); }
-            75% { transform: translateY(-3px) scale(1.05); }
-        }
+        @keyframes hop-icon { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-5px) scale(1.1); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px) scale(1.05); } }
         .icon-hopping svg { animation: hop-icon 0.6s ease; }
-
-        /* Clignement Œil */
-        @keyframes blink-eye {
-            0% { transform: scaleY(1); }
-            40% { transform: scaleY(0.1); } /* Fermé */
-            80% { transform: scaleY(1); }
-            100% { transform: scaleY(1); }
-        }
-        .eye-blinking svg { animation: blink-eye 0.4s ease-in-out; }
 
 
         /* --- BOUTON SON --- */
@@ -228,11 +186,10 @@
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
-        /* --- BOUTON ŒIL (Fixe) --- */
+        /* --- BOUTON ŒIL (Fixe & Vivant) --- */
         .fixed-eye-container {
             position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; display: flex; flex-direction: column; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 1s 1s;
+            z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 1s 1s;
         }
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
@@ -243,9 +200,17 @@
             text-decoration: none; backdrop-filter: blur(8px);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+            overflow: hidden; /* Important pour cacher la pupille si elle bouge trop */
         }
-        .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
+
+        /* SVG Œil personnalisé avec Pupille séparée */
+        .eye-svg { width: 35px; height: 35px; fill: none; stroke: currentColor; stroke-width: 2; overflow: visible; }
+        .eye-pupil { fill: currentColor; stroke: none; transition: transform 0.4s ease-out; }
+        
+        /* Anim Clignement */
+        .blink { animation: eye-blink 0.3s forwards; }
+        @keyframes eye-blink { 0% { transform: scaleY(1); } 50% { transform: scaleY(0.1); } 100% { transform: scaleY(1); } }
 
 
         /* --- MESSAGES FLOTTANTS --- */
@@ -254,27 +219,48 @@
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
             font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
         }
-        
-        /* STYLE SPÉCIFIQUE DU MESSAGE ŒIL (Blanc) */
-        .floating-eye-msg {
-            color: var(--white); 
-            background: rgba(0,0,0,0.6); /* Fond noir semi-transparent */
-            padding: 4px 10px; border-radius: 4px; border: 1px solid var(--white);
-            font-size: 1.2rem; letter-spacing: 2px;
-            opacity: 0; /* Caché par défaut, géré par JS */
-            transition: opacity 0.5s ease;
-        }
-
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
             100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
-
         @keyframes shake {
             0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); }
             75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); }
         }
         .shaking { animation: shake 0.4s ease-in-out; }
+
+
+        /* --- SECTION FINALE (Noire avec Boutons) --- */
+        .final-section {
+            background-color: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 30px;
+        }
+        .final-container {
+            display: flex; flex-direction: column; gap: 30px; align-items: center;
+            width: 100%; max-width: 320px;
+        }
+        
+        /* Bouton Devis (Style Intro) */
+        .btn-final-devis {
+            width: 300px; height: 80px;
+        }
+        
+        /* Bouton Power (Rond mais même style) */
+        .btn-final-off {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--white);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.3s;
+        }
+        .btn-final-off:hover {
+            border-color: red; /* Rouge pour éteindre */
+            box-shadow: 0 0 20px red;
+            background: rgba(255,0,0,0.1);
+        }
+        .btn-final-off svg { width: 35px; height: 35px; fill: var(--white); transition: 0.3s; }
+        .btn-final-off:hover svg { fill: red; }
 
     </style>
 </head>
@@ -308,140 +294,133 @@
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
         <div class="fixed-sidebar">
-            <!-- TÉLÉPHONE (Vert) -->
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
             </a>
-            
-            <!-- MAIL (Bleu) -->
             <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="side-btn" id="mail-btn" onclick="animateBtn(this, 'glow-active-blue')">
                 <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
-            
-            <!-- CŒUR (Rouge) -->
             <button class="side-btn heart-btn" id="heart-btn" onclick="triggerHeart(this)">
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
 
-        <!-- ŒIL CENTRAL -->
+        <!-- ŒIL CENTRAL (NOUVEAU SVG AVEC PUPILLE) -->
         <div class="fixed-eye-container" id="eye-container">
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                <svg class="eye-svg" viewBox="0 0 24 24">
+                    <!-- Forme de l'œil -->
+                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                    <!-- La Pupille (Indépendante) -->
+                    <circle class="eye-pupil" cx="12" cy="12" r="2.5" />
+                </svg>
             </a>
-            <!-- Le message sera injecté ici par JS -->
         </div>
     </div>
 
     <!-- FEED VIDEO -->
     <main class="feed-container" id="feed">
+        <!-- AJOUTE TES LIENS DANS "data-link" pour CHAQUE vidéo -->
+        
         <!-- VIDEO 1 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
             <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
         </section>
-        <!-- VIDEO 2 -->
-        <section class="video-section" data-link="https://instagram.com">
+
+        <!-- VIDEO 2 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
         </section>
+
         <!-- VIDEO 3 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
             <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
         </section>
-        <!-- VIDEO 4 -->
-        <section class="video-section" data-link="https://instagram.com">
+
+        <!-- VIDEO 4 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
         </section>
+
         <!-- VIDEO 5 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
             <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
         </section>
-        <!-- VIDEO 6 -->
-        <section class="video-section" data-link="https://instagram.com">
+
+        <!-- VIDEO 6 (HORIZONTALE - J'ai ajouté le lien data-link) -->
+        <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
         </section>
+
         <!-- VIDEO 7 -->
-        <section class="video-section last-video" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
+        </section>
+
+        <!-- SECTION FINALE (TV OFF) -->
+        <section class="video-section final-section">
+            <div class="final-container">
+                <!-- Bouton Devis -->
+                <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
+                    <h1 class="center-text">DEVIS GRATUIT</h1>
+                </a>
+                
+                <!-- Bouton Éteindre -->
+                <div class="btn-final-off" onclick="turnOffTv()">
+                    <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                </div>
+            </div>
         </section>
     </main>
 
     <script>
-        // --- ANIMATIONS AUTOMATIQUES ---
-        
-        // 1. TÉLÉPHONE (8s)
+        // --- ANIMATION ŒIL VIVANT (ALÉATOIRE) ---
+        function animateEyeRandomly() {
+            const pupil = document.querySelector('.eye-pupil');
+            const svg = document.querySelector('.eye-svg');
+            if(!pupil || !svg) return;
+
+            // 1. Clignement (Une chance sur 2 à chaque cycle)
+            if(Math.random() > 0.5) {
+                svg.classList.add('blink');
+                setTimeout(() => svg.classList.remove('blink'), 300);
+            }
+
+            // 2. Mouvement Pupille (Haut, Gauche, Droite, Centre)
+            const r = Math.random();
+            let x = 0, y = 0;
+            
+            if(r < 0.2) { x = -4; y = 0; } // Gauche
+            else if(r < 0.4) { x = 4; y = 0; } // Droite
+            else if(r < 0.6) { x = 0; y = -3; } // Haut
+            else { x = 0; y = 0; } // Centre
+
+            pupil.style.transform = `translate(${x}px, ${y}px)`;
+
+            // Relancer aléatoirement entre 1s et 4s
+            setTimeout(animateEyeRandomly, 1000 + Math.random() * 3000);
+        }
+        // Démarrage de l'œil
+        animateEyeRandomly();
+
+
+        // --- ANIMATIONS UI AUTO ---
         setInterval(() => {
             const phone = document.getElementById('phone-btn');
-            if(phone) {
-                phone.classList.add('icon-ringing');
-                setTimeout(() => phone.classList.remove('icon-ringing'), 1000);
-            }
+            if(phone) { phone.classList.add('icon-ringing'); setTimeout(() => phone.classList.remove('icon-ringing'), 1000); }
         }, 8000);
 
-        // 2. MAIL (10s)
         setInterval(() => {
             const mail = document.getElementById('mail-btn');
-            if(mail) {
-                mail.classList.add('icon-hopping');
-                setTimeout(() => mail.classList.remove('icon-hopping'), 1000);
-            }
+            if(mail) { mail.classList.add('icon-hopping'); setTimeout(() => mail.classList.remove('icon-hopping'), 1000); }
         }, 10000);
 
-        // 3. ŒIL & TEXTE (SÉQUENCE COMPLÈTE)
-        // Scénario : Cligne -> Texte Apparaît -> Reste -> Cligne -> Texte Disparaît
-        function runEyeSequence() {
-            const eye = document.getElementById('dynamic-eye-btn');
-            const container = document.getElementById('eye-container');
-            
-            if(!eye || !container) return;
-
-            // Etape 1 : Clignement (T=0)
-            eye.classList.add('eye-blinking');
-            setTimeout(() => eye.classList.remove('eye-blinking'), 400);
-
-            // Etape 2 : Texte apparait (T=400ms)
-            setTimeout(() => {
-                let msg = document.getElementById('hd-msg');
-                if(!msg) {
-                    msg = document.createElement('span');
-                    msg.id = 'hd-msg';
-                    msg.innerText = "VOIR EN HD";
-                    msg.classList.add('floating-msg', 'floating-eye-msg');
-                    // Positionnement statique au dessus
-                    msg.style.position = "absolute";
-                    msg.style.bottom = "85px"; // Au dessus du bouton
-                    msg.style.left = "50%";
-                    msg.style.transform = "translateX(-50%)";
-                    container.appendChild(msg);
-                }
-                msg.style.opacity = '1';
-            }, 400);
-
-            // Etape 3 : Reste affiché... puis Clignement de fin (T=3000ms)
-            setTimeout(() => {
-                eye.classList.add('eye-blinking');
-                setTimeout(() => eye.classList.remove('eye-blinking'), 400);
-            }, 3000);
-
-            // Etape 4 : Texte disparaît (T=3400ms)
-            setTimeout(() => {
-                const msg = document.getElementById('hd-msg');
-                if(msg) msg.style.opacity = '0';
-            }, 3400);
-        }
-
-        // Lancer la séquence toutes les 6 secondes
-        setInterval(runEyeSequence, 6000);
-
-
-        // --- GESTION DES CLICS (GLOW) ---
         function animateBtn(btn, glowClass) {
             btn.classList.add(glowClass);
-            setTimeout(() => {
-                btn.classList.remove(glowClass);
-            }, 1000);
+            setTimeout(() => { btn.classList.remove(glowClass); }, 1000);
         }
 
-        // --- LOGIQUE CŒUR ---
+        // --- CŒUR ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
@@ -471,31 +450,57 @@
             setTimeout(() => { msgEl.remove(); }, duration);
         }
 
-        // --- ENTRER ---
+        // --- ENTRER SITE ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
-            document.getElementById('ui-layer').classList.add('ui-visible');
-            const feed = document.getElementById('feed');
-            feed.classList.add('feed-active');
-
+            
             setTimeout(() => {
+                document.getElementById('ui-layer').classList.add('ui-visible');
+                const feed = document.getElementById('feed');
+                feed.classList.add('feed-active');
+                
+                // Lancement vidéo
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
                     firstVideo.muted = true;
-                    var playPromise = firstVideo.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(_ => { firstVideo.parentElement.classList.add('active'); })
-                        .catch(error => { console.log("Erreur lecture:", error); });
-                    }
+                    firstVideo.play().then(() => firstVideo.parentElement.classList.add('active')).catch(console.log);
                 }
                 initObserver();
-                setupLoop();
-                setTimeout(() => { intro.style.display = 'none'; }, 500);
-            }, 100);
+                intro.style.display = 'none';
+                intro.classList.remove('glitch-out'); // Reset pour plus tard
+            }, 400);
         });
 
-        // --- OBSERVER ---
+        // --- FONCTION TV OFF (RESET) ---
+        function turnOffTv() {
+            // 1. Ajouter la classe d'animation au BODY pour tout écraser
+            document.body.classList.add('turn-off-anim');
+
+            setTimeout(() => {
+                // 2. Reset de l'état du site (pendant que c'est noir)
+                const feed = document.getElementById('feed');
+                const ui = document.getElementById('ui-layer');
+                const intro = document.getElementById('intro-layer');
+
+                feed.scrollTo(0, 0); // Rembobiner
+                feed.classList.remove('feed-active');
+                ui.classList.remove('ui-visible');
+                intro.style.display = 'flex';
+                intro.style.opacity = '1';
+
+                // Remettre les vidéos à zéro
+                document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
+                
+                // 3. Enlever l'animation pour réouvrir "normalement"
+                setTimeout(() => {
+                    document.body.classList.remove('turn-off-anim');
+                }, 100); 
+
+            }, 600); // Attendre la fin de l'anim TV Off
+        }
+
+        // --- OBSERVER & UPDATE LIENS ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
@@ -503,13 +508,18 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const video = entry.target.querySelector('video');
+                    // On ne traite pas la section finale car elle n'a pas de vidéo
+                    if (entry.target.classList.contains('final-section')) return;
                     if (!video) return;
 
                     if (entry.isIntersecting) {
                         video.play().catch(e => {});
                         entry.target.classList.add('active');
+                        
+                        // MISE A JOUR DU LIEN DE L'OEIL
                         const link = entry.target.getAttribute('data-link');
                         eyeBtn.href = link ? link : "#";
+                        
                     } else {
                         video.pause();
                         video.currentTime = 0;
@@ -518,15 +528,6 @@
                 });
             }, { threshold: 0.6 });
             sections.forEach(section => { observer.observe(section); });
-        }
-
-        function setupLoop() {
-            const lastVideo = document.querySelector('.last-video video');
-            if(lastVideo) {
-                lastVideo.addEventListener('ended', function() {
-                    document.getElementById('feed').scrollTo({top: 0, behavior: 'smooth'});
-                });
-            }
         }
 
         let isMuted = true;
