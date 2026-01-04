@@ -26,64 +26,38 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- INTRO FIXE --- */
+        /* --- INTRO (Inchangé) --- */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5000; background-color: #000;
             display: flex; justify-content: center; align-items: center;
             transition: opacity 0.8s ease;
         }
-
         .intro-container {
-            position: relative;
-            width: 320px; height: 80px; /* Taille exacte du bouton */
+            position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
         }
-
-        /* IMAGE DU HAUT (Surfer) */
         .hero-image {
-            position: absolute; 
-            z-index: 1; /* Derrière le bouton */
-            width: 250px; 
-            /* On la place pour qu'elle sorte du haut du bouton */
-            bottom: 50%; 
-            left: 50%;
-            transform: translateX(-50%); 
-            animation: floatTop 4s ease-in-out infinite;
-            pointer-events: none;
+            position: absolute; z-index: 1; width: 250px; 
+            bottom: 50%; left: 50%; transform: translateX(-50%); 
+            animation: floatTop 4s ease-in-out infinite; pointer-events: none;
         }
-
-        /* Animation douce qui ne va pas trop haut */
         @keyframes floatTop {
             0% { transform: translateX(-50%) translateY(-35px); }
-            50% { transform: translateX(-50%) translateY(-50px); } /* Monte de 15px max */
+            50% { transform: translateX(-50%) translateY(-50px); }
             100% { transform: translateX(-50%) translateY(-35px); }
         }
-
-        /* IMAGE DU BAS (Glitch) - STATIQUE */
         .glitch-image {
-            position: absolute; 
-            z-index: 1; /* Derrière le bouton */
-            width: 280px;
-            /* Collée au bas du bouton */
-            top: 50%; 
-            left: 50%;
-            transform: translateX(-50%) translateY(35px); /* Décalage vers le bas fixe */
-            filter: url(#liquid-wave);
-            pointer-events: none;
+            position: absolute; z-index: 1; width: 280px;
+            top: 50%; left: 50%; transform: translateX(-50%) translateY(35px);
+            filter: url(#liquid-wave); pointer-events: none;
         }
-
-        /* BOUTON CENTRAL */
         .center-box {
-            position: relative; 
-            z-index: 10; /* Devant les images */
-            width: 100%; height: 100%;
-            background-color: var(--neon-purple);
-            border: 3px solid var(--white);
+            position: relative; z-index: 10; width: 100%; height: 100%;
+            background-color: var(--neon-purple); border: 3px solid var(--white);
             box-shadow: 8px 8px 0px var(--neon-green);
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.3s;
-            text-decoration: none;
+            cursor: pointer; transition: 0.3s; text-decoration: none;
             -webkit-tap-highlight-color: transparent;
         }
         .center-text {
@@ -115,31 +89,36 @@
             position: relative;
             display: flex; justify-content: center; align-items: center;
             background: #000;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #111;
+            overflow: hidden;
         }
 
+        /* --- LOGIQUE DE CADRAGE VIDÉO (CROP vs FIT) --- */
         video {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            object-fit: cover; 
             z-index: 1; opacity: 0.6; transition: opacity 0.3s;
         }
         .video-section.active video { opacity: 1; }
 
-        .info-overlay {
-            position: absolute; z-index: 10;
-            bottom: 0; left: 0; width: 100%;
-            padding: 20px 80px 40px 20px; 
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            pointer-events: none; 
+        /* RÈGLES MOBILE (Ecran Portrait) */
+        @media (orientation: portrait) {
+            /* Vidéos verticales : Plein écran (Cover) */
+            video.vertical { object-fit: cover; }
+            /* Vidéos horizontales : On voit tout (Contain) avec bandes noires */
+            video.horizontal { object-fit: contain; }
         }
-        h2 {
-            font-family: 'Bebas Neue'; font-size: 3rem; color: var(--neon-green);
-            text-shadow: 2px 2px 0px var(--neon-purple); margin-bottom: 5px; transform: skew(-5deg);
-        }
-        p { font-size: 1.1rem; max-width: 600px; color: #fff; text-shadow: 1px 1px 2px black; }
 
-        /* --- UI LAYER --- */
+        /* RÈGLES PC (Ecran Paysage) */
+        @media (orientation: landscape) {
+            /* Vidéos verticales : On voit tout (Contain) avec bandes noires */
+            video.vertical { object-fit: contain; }
+            /* Vidéos horizontales : Plein écran (Cover) */
+            video.horizontal { object-fit: cover; }
+        }
+
+
+        /* --- UI (Sidebar Droite) --- */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
 
@@ -166,16 +145,45 @@
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
-        .scroll-indicator {
-            position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-            z-index: 20; animation: bounce 2s infinite; opacity: 0.5; font-size: 1.2rem; pointer-events: none;
-        }
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
-            40% {transform: translateX(-50%) translateY(-10px);}
-            60% {transform: translateX(-50%) translateY(-5px);}
-        }
 
+        /* --- BOUTON ŒIL (Gauche) --- */
+        .eye-btn {
+            position: absolute; 
+            z-index: 20; 
+            left: 20px; 
+            bottom: 40px; /* En bas à gauche */
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid var(--neon-green);
+            color: var(--neon-green);
+            display: flex; justify-content: center; align-items: center;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+        .eye-btn svg { width: 32px; height: 32px; fill: currentColor; }
+        
+        .eye-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        
+        /* Petit label "Voir" au survol */
+        .eye-btn::after {
+            content: "VOIR";
+            position: absolute; left: 70px;
+            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.5rem;
+            opacity: 0; transition: 0.3s; pointer-events: none;
+            text-shadow: 2px 2px 0 #000;
+        }
+        .eye-btn:hover::after { opacity: 1; transform: translateX(5px); }
+
+
+        /* Floating MSG */
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 2000;
@@ -212,7 +220,7 @@
         </div>
     </div>
 
-    <!-- UI -->
+    <!-- UI (DROITE) -->
     <div class="ui-layer" id="ui-layer">
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         <div class="fixed-sidebar">
@@ -230,87 +238,94 @@
 
     <!-- FEED VIDEO -->
     <main class="feed-container" id="feed">
-        <!-- VIDEO 1 -->
+        
+        <!-- VIDEO 1 (VERTICALE) -->
         <section class="video-section">
-            <video src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
-            <div class="info-overlay"><h2>Showreel 2025</h2><p>Compilation des meilleurs moments.</p></div>
-            <div class="scroll-indicator">⬇</div>
+            <!-- class="vertical" car format portrait -->
+            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
+            
+            <!-- Bouton Œil (Change le lien href !) -->
+            <a href="https://www.instagram.com/p/DKcU3Iko4uw/" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 2 -->
+        <!-- VIDEO 2 (HORIZONTALE) -->
         <section class="video-section">
-            <video src="video2.mp4" loop muted playsinline preload="auto" poster="p2.png"></video>
-            <div class="info-overlay"><h2>Shooting IA</h2><p>Génération Midjourney v6.</p></div>
+            <!-- class="horizontal" car format paysage -->
+            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto" poster="p2.png"></video>
+            
+            <a href="https://youtu.be/BrlSj83gMP4" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 3 -->
+        <!-- VIDEO 3 (VERTICALE) -->
         <section class="video-section">
-            <video src="video3.mp4" loop muted playsinline preload="auto" poster="p3.png"></video>
-            <div class="info-overlay"><h2>Motion Design</h2><p>Animation logo & Typo.</p></div>
+            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto" poster="p3.png"></video>
+            <a href="https://www.instagram.com/p/DMBXsd3s-01/" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 4 -->
+        <!-- VIDEO 4 (HORIZONTALE) -->
         <section class="video-section">
-            <video src="video4.mp4" loop muted playsinline preload="auto" poster="p4.png"></video>
-            <div class="info-overlay"><h2>Event / Festival</h2><p>Aftermovie dynamique.</p></div>
+            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto" poster="p4.png"></video>
+            <a href="https://youtu.be/9zjvYZG_kUc?si=MfEUfFPeKu7nxKX6" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 5 -->
+        <!-- VIDEO 5 (VERTICALE) -->
         <section class="video-section">
-            <video src="video5.mp4" loop muted playsinline preload="auto" poster="p5.png"></video>
-            <div class="info-overlay"><h2>Packshot</h2><p>Lumière studio et Sound Design.</p></div>
+            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto" poster="p5.png"></video>
+            <a href="https://www.instagram.com/p/DLSoJ7HIvjq/" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 6 -->
+        <!-- VIDEO 6 (HORIZONTALE) -->
         <section class="video-section">
-            <video src="video6.mp4" loop muted playsinline preload="auto" poster="p6.png"></video>
-            <div class="info-overlay"><h2>Lifestyle</h2><p>Format Reels/TikTok.</p></div>
+            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto" poster="p6.png"></video>
+            <a href="https://youtu.be/q47H3s7y_C4?si=i5HohOUuqZ77ycU0" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- VIDEO 7 -->
-        <section class="video-section">
-            <video src="video7.mp4" loop muted playsinline preload="auto" poster="p7.png"></video>
-            <div class="info-overlay"><h2>Drone</h2><p>Prise de vue aérienne.</p></div>
+        <!-- VIDEO 7 (VERTICALE - DERNIÈRE VIDÉO) -->
+        <section class="video-section last-video">
+            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto" poster="p7.png"></video>
+            <a href="https://www.instagram.com/p/DJbWJ4PoPsY/" target="_blank" class="eye-btn">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
         </section>
 
-        <!-- FIN -->
-        <section class="video-section">
-             <div style="background: rgba(0,0,0,0.8); padding: 30px; border: 2px solid var(--neon-purple); text-align: center;">
-                <h2 style="font-size: 3rem;">THE END</h2>
-                <p>Swipe up pour revoir.</p>
-            </div>
-        </section>
+        <!-- PAS DE SECTION FINALE (SUPPRIMÉE) -->
     </main>
 
     <script>
         // --- BOUTON ENTRER ---
         document.getElementById('enter-btn').addEventListener('click', function() {
-            // Animation Intro
             const intro = document.getElementById('intro-layer');
             intro.style.opacity = '0';
             setTimeout(() => { intro.style.display = 'none'; }, 800);
-
-            // Affichage Feed
             document.getElementById('ui-layer').classList.add('ui-visible');
             const feed = document.getElementById('feed');
             feed.classList.add('feed-active');
 
-            // Lancement Vidéo
             setTimeout(() => {
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
-                    firstVideo.muted = true; // IMPORTANT
+                    firstVideo.muted = true;
                     var playPromise = firstVideo.play();
                     if (playPromise !== undefined) {
-                        playPromise.then(_ => {
-                            firstVideo.parentElement.classList.add('active');
-                            console.log("Lecture OK");
-                        }).catch(error => {
-                            console.log("Erreur lecture:", error);
-                        });
+                        playPromise.then(_ => { firstVideo.parentElement.classList.add('active'); })
+                        .catch(error => { console.log("Erreur lecture:", error); });
                     }
                 }
                 initObserver();
+                // Activation de la surveillance de la fin (pour le loop)
+                setupLoop();
             }, 500);
         });
 
@@ -332,6 +347,22 @@
                 });
             }, { threshold: 0.6 });
             sections.forEach(section => { observer.observe(section); });
+        }
+
+        // --- BOUCLE DE RETOUR AU DÉBUT ---
+        function setupLoop() {
+            // On cible la dernière vidéo
+            const lastVideo = document.querySelector('.last-video video');
+            if(lastVideo) {
+                // Quand la dernière vidéo se termine
+                lastVideo.addEventListener('ended', function() {
+                    // On remonte tout en haut
+                    document.getElementById('feed').scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
         }
 
         // --- SON ---
