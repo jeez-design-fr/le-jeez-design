@@ -12,6 +12,7 @@
         :root {
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
+            --neon-pink: #ff007f;
             --black: #000000;
             --white: #ffffff;
         }
@@ -26,13 +27,28 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- INTRO (Inchangé) --- */
+        /* --- INTRO --- */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5000; background-color: #000;
             display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.8s ease;
+            transition: opacity 0.5s ease; /* Plus rapide */
         }
+
+        /* EFFET GLITCH SUR L'INTRO (Au clic) */
+        .glitch-out {
+            animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+            filter: contrast(200%) brightness(150%);
+        }
+        @keyframes glitch-anim {
+            0% { transform: translate(0); }
+            20% { transform: translate(-10px, 10px); clip-path: inset(10% 0 80% 0); }
+            40% { transform: translate(10px, -10px); clip-path: inset(80% 0 10% 0); }
+            60% { transform: translate(-5px, 5px); clip-path: inset(40% 0 40% 0); filter: hue-rotate(90deg); }
+            80% { transform: translate(5px, -5px); clip-path: inset(10% 0 60% 0); }
+            100% { transform: translate(0); }
+        }
+
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
@@ -79,7 +95,7 @@
             scroll-snap-type: y mandatory; 
             scroll-behavior: smooth;
             opacity: 0; pointer-events: none;
-            transition: opacity 1s ease;
+            transition: opacity 0.5s ease; /* Transition rapide */
         }
         .feed-active { opacity: 1; pointer-events: auto; }
 
@@ -93,35 +109,28 @@
             overflow: hidden;
         }
 
-        /* --- LOGIQUE DE CADRAGE VIDÉO (CROP vs FIT) --- */
+        /* Format Vidéos */
         video {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
-            z-index: 1; opacity: 0.6; transition: opacity 0.3s;
+            z-index: 1; opacity: 0; transition: opacity 0.5s; /* Fade in vidéo */
         }
         .video-section.active video { opacity: 1; }
 
-        /* RÈGLES MOBILE (Ecran Portrait) */
         @media (orientation: portrait) {
-            /* Vidéos verticales : Plein écran (Cover) */
             video.vertical { object-fit: cover; }
-            /* Vidéos horizontales : On voit tout (Contain) avec bandes noires */
             video.horizontal { object-fit: contain; }
         }
-
-        /* RÈGLES PC (Ecran Paysage) */
         @media (orientation: landscape) {
-            /* Vidéos verticales : On voit tout (Contain) avec bandes noires */
             video.vertical { object-fit: contain; }
-            /* Vidéos horizontales : Plein écran (Cover) */
             video.horizontal { object-fit: cover; }
         }
 
-
-        /* --- UI (Sidebar Droite) --- */
+        /* --- UI LAYER (Fixe) --- */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
 
+        /* Sidebar Droite */
         .fixed-sidebar {
             position: fixed; z-index: 1000; right: 15px; bottom: 35%;
             display: flex; flex-direction: column; gap: 25px; align-items: center;
@@ -135,8 +144,16 @@
         }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         .side-btn:hover { transform: scale(1.15); background: var(--neon-purple); border-color: var(--neon-green); }
-        .heart-btn:hover { background: var(--neon-pink); border-color: var(--neon-pink); }
-
+        
+        /* Style Spécial Cœur Activé */
+        .heart-btn.heart-active {
+            background: var(--neon-pink) !important;
+            border-color: var(--neon-pink) !important;
+            color: white !important;
+            box-shadow: 0 0 20px var(--neon-pink), inset 0 0 10px white;
+        }
+        
+        /* Bouton Son */
         .sound-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
@@ -145,54 +162,59 @@
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
         }
 
+        /* --- LE BOUTON ŒIL FIXE (NOUVEAU) --- */
+        .fixed-eye-container {
+            position: fixed;
+            bottom: 40px; /* Position "Empreinte digitale" */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000; /* Au dessus des vidéos */
+            display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 1s 1s;
+        }
+        .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
-        /* --- BOUTON ŒIL (Gauche) --- */
-        .eye-btn {
-            position: absolute; 
-            z-index: 20; 
-            left: 20px; 
-            bottom: 40px; /* En bas à gauche */
-            width: 60px; height: 60px;
+        .eye-btn-main {
+            width: 70px; height: 70px;
             border-radius: 50%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.5);
             border: 2px solid var(--neon-green);
             color: var(--neon-green);
             display: flex; justify-content: center; align-items: center;
             text-decoration: none;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s;
-            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+            backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
         }
-        .eye-btn svg { width: 32px; height: 32px; fill: currentColor; }
         
-        .eye-btn:hover {
+        .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
+
+        .eye-btn-main:hover, .eye-btn-main:active {
+            transform: scale(1.2);
             background: var(--neon-green);
             color: #000;
-            transform: scale(1.1);
-            box-shadow: 0 0 20px var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green);
         }
-        
-        /* Petit label "Voir" au survol */
-        .eye-btn::after {
-            content: "VOIR";
-            position: absolute; left: 70px;
-            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.5rem;
-            opacity: 0; transition: 0.3s; pointer-events: none;
-            text-shadow: 2px 2px 0 #000;
-        }
-        .eye-btn:hover::after { opacity: 1; transform: translateX(5px); }
 
-
-        /* Floating MSG */
+        /* Messages flottants */
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
-            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 2000;
+            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
             font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black;
         }
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
             100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
         }
+        /* Shake animation */
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.1); }
+            100% { transform: rotate(0deg) scale(1.1); }
+        }
+        .shaking { animation: shake 0.4s ease-in-out; }
+
     </style>
 </head>
 <body>
@@ -220,9 +242,12 @@
         </div>
     </div>
 
-    <!-- UI (DROITE) -->
+    <!-- UI LAYER (FIXE) -->
     <div class="ui-layer" id="ui-layer">
+        <!-- SON -->
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
+        
+        <!-- SIDEBAR DROITE -->
         <div class="fixed-sidebar">
             <a href="tel:0635256900" class="side-btn">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
@@ -234,85 +259,68 @@
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
+
+        <!-- LE BOUTON ŒIL (FIXE EN BAS AU CENTRE) -->
+        <div class="fixed-eye-container">
+            <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
+                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </a>
+        </div>
     </div>
 
     <!-- FEED VIDEO -->
     <main class="feed-container" id="feed">
         
-        <!-- VIDEO 1 (VERTICALE) -->
-        <section class="video-section">
-            <!-- class="vertical" car format portrait -->
-            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto" poster="p1.png"></video>
-            
-            <!-- Bouton Œil (Change le lien href !) -->
-            <a href="https://www.instagram.com/p/DKcU3Iko4uw/" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 1 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
+            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 2 (HORIZONTALE) -->
-        <section class="video-section">
-            <!-- class="horizontal" car format paysage -->
-            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto" poster="p2.png"></video>
-            
-            <a href="https://youtu.be/BrlSj83gMP4" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 2 -->
+        <section class="video-section" data-link="https://instagram.com">
+            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 3 (VERTICALE) -->
-        <section class="video-section">
-            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto" poster="p3.png"></video>
-            <a href="https://www.instagram.com/p/DMBXsd3s-01/" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 3 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
+            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 4 (HORIZONTALE) -->
-        <section class="video-section">
-            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto" poster="p4.png"></video>
-            <a href="https://youtu.be/9zjvYZG_kUc?si=MfEUfFPeKu7nxKX6" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 4 -->
+        <section class="video-section" data-link="https://instagram.com">
+            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 5 (VERTICALE) -->
-        <section class="video-section">
-            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto" poster="p5.png"></video>
-            <a href="https://www.instagram.com/p/DLSoJ7HIvjq/" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 5 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
+            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 6 (HORIZONTALE) -->
-        <section class="video-section">
-            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto" poster="p6.png"></video>
-            <a href="https://youtu.be/q47H3s7y_C4?si=i5HohOUuqZ77ycU0" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 6 -->
+        <section class="video-section" data-link="https://instagram.com">
+            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- VIDEO 7 (VERTICALE - DERNIÈRE VIDÉO) -->
-        <section class="video-section last-video">
-            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto" poster="p7.png"></video>
-            <a href="https://www.instagram.com/p/DJbWJ4PoPsY/" target="_blank" class="eye-btn">
-                <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-            </a>
+        <!-- VIDEO 7 -->
+        <section class="video-section last-video" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
+            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
-        <!-- PAS DE SECTION FINALE (SUPPRIMÉE) -->
     </main>
 
     <script>
-        // --- BOUTON ENTRER ---
+        // --- BOUTON ENTRER AVEC EFFET GLITCH ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
-            intro.style.opacity = '0';
-            setTimeout(() => { intro.style.display = 'none'; }, 800);
+            
+            // 1. Ajouter la classe Glitch
+            intro.classList.add('glitch-out');
+
+            // 2. Montrer l'UI
             document.getElementById('ui-layer').classList.add('ui-visible');
             const feed = document.getElementById('feed');
             feed.classList.add('feed-active');
 
+            // 3. Lancer la vidéo immédiatement (sous le glitch)
             setTimeout(() => {
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
@@ -323,44 +331,58 @@
                         .catch(error => { console.log("Erreur lecture:", error); });
                     }
                 }
+                
+                // Initialiser l'observateur pour le bouton Œil et le scroll
                 initObserver();
-                // Activation de la surveillance de la fin (pour le loop)
                 setupLoop();
-            }, 500);
+
+                // Supprimer l'intro du DOM après l'animation
+                setTimeout(() => { intro.style.display = 'none'; }, 500);
+            }, 100); // Délai très court pour laisser le glitch commencer
         });
 
-        // --- OBSERVATEUR ---
+        // --- OBSERVATEUR DE SCROLL & BOUTON ŒIL DYNAMIQUE ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
+            const eyeBtn = document.getElementById('dynamic-eye-btn');
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const video = entry.target.querySelector('video');
                     if (!video) return;
+
                     if (entry.isIntersecting) {
+                        // 1. Play Video
                         video.play().catch(e => {});
                         entry.target.classList.add('active');
+
+                        // 2. METTRE À JOUR LE LIEN DE L'ŒIL FIXE
+                        // On récupère le lien dans l'attribut "data-link" de la section
+                        const link = entry.target.getAttribute('data-link');
+                        if (link) {
+                            eyeBtn.href = link;
+                        } else {
+                            eyeBtn.href = "#"; // Fallback
+                        }
+
                     } else {
+                        // Pause Video
                         video.pause();
                         video.currentTime = 0;
                         entry.target.classList.remove('active');
                     }
                 });
             }, { threshold: 0.6 });
+
             sections.forEach(section => { observer.observe(section); });
         }
 
-        // --- BOUCLE DE RETOUR AU DÉBUT ---
+        // --- BOUCLE ---
         function setupLoop() {
-            // On cible la dernière vidéo
             const lastVideo = document.querySelector('.last-video video');
             if(lastVideo) {
-                // Quand la dernière vidéo se termine
                 lastVideo.addEventListener('ended', function() {
-                    // On remonte tout en haut
-                    document.getElementById('feed').scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
+                    document.getElementById('feed').scrollTo({top: 0, behavior: 'smooth'});
                 });
             }
         }
@@ -383,10 +405,16 @@
             }
         }
 
-        // --- CŒUR ---
+        // --- CŒUR (SHAKE + GLOW ROUGE) ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
+            // 1. Animation Shake
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
+            
+            // 2. Ajout de la classe GLOW (Rouge)
+            btn.classList.add('heart-active');
+
+            // 3. Messages
             heartClickCount++;
             const cycleIndex = heartClickCount % 10;
             let message = ""; let duration = 1200;
@@ -403,6 +431,7 @@
             msgEl.innerText = message;
             msgEl.classList.add('floating-msg');
             msgEl.style.animationDuration = (duration/1000) + "s";
+            
             const rect = btn.getBoundingClientRect();
             msgEl.style.left = (rect.left - 20) + 'px'; 
             msgEl.style.top = rect.top + (rect.height / 2) + 'px';
