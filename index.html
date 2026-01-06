@@ -18,7 +18,6 @@
             --neon-blue: #00f3ff;
             --black: #000000;
             --white: #ffffff;
-            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -34,7 +33,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS GLOBALES --- */
+        /* --- ANIMATIONS --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -56,12 +55,17 @@
             100% { transform: translate(0); }
         }
 
-        /* SCINTILLEMENT LETTRES (DEVIS) */
-        @keyframes letter-flicker {
-            0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            50% { opacity: 0.5; text-shadow: none; }
+        /* Animation GLOW PRECIEUX (Bio Titre) */
+        @keyframes precious-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
+            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
         }
-        .char-flicker { animation: letter-flicker linear infinite; }
+
+        /* Animation RARE FLASH (Devis) */
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
 
         @keyframes neon-flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; }
@@ -78,16 +82,7 @@
         }
         .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
 
-        #feed, #image-feed {
-            display: none; overflow-y: auto !important; -webkit-overflow-scrolling: touch; touch-action: pan-y;
-        }
-        #feed.active { display: block; } 
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
-
-
-        /* ========================
-           1. INTRO
-           ======================== */
+        /* INTRO */
         #intro-layer { background-color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
@@ -98,43 +93,32 @@
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-        /* ========================
-           2. BIO
-           ======================== */
+        /* BIO */
         #bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
+        
+        /* Titre Bio avec Glow Précieux */
+        .bio-title { 
+            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
+            animation: precious-glow 4s ease-in-out infinite; /* Animation lente */
+        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
+        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
-        
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        
-        /* COULEURS DES BOUTONS BIO */
         .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
-        .btn-images:hover { background-color: var(--neon-pink); color: white; }
-        
         .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
-        .btn-videos:hover { background-color: var(--neon-blue); color: black; }
 
-        /* ========================
-           3. UI LAYER (SIDEBAR)
-           ======================== */
-        #ui-layer { 
-            z-index: 9000; pointer-events: none; display: none; /* CACHÉ PAR DÉFAUT */
-        }
+        /* UI LAYER (SIDEBAR) */
+        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        .fixed-sidebar { 
-            position: fixed; right: 15px; bottom: 35%; 
-            display: flex; flex-direction: column; gap: 25px; align-items: center; 
-            pointer-events: auto; z-index: 9001; 
-        }
-        
+        .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; pointer-events: auto; z-index: 9001; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -152,6 +136,7 @@
             text-transform: uppercase; padding: 5px 15px; 
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
             padding-top: 8px; display: none; pointer-events: auto;
+            transition: opacity 0.3s; /* Transition pour disparition fluide */
         }
 
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
@@ -167,22 +152,11 @@
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
 
-        /* ========================
-           4. FEEDS (SCROLLABLE)
-           ======================== */
-        #feed, #image-feed {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            overflow-y: auto; 
-            -webkit-overflow-scrolling: touch;
-            z-index: 3000;
-            display: none; 
-        }
-        
+        /* FEEDS */
+        #feed, #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto !important; -webkit-overflow-scrolling: touch; touch-action: pan-y; z-index: 3000; display: none; }
         #feed.active { display: block; }
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
-        /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
         .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
@@ -190,10 +164,7 @@
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* IMAGE ITEMS */
         .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
-        
-        /* HOVER MINIATURE EN VERT */
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
         .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
@@ -211,10 +182,10 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        /* Style des lettres qui clignotent */
+        /* Animation Rare Flash sur le mot entier */
         .btn-final-devis .center-text { 
             color: var(--neon-green); 
-            display: flex; gap: 2px;
+            animation: rare-flash 6s infinite; /* Clignote toutes les 6s */
         }
         
         .btn-final-off { 
@@ -223,7 +194,7 @@
             cursor: pointer; background: rgba(255,0,0,0.1); 
             animation: neon-flicker 2s infinite; 
             pointer-events: auto;
-            margin-top: 20px; /* Espace supplémentaire demandé */
+            margin-top: 20px;
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
@@ -242,7 +213,8 @@
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        /* CONTACT MODAL (Z-INDEX 10000 POUR ÊTRE AU DESSUS DE TOUT) */
+        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .contact-modal.active { display: flex; animation: fadeIn 0.3s; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
         .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
@@ -265,7 +237,7 @@
     </svg>
 
     <!-- 1. INTRO -->
-    <div id="intro-layer" class="layer active">
+    <div id="intro-layer" class="intro-layer layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
@@ -276,7 +248,7 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer">
+    <div id="bio-layer" class="bio-layer layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
@@ -332,22 +304,7 @@
             <canvas id="matrix-canvas-final" class="matrix-bg"></canvas>
             <div class="final-container">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
-                    <!-- Lettres Scintillantes -->
-                    <h1 class="center-text">
-                        <span class="char-flicker" style="animation-duration: 2.1s">D</span>
-                        <span class="char-flicker" style="animation-duration: 3.5s">E</span>
-                        <span class="char-flicker" style="animation-duration: 1.1s">V</span>
-                        <span class="char-flicker" style="animation-duration: 2.8s">I</span>
-                        <span class="char-flicker" style="animation-duration: 1.5s">S</span>
-                        &nbsp;
-                        <span class="char-flicker" style="animation-duration: 2.3s">G</span>
-                        <span class="char-flicker" style="animation-duration: 1.9s">R</span>
-                        <span class="char-flicker" style="animation-duration: 3.1s">A</span>
-                        <span class="char-flicker" style="animation-duration: 1.7s">T</span>
-                        <span class="char-flicker" style="animation-duration: 2.5s">U</span>
-                        <span class="char-flicker" style="animation-duration: 1.3s">I</span>
-                        <span class="char-flicker" style="animation-duration: 3.7s">T</span>
-                    </h1>
+                    <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
@@ -371,22 +328,7 @@
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
             <div class="final-container" style="padding: 100px 0;">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
-                    <!-- Lettres Scintillantes -->
-                    <h1 class="center-text">
-                        <span class="char-flicker" style="animation-duration: 2.1s">D</span>
-                        <span class="char-flicker" style="animation-duration: 3.5s">E</span>
-                        <span class="char-flicker" style="animation-duration: 1.1s">V</span>
-                        <span class="char-flicker" style="animation-duration: 2.8s">I</span>
-                        <span class="char-flicker" style="animation-duration: 1.5s">S</span>
-                        &nbsp;
-                        <span class="char-flicker" style="animation-duration: 2.3s">G</span>
-                        <span class="char-flicker" style="animation-duration: 1.9s">R</span>
-                        <span class="char-flicker" style="animation-duration: 3.1s">A</span>
-                        <span class="char-flicker" style="animation-duration: 1.7s">T</span>
-                        <span class="char-flicker" style="animation-duration: 2.5s">U</span>
-                        <span class="char-flicker" style="animation-duration: 1.3s">I</span>
-                        <span class="char-flicker" style="animation-duration: 3.7s">T</span>
-                    </h1>
+                    <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
@@ -420,14 +362,11 @@
         window.history.replaceState({page: 'intro'}, "", "");
 
         function handleNavigation(targetId) {
-            // 1. Masquer tout par défaut
-            document.querySelectorAll('.layer').forEach(el => {
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
-            
-            // 2. Affichage ciblé
+
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
             if (targetId === 'image-feed') target.style.display = 'flex';
@@ -436,7 +375,7 @@
 
             setTimeout(() => target.classList.add('active'), 10);
 
-            // 3. Gestion UI Layer (Caché sur intro/bio)
+            // GESTION UI LAYER
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -446,7 +385,7 @@
                 setTimeout(() => ui.classList.add('active'), 10);
                 
                 if(targetId === 'feed') {
-                    soundBtn.style.display = 'block';
+                    soundBtn.style.display = 'block'; // Son visible par défaut (sera caché par observer si besoin)
                     eye.classList.remove('hidden');
                     const v = document.querySelector('#feed video');
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
@@ -458,7 +397,6 @@
                 }
             } else {
                 ui.classList.remove('active');
-                setTimeout(() => ui.style.display = 'none', 400); // Attendre la fin de la transition
             }
 
             if (!history.state || history.state.page !== targetId) {
@@ -534,9 +472,20 @@
         function openContactForm(e) {
             e.preventDefault();
             document.getElementById('contact-modal').classList.add('active');
+            // Cacher le bouton son quand le contact est ouvert pour éviter conflit
+            const soundBtn = document.getElementById('sound-btn');
+            if(soundBtn) soundBtn.style.display = 'none';
         }
         function closeContactForm() {
             document.getElementById('contact-modal').classList.remove('active');
+            // Restaurer le bouton son si on est dans le feed (sauf si on est sur la section finale)
+            // Mais l'observer s'en chargera au scroll, pour l'instant on le laisse caché ou on check l'état
+            const feed = document.getElementById('feed');
+            if(feed.classList.contains('active')) {
+                // Check si on est à la fin ou pas n'est pas facile ici, 
+                // on le remet, l'observer le cachera si on est en bas au prochain scroll
+                document.getElementById('sound-btn').style.display = 'block';
+            }
         }
 
         // --- IMAGES LOGIC ---
@@ -566,18 +515,33 @@
             }, 600); 
         }
 
-        // --- OBSERVER ---
+        // --- OBSERVER (SON DISPARITION) ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
+            const soundBtn = document.getElementById('sound-btn');
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // SI C'EST LA SECTION FINALE
                     if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) { eyeContainer.classList.add('hidden'); startM(videoFinalMatrix); }
-                        else { stopM(videoFinalMatrix); }
+                        if(entry.isIntersecting) { 
+                            eyeContainer.classList.add('hidden'); 
+                            startM(videoFinalMatrix);
+                            // CACHER LE SON QUAND ON ARRIVE EN BAS
+                            soundBtn.style.opacity = '0';
+                            setTimeout(() => soundBtn.style.display = 'none', 300);
+                        }
+                        else { 
+                            stopM(videoFinalMatrix); 
+                            // REAFFICHER LE SON QUAND ON REMONTE
+                            soundBtn.style.display = 'block';
+                            setTimeout(() => soundBtn.style.opacity = '1', 10);
+                        }
                         return;
                     }
+
                     const video = entry.target.querySelector('video');
                     if (!video) return;
                     if (entry.isIntersecting) {
