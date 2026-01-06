@@ -29,11 +29,12 @@
             background-color: var(--black);
             color: var(--white);
             font-family: var(--font-text);
-            overflow: hidden; /* Le body ne scroll pas, ce sont les conteneurs qui scrollent */
+            overflow: hidden; /* Le body ne scroll pas */
             width: 100vw; height: 100vh;
+            position: fixed; /* Fixe le body pour éviter le rebond sur mobile */
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -60,42 +61,29 @@
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-        @keyframes subtle-shake {
-            0% { transform: translate(0, 0); } 25% { transform: translate(2px, 0); }
-            50% { transform: translate(-2px, 0); } 75% { transform: translate(2px, 0); }
-            100% { transform: translate(0, 0); }
-        }
-
 
         /* ========================
-           LAYERS GLOBAUX
+           LAYERS (INTRO & BIO)
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; /* Caché par défaut */
-            opacity: 0; transition: opacity 0.5s ease;
+            display: none; opacity: 0; transition: opacity 0.5s ease;
+            overflow: hidden; /* Intro et Bio ne scrollent pas */
         }
         .layer.active { display: flex; opacity: 1; pointer-events: auto; }
 
-
-        /* ========================
-           1. INTRO LAYER
-           ======================== */
+        /* INTRO */
         .intro-layer { z-index: 5000; background-color: #000; justify-content: center; align-items: center; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 60vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
-        
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-
-        /* ========================
-           2. BIO LAYER
-           ======================== */
+        /* BIO */
         .bio-layer { z-index: 4000; background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
@@ -113,12 +101,63 @@
 
 
         /* ========================
-           3. UI LAYER (SIDEBAR + SON)
+           3. SCROLLABLE FEEDS (CORRECTION SCROLL)
            ======================== */
-        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; position: fixed; width: 100%; height: 100%; z-index: 6000; }
+        #feed, #image-feed {
+            position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: #000;
+            opacity: 0; 
+            pointer-events: none; /* Bloqué par défaut */
+            transition: opacity 0.5s ease;
+            z-index: 3000; /* Niveau de base */
+            
+            /* C'EST ICI QUE LA MAGIE DU SCROLL OPÈRE */
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; /* Pour iOS */
+            touch-action: pan-y;
+            overscroll-behavior: contain;
+        }
+
+        /* QUAND ACTIF, ON LE MET AU DESSUS DE TOUT ET ON ACTIVE LE SCROLL */
+        #feed.feed-active, #image-feed.feed-active { 
+            opacity: 1; 
+            pointer-events: auto !important;
+            z-index: 6000; /* Au dessus de l'intro (5000) et de la bio (4000) */
+            display: block; /* Force l'affichage */
+        }
+        
+        #image-feed.feed-active {
+            display: flex; /* Flex pour les images */
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start;
+            padding-top: 20px;
+            gap: 40px;
+        }
+
+        /* Vidéo Scroll Snap */
+        #feed { scroll-snap-type: y mandatory; }
+        .video-section { 
+            height: 100vh; width: 100%; 
+            scroll-snap-align: start; 
+            position: relative; display: flex; justify-content: center; align-items: center; 
+            background: #000; border-bottom: 1px solid #111; overflow: hidden;
+            flex-shrink: 0; /* Ne pas écraser */
+        }
+        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
+        .video-section.active video { opacity: 1; }
+        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
+        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
+
+
+        /* ========================
+           UI ELEMENTS (SIDEBAR, BUTTONS)
+           ======================== */
+        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; position: fixed; width: 100%; height: 100%; z-index: 7000; /* Toujours au dessus des feeds */ }
         .ui-layer.active { opacity: 1; pointer-events: auto; }
         
-        .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; z-index: 6005; }
+        .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; pointer-events: auto; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -129,9 +168,16 @@
         .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue); }
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink); }
 
-        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 6005; background: rgba(0,0,0,0.5); color: var(--neon-green); cursor: pointer; font-family: var(--font-title); font-size: 1.5rem; text-transform: uppercase; padding: 5px 15px; border: 1px solid var(--neon-green); backdrop-filter: blur(4px); padding-top: 8px; }
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 7005; /* Au dessus de tout */
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
+            text-transform: uppercase; padding: 5px 15px; 
+            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
+            padding-top: 8px; display: none; /* Caché par défaut */
+        }
 
-        .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
+        .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 7000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         .ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
         .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
@@ -139,81 +185,30 @@
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
 
-        .floating-msg { position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold; pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 7000; font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap; }
+        .floating-msg { position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold; pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 8000; font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap; }
         @keyframes floatAndFade { 0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); } 100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); } }
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
 
 
         /* ========================
-           4. FEED VIDEO
-           ======================== */
-        #feed { 
-            position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; 
-            overflow-y: auto; /* IMPORTANT : Auto pour le scroll */
-            scroll-snap-type: y mandatory; scroll-behavior: smooth; 
-            background: #000; z-index: 3000; 
-            display: none; /* Caché par défaut */
-        }
-        
-        .video-section { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; }
-        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
-        .video-section.active video { opacity: 1; }
-        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
-        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
-
-
-        /* ========================
-           5. IMAGE FEED LAYER
-           ======================== */
-        #image-feed { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #000; 
-            overflow-y: auto; /* Scrollable */
-            z-index: 3000; 
-            display: none; /* Caché par défaut */
-            flex-direction: column; align-items: center; /* IMPORTANT pour le layout */
-            justify-content: flex-start; /* IMPORTANT : commence en haut */
-            padding-top: 20px; 
-            gap: 40px; 
-        }
-        
-        .feed-instruction {
-            font-family: var(--font-title); font-size: 3rem; color: var(--white);
-            text-align: center; margin-top: 10px; margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: text-flicker 3s infinite alternate;
-            flex-shrink: 0; /* Ne pas écraser */
-        }
-
-        .thumb-container { 
-            width: 100%; max-width: 400px; border: 1px solid #333; 
-            cursor: pointer; transition: 0.3s; position: relative; 
-            flex-shrink: 0; /* Garde sa taille */
-        }
-        .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
-        .thumb-img { width: 100%; display: block; }
-
-
-        /* ========================
-           SECTION FINALE (COMMUN VIDEOS & IMAGES)
+           SECTION FINALE (COMMUN)
            ======================== */
         .final-section { 
             position: relative; background-color: #000; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            min-height: 100vh; scroll-snap-align: start; 
-            width: 100%;
-            flex-shrink: 0; /* IMPORTANT pour le flux image */
+            min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0;
         }
         .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
-        .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 10; width: 100%; max-width: 320px; }
+        .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 20; width: 100%; max-width: 320px; position: relative; }
         
-        /* BOUTONS DE FIN */
         .btn-final-devis { 
             width: 300px; height: 80px; 
             border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); 
             box-shadow: 0 0 20px var(--neon-green);
-            text-decoration: none; /* Pas de soulignement */
+            text-decoration: none; display: flex; justify-content: center; align-items: center;
+            border-style: solid; border-width: 2px;
+            cursor: pointer; pointer-events: auto; /* Force le clic */
         }
         .btn-final-devis .center-text { color: var(--neon-green); }
         
@@ -222,54 +217,51 @@
             display: flex; justify-content: center; align-items: center; 
             cursor: pointer; background: rgba(255,0,0,0.1); 
             animation: neon-flicker 2s infinite; 
+            pointer-events: auto; /* Force le clic */
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
 
         /* ========================
-           FULL SCREEN IMAGE MODAL
+           IMAGE FEED SPECIFIQUE
            ======================== */
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 7000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .feed-instruction {
+            font-family: var(--font-title); font-size: 3rem; color: var(--white);
+            text-align: center; margin-top: 10px; margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: text-flicker 3s infinite alternate; flex-shrink: 0;
+        }
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; }
+        .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
+        .thumb-img { width: 100%; display: block; }
+
+
+        /* ========================
+           MODALS
+           ======================== */
+        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 8000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .image-modal.active { opacity: 1; pointer-events: auto; }
-        
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
-
         .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); animation: text-flicker 2s infinite; pointer-events: none; width: 100%; text-align: center; }
 
-        /* CROIX MODAL STYLISÉE */
+        /* CROIX MODAL */
         .close-modal { 
-            position: absolute; top: 20px; right: 20px; z-index: 7001;
-            border: 1px solid var(--neon-green); 
-            background: rgba(0,0,0,0.5);
-            color: white; /* Emoji rouge géré dans le HTML */
-            font-size: 1.2rem;
-            padding: 5px 15px;
-            cursor: pointer;
-            backdrop-filter: blur(4px);
-            font-family: var(--font-title);
+            position: absolute; top: 20px; right: 20px; z-index: 8001;
+            border: 1px solid var(--neon-green); background: rgba(0,0,0,0.5);
+            color: red; /* Emoji rouge */
+            font-size: 1.5rem; padding: 5px 15px; cursor: pointer;
+            backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-
         /* CONTACT FORM MODAL */
-        .contact-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 8000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
-        }
+        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .contact-modal.active { opacity: 1; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
-        .contact-input, .contact-msg { 
-            background: #111; border: 1px solid var(--neon-green); color: white; 
-            padding: 15px; font-family: var(--font-text); font-size: 1rem; 
-        }
-        .contact-submit {
-            background: var(--neon-green); color: black; border: none; padding: 15px;
-            font-family: var(--font-title); font-size: 1.5rem; cursor: pointer;
-        }
+        .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
+        .contact-submit { background: var(--neon-green); color: black; border: none; padding: 15px; font-family: var(--font-title); font-size: 1.5rem; cursor: pointer; }
 
     </style>
 </head>
@@ -318,9 +310,11 @@
         </div>
     </div>
 
-    <!-- UI LAYER -->
+    <!-- UI LAYER (SIDEBAR) -->
     <div id="ui-layer" class="ui-layer">
+        <!-- BOUTON SON (Sera caché/affiché via JS) -->
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
+        
         <div class="fixed-sidebar">
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
@@ -332,6 +326,8 @@
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
+        
+        <!-- ŒIL (Sera caché/affiché via JS) -->
         <div class="fixed-eye-container" id="eye-container">
             <span class="static-hd-text">VOIR EN HD</span>
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
@@ -377,7 +373,7 @@
         <!-- FOOTER IMAGES -->
         <section class="final-section" style="margin-top: 50px;">
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
-            <div class="final-container">
+            <div class="final-container" style="padding: 100px 0;">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
@@ -400,7 +396,7 @@
         <div class="close-modal" onclick="closeContactForm()">❌</div>
         
         <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
-        <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
+        <form action="https://formspree.io/f/TON_CODE_ICI" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
             <textarea name="message" placeholder="RACONTE-MOI TOUT..." rows="5" class="contact-msg" required></textarea>
@@ -413,40 +409,52 @@
         window.history.replaceState({page: 'intro'}, "", "");
 
         function navigateTo(targetId) {
-            document.querySelectorAll('.layer').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.layer').forEach(el => el.style.display = 'none');
+            // Cacher les layers de base
+            document.querySelectorAll('.layer').forEach(el => {
+                el.classList.remove('active');
+                if(el.id !== 'feed' && el.id !== 'image-feed') el.style.display = 'none';
+            });
             
+            // Gestion UI Layer
             const ui = document.getElementById('ui-layer');
-            if (targetId === 'feed' || targetId === 'image-feed') ui.classList.add('active');
-            else ui.classList.remove('active');
+            if (targetId === 'feed' || targetId === 'image-feed') {
+                ui.classList.add('active');
+            } else {
+                ui.classList.remove('active');
+            }
 
-            // GESTION SON (Visible seulement sur Video Feed)
+            // Gestion Bouton Son & Œil
             const soundBtn = document.getElementById('sound-btn');
-            if(targetId === 'feed') soundBtn.style.display = 'block';
-            else soundBtn.style.display = 'none';
-
-            // GESTION ŒIL (Visible seulement sur Video Feed)
             const eye = document.getElementById('eye-container');
-            if (targetId === 'feed') eye.classList.remove('hidden');
-            else eye.classList.add('hidden');
+            
+            if(targetId === 'feed') {
+                soundBtn.style.display = 'block';
+                eye.classList.remove('hidden');
+            } else {
+                soundBtn.style.display = 'none'; // Caché sur Image Feed
+                eye.classList.add('hidden'); // Caché sur Image Feed
+            }
 
+            // Affichage Cible
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // CORRECTION LAYOUT IMAGES
-            if (targetId === 'image-feed') target.style.display = 'flex'; // Flex pour column layout
-            else if (targetId === 'intro' || targetId === 'bio') target.style.display = 'flex';
-            else target.style.display = 'block';
-
-            setTimeout(() => target.classList.add('active'), 10);
-
-            if (targetId === 'feed') {
+            // Reset Layout Displays
+            if (targetId === 'image-feed') {
+                target.style.display = 'flex'; // Important pour images
+                startM(imageFinalMatrix);
+            } else if (targetId === 'feed') {
+                target.style.display = 'block'; // Important pour scroll snap video
                 const v = target.querySelector('video');
                 if (v) { v.muted=true; v.play().catch(e=>{}); }
                 initObserver(); 
+            } else if (targetId === 'intro' || targetId === 'bio') {
+                target.style.display = 'flex';
             }
-            if (targetId === 'image-feed') {
-                startM(imageFinalMatrix); 
-            }
+
+            // Force reflow
+            void target.offsetWidth; 
+            target.classList.add('feed-active'); // Pour feed/image-feed
+            target.classList.add('active'); // Pour intro/bio
 
             if (!history.state || history.state.page !== targetId) {
                 history.pushState({page: targetId}, "", "");
@@ -456,28 +464,41 @@
         window.addEventListener('popstate', function(event) {
             if (event.state) {
                 const page = event.state.page;
-                document.querySelectorAll('.layer').forEach(el => el.classList.remove('active'));
-                document.querySelectorAll('.layer').forEach(el => el.style.display = 'none');
+                // Tout fermer
+                document.querySelectorAll('.layer').forEach(el => {
+                    el.classList.remove('active');
+                    el.classList.remove('feed-active');
+                    el.style.display = 'none';
+                });
                 document.getElementById('image-modal').classList.remove('active');
                 document.getElementById('contact-modal').classList.remove('active');
 
+                // Rouvrir
                 const targetId = page === 'intro' ? 'intro-layer' : (page === 'bio' ? 'bio-layer' : page);
                 const target = document.getElementById(targetId);
                 
-                if (page === 'image-feed') target.style.display = 'flex';
-                else if (page === 'intro' || page === 'bio') target.style.display = 'flex';
-                else target.style.display = 'block';
+                if (page === 'image-feed') { target.style.display = 'flex'; startM(imageFinalMatrix); }
+                else if (page === 'feed') { target.style.display = 'block'; }
+                else target.style.display = 'flex';
                 
                 setTimeout(() => target.classList.add('active'), 10);
+                if(page === 'feed' || page === 'image-feed') target.classList.add('feed-active');
 
+                // UI
                 const ui = document.getElementById('ui-layer');
+                const soundBtn = document.getElementById('sound-btn');
+                const eye = document.getElementById('eye-container');
+
                 if (page === 'feed' || page === 'image-feed') ui.classList.add('active');
                 else ui.classList.remove('active');
 
-                // Restore Sound Button Logic on Back
-                const soundBtn = document.getElementById('sound-btn');
-                if(page === 'feed') soundBtn.style.display = 'block';
-                else soundBtn.style.display = 'none';
+                if(page === 'feed') {
+                    soundBtn.style.display = 'block';
+                    eye.classList.remove('hidden');
+                } else {
+                    soundBtn.style.display = 'none';
+                    eye.classList.add('hidden');
+                }
             }
         });
 
