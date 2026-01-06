@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Work du Jeez</title>
+    <title>Le Work de Jeez</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
@@ -60,12 +60,13 @@
             100% { transform: translate(0); }
         }
         
+        /* Conteneur principal Intro */
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
+            /* Pas d'overflow hidden ici sinon ça coupe la cascade */
         }
         
-        /* IMAGE DU SURFER (Uniquement) */
         .hero-image {
             position: absolute; z-index: 1; width: 250px; 
             bottom: 50%; left: 50%; transform: translateX(-50%); 
@@ -77,32 +78,36 @@
             100% { transform: translateX(-50%) translateY(-35px); }
         }
 
-        /* --- MATRIX CANVAS --- */
+        /* --- MATRIX CANVAS (CASCADE) --- */
         #matrix-canvas {
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 5; /* Derrière le texte du bouton, mais devant le fond */
+            top: 80px; /* Commence pile sous le bouton (hauteur bouton = 80px) */
+            left: 0;
+            width: 320px; /* Exactement la largeur du bouton */
+            height: 60vh; /* Descend jusqu'en bas de l'écran */
+            z-index: 5;
             pointer-events: none;
-            opacity: 0.4; /* Légèrement transparent pour ne pas gêner la lecture */
+            opacity: 0.6; /* Un peu transparent */
+            
+            /* Petit fondu vers le bas pour que ça s'arrête proprement */
+            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
 
         /* BOUTON INTRO */
         .center-box {
             position: relative; z-index: 10; 
             width: 100%; height: 100%;
-            background-color: transparent; /* Fond transparent pour voir Matrix */
+            background-color: #000; /* Fond noir pour cacher le Matrix derrière le bouton lui-même */
             border: 2px solid var(--white);
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; text-decoration: none;
             -webkit-tap-highlight-color: transparent;
-            overflow: hidden; /* Empêche Matrix de dépasser si bug */
         }
         .center-text {
             color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
             letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
-            text-shadow: 0 0 5px black; /* Ombre pour lisibilité sur Matrix */
         }
         .center-box:hover {
             border-color: var(--neon-green);
@@ -166,12 +171,10 @@
         }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
 
-        /* Hover Styles */
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(57, 255, 20, 0.2); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
         #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
         #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
 
-        /* Glow Active */
         .glow-active-green { background: var(--neon-green) !important; color: black !important; box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important; }
         .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important; }
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important; }
@@ -200,14 +203,11 @@
             display: flex; flex-direction: column; align-items: center;
             opacity: 0; pointer-events: none; transition: opacity 1s 1s;
         }
-        .fixed-eye-container.hidden {
-            opacity: 0 !important; pointer-events: none !important; transition: opacity 0.3s ease;
-        }
+        .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; transition: opacity 0.3s ease; }
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
         .static-hd-text {
-            color: var(--white);
-            font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
+            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
             margin-bottom: 8px; text-shadow: 2px 2px 0px #000;
         }
 
@@ -280,12 +280,13 @@
     <!-- INTRO -->
     <div class="intro-layer" id="intro-layer">
         <div class="intro-container">
-            <!-- Surfer Image (Toujours là) -->
+            <!-- Image Surfer -->
             <img src="surfer.png" class="hero-image">
             
-            <!-- CANVAS MATRIX (Largeur du bouton) -->
+            <!-- CANVAS MATRIX (CASCADE SOUS LE BOUTON) -->
             <canvas id="matrix-canvas"></canvas>
 
+            <!-- BOUTON -->
             <div class="center-box" id="enter-btn">
                 <h1 class="center-text">le-Work-du-Jeez</h1>
             </div>
@@ -308,7 +309,6 @@
             </button>
         </div>
 
-        <!-- ŒIL CENTRAL (FIXE AVEC TEXTE) -->
         <div class="fixed-eye-container" id="eye-container">
             <span class="static-hd-text">VOIR EN HD</span>
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
@@ -354,15 +354,12 @@
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- SECTION FINALE (TV OFF) -->
+        <!-- SECTION FINALE -->
         <section class="video-section final-section">
             <div class="final-container">
-                <!-- Bouton Devis -->
                 <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
-                
-                <!-- Bouton Éteindre -->
                 <div class="btn-final-off" onclick="turnOffTv()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
                 </div>
@@ -375,16 +372,16 @@
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
 
-        // Dimensions du canvas (taille du bouton)
+        // Dimensions pour coller au bouton
         canvas.width = 320; 
-        canvas.height = 80;
+        canvas.height = window.innerHeight; // Descend jusqu'en bas de l'écran
 
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 12;
         const columns = canvas.width / fontSize;
         const drops = [];
 
-        // Initialisation des gouttes
+        // Initialisation
         for (let i = 0; i < columns; i++) {
             drops[i] = 1;
         }
@@ -392,7 +389,7 @@
         let matrixInterval;
 
         function drawMatrix() {
-            // Fond noir avec opacité pour l'effet de traînée
+            // Fond noir transparent pour l'effacement progressif
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -403,6 +400,7 @@
                 const text = characters.charAt(Math.floor(Math.random() * characters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
+                // Reset aléatoire quand ça dépasse l'écran
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[i] = 0;
                 }
@@ -410,22 +408,18 @@
             }
         }
 
-        // Lancer l'animation Matrix
         function startMatrix() {
             if(matrixInterval) clearInterval(matrixInterval);
             matrixInterval = setInterval(drawMatrix, 50);
         }
-        
-        // Arrêter l'animation Matrix
         function stopMatrix() {
             if(matrixInterval) clearInterval(matrixInterval);
         }
 
-        // Démarrage immédiat
         startMatrix();
 
 
-        // --- ANIMATIONS UI AUTO ---
+        // --- UI ANIMATIONS ---
         setInterval(() => {
             const phone = document.getElementById('phone-btn');
             if(phone) { phone.classList.add('icon-ringing'); setTimeout(() => phone.classList.remove('icon-ringing'), 1000); }
@@ -441,7 +435,6 @@
             setTimeout(() => { btn.classList.remove(glowClass); }, 1000);
         }
 
-        // --- CŒUR ---
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
@@ -475,9 +468,7 @@
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
-            
-            // Arrêt Matrix pour perf
-            stopMatrix();
+            stopMatrix(); // Pause Matrix
 
             setTimeout(() => {
                 document.getElementById('ui-layer').classList.add('ui-visible');
@@ -511,8 +502,7 @@
 
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 
-                // Redémarrer Matrix
-                startMatrix();
+                startMatrix(); // Restart Matrix
 
                 setTimeout(() => {
                     document.body.classList.remove('turn-off-anim');
@@ -521,7 +511,7 @@
             }, 600); 
         }
 
-        // --- OBSERVER & UPDATE LIENS & HIDE EYE ---
+        // --- OBSERVER ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
@@ -529,7 +519,6 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // GESTION DE LA DERNIÈRE SECTION (Masquer l'œil)
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) {
                             eyeContainer.classList.add('hidden');
@@ -537,19 +526,15 @@
                         return;
                     }
 
-                    // GESTION DES VIDÉOS
                     const video = entry.target.querySelector('video');
                     if (!video) return;
 
                     if (entry.isIntersecting) {
                         eyeContainer.classList.remove('hidden');
-
                         video.play().catch(e => {});
                         entry.target.classList.add('active');
-                        
                         const link = entry.target.getAttribute('data-link');
                         eyeBtn.href = link ? link : "#";
-                        
                     } else {
                         video.pause();
                         video.currentTime = 0;
