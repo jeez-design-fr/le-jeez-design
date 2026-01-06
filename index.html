@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Work de Jeez</title>
+    <title>Le Work du Jeez</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
@@ -28,25 +28,15 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- ANIMATION TV OFF --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
             80% { transform: scale(0, 0.002); }
             100% { transform: scale(0, 0); }
         }
-        .turn-off-anim {
-            animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-            pointer-events: none;
-        }
+        .turn-off-anim { animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; pointer-events: none; }
 
-        /* --- INTRO & GLITCH --- */
-        .intro-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000; background-color: #000;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease;
-        }
         .glitch-out {
             animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
             filter: contrast(200%) brightness(150%);
@@ -59,14 +49,21 @@
             80% { transform: translate(5px, -5px); clip-path: inset(10% 0 60% 0); }
             100% { transform: translate(0); }
         }
-        
-        /* Conteneur principal Intro */
+
+
+        /* ========================
+           1. INTRO LAYER
+           ======================== */
+        .intro-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5000; background-color: #000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease;
+        }
         .intro-container {
             position: relative; width: 320px; height: 80px;
             display: flex; justify-content: center; align-items: center;
-            /* Pas d'overflow hidden ici sinon ça coupe la cascade */
         }
-        
         .hero-image {
             position: absolute; z-index: 1; width: 250px; 
             bottom: 50%; left: 50%; transform: translateX(-50%); 
@@ -78,28 +75,19 @@
             100% { transform: translateX(-50%) translateY(-35px); }
         }
 
-        /* --- MATRIX CANVAS (CASCADE) --- */
+        /* Matrix sous le bouton */
         #matrix-canvas {
-            position: absolute;
-            top: 80px; /* Commence pile sous le bouton (hauteur bouton = 80px) */
-            left: 0;
-            width: 320px; /* Exactement la largeur du bouton */
-            height: 60vh; /* Descend jusqu'en bas de l'écran */
-            z-index: 5;
-            pointer-events: none;
-            opacity: 0.6; /* Un peu transparent */
-            
-            /* Petit fondu vers le bas pour que ça s'arrête proprement */
+            position: absolute; top: 80px; left: 0;
+            width: 320px; height: 60vh;
+            z-index: 5; pointer-events: none; opacity: 0.6;
             -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
 
-        /* BOUTON INTRO */
+        /* Bouton Intro */
         .center-box {
-            position: relative; z-index: 10; 
-            width: 100%; height: 100%;
-            background-color: #000; /* Fond noir pour cacher le Matrix derrière le bouton lui-même */
-            border: 2px solid var(--white);
+            position: relative; z-index: 10; width: 100%; height: 100%;
+            background-color: #000; border: 2px solid var(--white);
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s; text-decoration: none;
@@ -109,14 +97,144 @@
             color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
             letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
         }
-        .center-box:hover {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 20px var(--neon-green);
-        }
+        .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
 
-        /* --- FEED --- */
+        /* ========================
+           2. BIO LAYER (NOUVEAU)
+           ======================== */
+        .bio-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 4000; background-color: #000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; /* Caché au départ */
+            transition: opacity 0.5s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        .bio-active { opacity: 1; pointer-events: auto; }
+
+        .bio-text {
+            max-width: 600px;
+            font-size: 1.2rem; line-height: 1.6;
+            margin-bottom: 50px;
+        }
+        .bio-text h1 {
+            font-family: 'Bebas Neue'; font-size: 3rem; color: var(--neon-purple);
+            margin-bottom: 30px; letter-spacing: 2px;
+        }
+        .bio-text p { margin-bottom: 15px; color: #ddd; }
+        .highlight { color: var(--neon-green); font-weight: bold; text-transform: uppercase; }
+
+        /* Conteneur des boutons choix */
+        .choice-container {
+            display: flex; gap: 40px;
+            flex-wrap: wrap; justify-content: center;
+        }
+
+        /* Boutons Choix (Base) */
+        .choice-btn {
+            padding: 15px 40px;
+            font-family: 'Bebas Neue'; font-size: 2rem;
+            background: transparent; border: 2px solid;
+            cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: white;
+            position: relative; overflow: hidden;
+        }
+        
+        /* Bouton IMAGES (Rouge) */
+        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
+        .btn-images:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 30px var(--neon-pink); transform: scale(1.05); }
+
+        /* Bouton VIDEOS (Bleu) */
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+        .btn-videos:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 30px var(--neon-blue); transform: scale(1.05); }
+
+
+        /* ========================
+           3. UI LAYER (Interface)
+           ======================== */
+        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
+        .ui-visible { opacity: 1; pointer-events: auto; }
+
+        .fixed-sidebar {
+            position: fixed; z-index: 1000; right: 15px; bottom: 35%;
+            display: flex; flex-direction: column; gap: 25px; align-items: center;
+        }
+        .side-btn {
+            width: 55px; height: 55px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
+            color: var(--white); display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: 0.2s; text-decoration: none;
+            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+        .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
+
+        #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(57, 255, 20, 0.2); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
+        #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
+        #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
+
+        .glow-active-green { background: var(--neon-green) !important; color: black !important; box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important; }
+        .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important; }
+        .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important; }
+
+        @keyframes ring-icon { 0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); } 40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); } }
+        .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
+        @keyframes hop-icon { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-5px) scale(1.1); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px) scale(1.05); } }
+        .icon-hopping svg { animation: hop-icon 0.6s ease; }
+
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: 'Bebas Neue'; font-size: 1.5rem;
+            text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
+            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
+        }
+
+        .fixed-eye-container {
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+            z-index: 2000; display: flex; flex-direction: column; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 1s 1s;
+        }
+        .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; transition: opacity 0.3s ease; }
+        .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
+
+        .static-hd-text {
+            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
+            margin-bottom: 8px; text-shadow: 2px 2px 0px #000;
+        }
+        .eye-btn-main {
+            width: 70px; height: 70px; border-radius: 50%;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green);
+            color: var(--neon-green); display: flex; justify-content: center; align-items: center;
+            text-decoration: none; backdrop-filter: blur(8px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+        .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
+        .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
+
+        .floating-msg {
+            position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
+            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
+            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
+        }
+        @keyframes floatAndFade {
+            0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
+            100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
+        }
+        @keyframes shake {
+            0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); }
+            75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); }
+        }
+        .shaking { animation: shake 0.4s ease-in-out; }
+
+
+        /* ========================
+           4. FEED CONTAINER
+           ======================== */
         .feed-container {
             position: fixed; top: 0; left: 0;
             height: 100vh; width: 100vw;
@@ -151,96 +269,7 @@
             video.horizontal { object-fit: cover; }
         }
 
-
-        /* --- UI LAYER --- */
-        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
-        .ui-visible { opacity: 1; pointer-events: auto; }
-
-        .fixed-sidebar {
-            position: fixed; z-index: 1000; right: 15px; bottom: 35%;
-            display: flex; flex-direction: column; gap: 25px; align-items: center;
-        }
-
-        /* --- BOUTONS LATÉRAUX --- */
-        .side-btn {
-            width: 55px; height: 55px; border-radius: 50%;
-            background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white);
-            color: var(--white); display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.2s; text-decoration: none;
-            backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-        .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
-
-        #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(57, 255, 20, 0.2); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
-        #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
-        #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
-
-        .glow-active-green { background: var(--neon-green) !important; color: black !important; box-shadow: 0 0 25px var(--neon-green), inset 0 0 10px white !important; }
-        .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue), inset 0 0 10px white !important; }
-        .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink), inset 0 0 10px white !important; }
-
-
-        /* --- ANIMATIONS AUTOMATIQUES --- */
-        @keyframes ring-icon { 0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); } 40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); } }
-        .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
-        @keyframes hop-icon { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-5px) scale(1.1); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px) scale(1.05); } }
-        .icon-hopping svg { animation: hop-icon 0.6s ease; }
-
-
-        /* --- BOUTON SON --- */
-        .sound-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: rgba(0,0,0,0.5); color: var(--neon-green);
-            cursor: pointer; font-family: 'Bebas Neue'; font-size: 1.5rem;
-            text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
-            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
-        }
-
-        /* --- CONTENEUR ŒIL ET TEXTE (Fixe) --- */
-        .fixed-eye-container {
-            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
-            z-index: 2000; 
-            display: flex; flex-direction: column; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 1s 1s;
-        }
-        .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; transition: opacity 0.3s ease; }
-        .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
-
-        .static-hd-text {
-            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
-            margin-bottom: 8px; text-shadow: 2px 2px 0px #000;
-        }
-
-        .eye-btn-main {
-            width: 70px; height: 70px; border-radius: 50%;
-            background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green);
-            color: var(--neon-green); display: flex; justify-content: center; align-items: center;
-            text-decoration: none; backdrop-filter: blur(8px);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
-        }
-        .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
-        .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
-
-
-        /* --- MESSAGES FLOTTANTS --- */
-        .floating-msg {
-            position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
-            pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
-            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
-        }
-        @keyframes floatAndFade {
-            0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
-            100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); }
-        }
-        @keyframes shake {
-            0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); }
-            75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); }
-        }
-        .shaking { animation: shake 0.4s ease-in-out; }
-
-
-        /* --- SECTION FINALE --- */
+        /* SECTION FINALE */
         .final-section {
             background-color: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -250,7 +279,6 @@
             display: flex; flex-direction: column; gap: 30px; align-items: center;
             width: 100%; max-width: 320px;
         }
-        
         .btn-final-devis { width: 300px; height: 80px; }
         .btn-final-off {
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--white);
@@ -280,23 +308,45 @@
     <!-- INTRO -->
     <div class="intro-layer" id="intro-layer">
         <div class="intro-container">
-            <!-- Image Surfer -->
             <img src="surfer.png" class="hero-image">
-            
-            <!-- CANVAS MATRIX (CASCADE SOUS LE BOUTON) -->
+            <!-- CANVAS MATRIX -->
             <canvas id="matrix-canvas"></canvas>
-
-            <!-- BOUTON -->
+            <!-- BOUTON INTRO -->
             <div class="center-box" id="enter-btn">
-                <h1 class="center-text">le-Work-du-Jeez</h1>
+                <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
+        </div>
+    </div>
+
+    <!-- BIO LAYER (Sas d'entrée) -->
+    <div class="bio-layer" id="bio-layer">
+        <div class="bio-text">
+            <h1>Bienvenue sur mon Feed !</h1>
+            <p>
+                Tu trouveras ici une partie de mon travail,<br>
+                production de A à Z avec mon propre matériel<br>
+                <span class="highlight">(machine de guerre)</span>
+            </p>
+            <p>
+                optimisé avec de l'I.A<br>
+                <span class="highlight">(on gagne du temps et de l'argent pas mal non ?)</span>
+            </p>
+            <br>
+            <p>N'hésite pas à me contacter pour qu'on réalise ton projet !</p>
+            <p>On se retrouve de l'autre côté !</p>
+            <br>
+            <p style="font-style: italic; opacity: 0.7;">En attendant fais ton choix !</p>
+        </div>
+
+        <div class="choice-container">
+            <button class="choice-btn btn-images" onclick="alert('Section IMAGES bientôt disponible !')">IMAGES</button>
+            <button class="choice-btn btn-videos" id="video-access-btn">VIDÉOS</button>
         </div>
     </div>
 
     <!-- UI LAYER -->
     <div class="ui-layer" id="ui-layer">
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
-        
         <div class="fixed-sidebar">
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
@@ -323,32 +373,26 @@
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
             <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 2 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 3 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
             <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 4 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 5 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
             <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 6 -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
         </section>
-
         <!-- VIDEO 7 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
@@ -368,68 +412,44 @@
     </main>
 
     <script>
-        // --- MATRIX RAIN EFFECT ---
+        // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-
-        // Dimensions pour coller au bouton
         canvas.width = 320; 
-        canvas.height = window.innerHeight; // Descend jusqu'en bas de l'écran
+        canvas.height = window.innerHeight;
 
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         const fontSize = 12;
         const columns = canvas.width / fontSize;
         const drops = [];
-
-        // Initialisation
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
-
+        for (let i = 0; i < columns; i++) drops[i] = 1;
         let matrixInterval;
 
         function drawMatrix() {
-            // Fond noir transparent pour l'effacement progressif
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#ffffff'; // Texte blanc
+            ctx.fillStyle = '#ffffff'; 
             ctx.font = fontSize + 'px monospace';
-
             for (let i = 0; i < drops.length; i++) {
                 const text = characters.charAt(Math.floor(Math.random() * characters.length));
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Reset aléatoire quand ça dépasse l'écran
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-
-        function startMatrix() {
-            if(matrixInterval) clearInterval(matrixInterval);
-            matrixInterval = setInterval(drawMatrix, 50);
-        }
-        function stopMatrix() {
-            if(matrixInterval) clearInterval(matrixInterval);
-        }
-
+        function startMatrix() { if(matrixInterval) clearInterval(matrixInterval); matrixInterval = setInterval(drawMatrix, 50); }
+        function stopMatrix() { if(matrixInterval) clearInterval(matrixInterval); }
         startMatrix();
 
-
-        // --- UI ANIMATIONS ---
+        // --- ANIMATIONS UI ---
         setInterval(() => {
             const phone = document.getElementById('phone-btn');
             if(phone) { phone.classList.add('icon-ringing'); setTimeout(() => phone.classList.remove('icon-ringing'), 1000); }
         }, 8000);
-
         setInterval(() => {
             const mail = document.getElementById('mail-btn');
             if(mail) { mail.classList.add('icon-hopping'); setTimeout(() => mail.classList.remove('icon-hopping'), 1000); }
         }, 10000);
-
         function animateBtn(btn, glowClass) {
             btn.classList.add(glowClass);
             setTimeout(() => { btn.classList.remove(glowClass); }, 1000);
@@ -440,11 +460,9 @@
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
             btn.classList.add('glow-active-red');
             setTimeout(() => { btn.classList.remove('glow-active-red'); }, 1000);
-
             heartClickCount++;
             const cycleIndex = heartClickCount % 10;
             let message = ""; let duration = 1200;
-
             if (cycleIndex === 1) message = "merci !!";
             else if (cycleIndex === 2) message = "💃 Owyeaaa";
             else if (cycleIndex === 3) message = "🤩🤩🤩";
@@ -452,7 +470,6 @@
             else if (cycleIndex === 5) { message = "😴💤"; duration = 3000; }
             else if (cycleIndex === 0) message = "🤠";
             else return;
-
             const msgEl = document.createElement('span');
             msgEl.innerText = message;
             msgEl.classList.add('floating-msg');
@@ -464,50 +481,74 @@
             setTimeout(() => { msgEl.remove(); }, duration);
         }
 
-        // --- ENTRER ---
+        // --- NAVIGATION LOGIC ---
+        
+        // 1. CLIC INTRO -> BIO
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
-            stopMatrix(); // Pause Matrix
-
+            stopMatrix(); 
+            
             setTimeout(() => {
+                intro.style.display = 'none';
+                intro.classList.remove('glitch-out');
+                
+                // Afficher la Bio
+                const bio = document.getElementById('bio-layer');
+                bio.classList.add('bio-active');
+            }, 400);
+        });
+
+        // 2. CLIC VIDEOS -> FEED
+        document.getElementById('video-access-btn').addEventListener('click', function() {
+            const bio = document.getElementById('bio-layer');
+            // Petit effet de glitch sur la bio aussi avant de partir
+            bio.classList.add('glitch-out');
+            
+            setTimeout(() => {
+                bio.style.display = 'none'; // On cache la bio
+                bio.classList.remove('glitch-out');
+
+                // On affiche l'interface principale
                 document.getElementById('ui-layer').classList.add('ui-visible');
                 const feed = document.getElementById('feed');
                 feed.classList.add('feed-active');
                 
+                // Lancement vidéo
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
                     firstVideo.muted = true;
                     firstVideo.play().then(() => firstVideo.parentElement.classList.add('active')).catch(console.log);
                 }
                 initObserver();
-                intro.style.display = 'none';
-                intro.classList.remove('glitch-out'); 
             }, 400);
         });
 
-        // --- TV OFF ---
+        // --- TV OFF (RESET) ---
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
                 const feed = document.getElementById('feed');
                 const ui = document.getElementById('ui-layer');
+                const bio = document.getElementById('bio-layer');
                 const intro = document.getElementById('intro-layer');
 
+                // Reset Scroll & Videos
                 feed.scrollTo(0, 0); 
                 feed.classList.remove('feed-active');
-                ui.classList.remove('ui-visible');
-                intro.style.display = 'flex';
-                intro.style.opacity = '1';
-
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 
-                startMatrix(); // Restart Matrix
+                // Cacher UI & Bio
+                ui.classList.remove('ui-visible');
+                bio.classList.remove('bio-active');
+                bio.style.display = 'flex'; // Reset display pour prochaine fois
 
-                setTimeout(() => {
-                    document.body.classList.remove('turn-off-anim');
-                }, 100); 
+                // Montrer Intro
+                intro.style.display = 'flex';
+                intro.style.opacity = '1';
+                startMatrix();
 
+                setTimeout(() => { document.body.classList.remove('turn-off-anim'); }, 100); 
             }, 600); 
         }
 
@@ -520,9 +561,7 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) {
-                            eyeContainer.classList.add('hidden');
-                        }
+                        if(entry.isIntersecting) eyeContainer.classList.add('hidden');
                         return;
                     }
 
