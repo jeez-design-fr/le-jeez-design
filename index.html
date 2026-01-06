@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Work du Jeez</title>
     
-    <!-- FONTS -->
+    <!-- RETOUR AUX POLICES ORIGINALES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -16,10 +16,12 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            --black: #050505;
+            --black: #000000;
             --white: #ffffff;
-            --font-title: 'Rubik 80s Fade', cursive;
-            --font-text: 'Share Tech Mono', monospace;
+            
+            /* FONTS ORIGINALES */
+            --font-title: 'Bebas Neue', sans-serif;
+            --font-text: 'Rajdhani', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +34,7 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -54,7 +56,21 @@
             100% { transform: translate(0); }
         }
 
-        /* --- STYLES INTRO --- */
+        @keyframes neon-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; }
+            20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
+        }
+
+        @keyframes subtle-shake {
+            0% { transform: translate(0, 0); } 25% { transform: translate(2px, 0); }
+            50% { transform: translate(-2px, 0); } 75% { transform: translate(2px, 0); }
+            100% { transform: translate(0, 0); }
+        }
+
+
+        /* ========================
+           1. INTRO LAYER
+           ======================== */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5000; background-color: #000;
@@ -62,7 +78,6 @@
             transition: opacity 0.5s ease;
         }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
-        
         .hero-image {
             position: absolute; z-index: 1; width: 250px; 
             bottom: 50%; left: 50%; transform: translateX(-50%); 
@@ -73,14 +88,12 @@
             50% { transform: translateX(-50%) translateY(-50px); }
             100% { transform: translateX(-50%) translateY(-35px); }
         }
-
         #matrix-canvas {
             position: absolute; top: 80px; left: 0; width: 320px; height: 60vh;
             z-index: 5; pointer-events: none; opacity: 0.8;
             -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
-
         .center-box {
             position: relative; z-index: 10; width: 100%; height: 100%;
             background-color: #000; border: 2px solid var(--white);
@@ -89,15 +102,16 @@
             cursor: pointer; transition: 0.3s;
         }
         .center-text {
-            color: var(--white); font-family: var(--font-title); font-size: 2.2rem; 
+            color: var(--white); font-family: var(--font-title); font-size: 2.5rem; 
             letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
-            line-height: 1;
         }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
 
-        /* --- STYLES BIO --- */
+        /* ========================
+           2. BIO LAYER
+           ======================== */
         .bio-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 4000; background-color: #000;
@@ -107,10 +121,13 @@
         }
         .bio-active { opacity: 1; pointer-events: auto; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
-        .bio-text { font-family: var(--font-text); text-transform: uppercase; line-height: 1.4; letter-spacing: 1px; font-size: 1.1rem; }
-        @media (max-width: 600px) { .bio-text { font-size: 4vw; } }
-        .bio-title { font-family: var(--font-title); font-size: 3.5rem; color: var(--neon-green); margin-bottom: 5px; line-height: 1; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
-        @media (max-width: 600px) { .bio-title { font-size: 12vw; } }
+        
+        .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
+        @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
+        
+        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
+        @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
+        
         .bio-p { color: var(--white); margin: 0; }
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @media (max-width: 600px) { .flicker-text { font-size: 8vw; } }
@@ -118,39 +135,40 @@
         
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn {
-            padding: 12px 10px; width: 45%; max-width: 180px; 
-            font-family: var(--font-title); font-size: 1.5rem;
+            padding: 15px 10px; width: 45%; max-width: 180px; 
+            font-family: var(--font-title); font-size: 1.8rem;
             background: black; border: 2px solid; cursor: pointer; color: white;
-            animation: float-shake 3s ease-in-out infinite; line-height: 1;
+            animation: float-shake 3s ease-in-out infinite; 
         }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
         .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
         .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
 
 
-        /* --- UI LAYER --- */
+        /* ========================
+           3. UI LAYER
+           ======================== */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
-        .fixed-sidebar { position: fixed; z-index: 6500; /* AU DESSUS DU MODAL */ right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
-        .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        .side-btn svg { width: 28px; height: 28px; fill: currentColor; transition: 0.3s; }
         
-        #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); background: rgba(57, 255, 20, 0.2); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
-        #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); background: rgba(0, 243, 255, 0.2); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
-        #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); background: rgba(255, 0, 127, 0.2); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
+        .fixed-sidebar { position: fixed; z-index: 6500; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
+        .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
+        #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
+        #mail-btn:hover { border-color: var(--neon-blue); color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); transform: scale(1.15); }
+        #heart-btn:hover { border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.15); }
         
         .glow-active-green { background: var(--neon-green) !important; color: black !important; box-shadow: 0 0 25px var(--neon-green); }
         .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue); }
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink); }
 
-        @keyframes ring-icon { 0% { transform: rotate(0); } 10% { transform: rotate(15deg) scale(1.1); } 20% { transform: rotate(-15deg) scale(1.1); } 30% { transform: rotate(15deg) scale(1.1); } 40% { transform: rotate(-15deg) scale(1.1); } 50% { transform: rotate(0) scale(1); } 100% { transform: rotate(0) scale(1); } }
-        .icon-ringing svg { animation: ring-icon 0.8s ease-in-out; }
-        @keyframes hop-icon { 0%, 100% { transform: translateY(0); } 25% { transform: translateY(-5px) scale(1.1); } 50% { transform: translateY(0); } 75% { transform: translateY(-3px) scale(1.05); } }
-        .icon-hopping svg { animation: hop-icon 0.6s ease; }
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
+            text-transform: uppercase; padding: 5px 15px; border: 1px solid var(--neon-green);
+        }
 
-        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; background: rgba(0,0,0,0.5); color: var(--neon-green); cursor: pointer; font-family: var(--font-title); font-size: 1.2rem; text-transform: uppercase; padding: 5px 15px; border: 1px solid var(--neon-green); backdrop-filter: blur(4px); padding-top: 8px; }
-
-        /* Œil */
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
@@ -165,7 +183,9 @@
         .shaking { animation: shake 0.4s ease-in-out; }
 
 
-        /* --- FEED VIDEO --- */
+        /* ========================
+           4. FEED VIDEO
+           ======================== */
         #feed { position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         #feed.feed-active { opacity: 1; pointer-events: auto; }
         .video-section { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; }
@@ -182,18 +202,19 @@
         .btn-final-devis { width: 300px; height: 80px; border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); box-shadow: 0 0 20px var(--neon-green); }
         .btn-final-devis .center-text { color: var(--neon-green); }
         .btn-final-devis:hover { animation: subtle-shake 0.3s infinite; }
-        @keyframes subtle-shake { 0% { transform: translate(0, 0); } 25% { transform: translate(2px, 0); } 50% { transform: translate(-2px, 0); } 75% { transform: translate(2px, 0); } 100% { transform: translate(0, 0); } }
 
         .btn-final-off { width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,0,0,0.1); animation: neon-flicker 2s infinite; }
-        @keyframes neon-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; } 20%, 24%, 55% { opacity: 0.5; box-shadow: none; } }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
         .btn-final-off:hover { animation: subtle-shake 0.3s infinite; }
 
 
-        /* --- IMAGE FEED LAYER --- */
-        #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 3000; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        /* ========================
+           5. IMAGE FEED LAYER (NOUVEAU)
+           ======================== */
+        #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 3000; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
         #image-feed.feed-active { opacity: 1; pointer-events: auto; }
-        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; }
+        
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; }
         .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
 
@@ -203,12 +224,8 @@
         
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
-        /* Animation BUMP lors de la transformation */
-        @keyframes bump-anim {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05) rotate(1deg); }
-            100% { transform: scale(1); }
-        }
+        /* Animation BUMP */
+        @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
 
         .tap-hint { position: absolute; top: 20px; color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black; animation: text-flicker 2s infinite; pointer-events: none; }
@@ -293,7 +310,7 @@
         <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video></section>
 
-        <!-- SECTION FINALE -->
+        <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
             <canvas id="matrix-canvas-final"></canvas>
             <div class="final-container">
@@ -307,11 +324,27 @@
         </section>
     </main>
 
-    <!-- IMAGE FEED -->
+    <!-- IMAGE FEED (5 MINIATURES) -->
     <main id="image-feed">
-        <!-- Miniature Test (WEBP) -->
-        <div class="thumb-container" onclick="openImageModal()">
+        <!-- Miniature 1 (5 images) -->
+        <div class="thumb-container" onclick="openImageModal(1)">
             <img src="img1_1.webp" class="thumb-img">
+        </div>
+        <!-- Miniature 2 (3 images) -->
+        <div class="thumb-container" onclick="openImageModal(2)">
+            <img src="img2_1.webp" class="thumb-img">
+        </div>
+        <!-- Miniature 3 (5 images) -->
+        <div class="thumb-container" onclick="openImageModal(3)">
+            <img src="img3_1.webp" class="thumb-img">
+        </div>
+        <!-- Miniature 4 (4 images) -->
+        <div class="thumb-container" onclick="openImageModal(4)">
+            <img src="img4_1.webp" class="thumb-img">
+        </div>
+        <!-- Miniature 5 (6 images) -->
+        <div class="thumb-container" onclick="openImageModal(5)">
+            <img src="img5_1.webp" class="thumb-img">
         </div>
     </main>
 
@@ -323,13 +356,22 @@
     </div>
 
     <script>
-        // --- PRELOAD DES IMAGES (TRES IMPORTANT POUR LA RAPIDITE) ---
-        const imgSequence = ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'];
-        // On charge les images en mémoire dès le début
-        imgSequence.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
+        // --- DONNEES GALERIES (LISTES) ---
+        const galleries = {
+            1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
+            2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
+            3: ['img3_1.webp', 'img3_2.webp', 'img3_3.webp', 'img3_4.webp', 'img3_5.webp'],
+            4: ['img4_1.webp', 'img4_2.webp', 'img4_3.webp', 'img4_4.webp'],
+            5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp']
+        };
+
+        // --- PRELOAD TOUTES LES IMAGES ---
+        for (const key in galleries) {
+            galleries[key].forEach(src => {
+                const i = new Image();
+                i.src = src;
+            });
+        }
 
         // --- MATRIX RAIN ---
         const canvas = document.getElementById('matrix-canvas'); const ctx = canvas.getContext('2d');
@@ -351,6 +393,7 @@
         function stopMatrix() { if(matrixInterval) clearInterval(matrixInterval); }
         startMatrix();
 
+        // MATRIX FINAL
         const canvasFinal = document.getElementById('matrix-canvas-final'); const ctxFinal = canvasFinal.getContext('2d');
         canvasFinal.width = window.innerWidth; canvasFinal.height = window.innerHeight;
         const columnsFinal = canvasFinal.width / fontSize; const dropsFinal = []; for(let i=0; i<columnsFinal; i++) dropsFinal[i]=1;
@@ -411,33 +454,35 @@
             }, 400);
         });
 
-        // --- LOGIQUE IMAGE TRANSFORM (AVEC ANIMATION BUMP) ---
+        // --- LOGIQUE IMAGE TRANSFORM (GALERIES MULTIPLES) ---
         let currentImgIndex = 0;
-        function openImageModal() {
+        let currentGallery = []; // La galerie en cours de visionnage
+
+        function openImageModal(galleryId) {
+            // Charger la liste correspondante
+            currentGallery = galleries[galleryId];
+            
             const modal = document.getElementById('image-modal');
             const img = document.getElementById('full-img');
+            
             currentImgIndex = 0;
-            img.src = imgSequence[0];
+            img.src = currentGallery[0];
             modal.classList.add('active');
         }
+
         function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); }
         
         function nextImageStep() {
             const img = document.getElementById('full-img');
-            
-            // 1. Ajouter la classe d'animation BUMP
             img.classList.add('anim-bump');
             
-            // 2. Changer l'image au milieu de l'animation
             setTimeout(() => {
-                currentImgIndex = (currentImgIndex + 1) % imgSequence.length;
-                img.src = imgSequence[currentImgIndex];
-            }, 100); // 100ms = moitié de l'anim bump (0.2s)
+                // Utiliser currentGallery au lieu d'une liste unique
+                currentImgIndex = (currentImgIndex + 1) % currentGallery.length;
+                img.src = currentGallery[currentImgIndex];
+            }, 100); 
 
-            // 3. Retirer la classe pour pouvoir la relancer au prochain clic
-            setTimeout(() => {
-                img.classList.remove('anim-bump');
-            }, 250);
+            setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
         }
 
         // --- TV OFF ---
