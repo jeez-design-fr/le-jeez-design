@@ -16,8 +16,11 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
+            --bio-red: #ff0000;
+            --bio-blue: #003dff;
             --black: #000000;
             --white: #ffffff;
+            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -33,7 +36,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -60,41 +63,43 @@
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-        /* --- ANIMATION CLIGNEMENT OEIL --- */
-        @keyframes eye-blink {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.1); }
-        }
-        .blink-now { 
-            transform-origin: center; 
-            animation: eye-blink 0.2s linear; 
+        /* Animation GLOW PRECIEUX (Bio Titre) */
+        @keyframes precious-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
+            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
         }
 
-        /* --- ANIMATION FLÈCHE SCROLL --- */
-        @keyframes scroll-hint-flow {
+        /* Animation RARE FLASH (Devis) */
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
+
+        /* Animation FLOTTEMENT TEXTE HD (Nouveau) */
+        @keyframes float-text {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Animation FLÈCHE SCROLL */
+        @keyframes scroll-hint-anim {
             0% { opacity: 0; transform: translateY(-20px); }
             20% { opacity: 1; transform: translateY(0); }
             80% { opacity: 1; transform: translateY(20px); }
             100% { opacity: 0; transform: translateY(40px); }
         }
+        .play-anim { animation: scroll-hint-anim 2s ease-in-out forwards; }
+
 
         /* ========================
            SYSTEME DE LAYERS
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; 
-            opacity: 0; 
-            transition: opacity 0.4s ease;
+            display: none; opacity: 0; transition: opacity 0.4s ease;
             z-index: 10;
         }
-        
-        .layer.active {
-            opacity: 1;
-            pointer-events: auto;
-            display: flex;
-            z-index: 100;
-        }
+        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
 
         /* Feeds scrollables */
         #feed, #image-feed {
@@ -133,10 +138,6 @@
             font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
             animation: precious-glow 4s ease-in-out infinite; 
         }
-        @keyframes precious-glow {
-            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
-            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
-        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
         
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
@@ -144,8 +145,12 @@
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
-        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
+        
+        /* COULEURS DES BOUTONS BIO */
+        .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
+        .btn-images:hover { background-color: var(--bio-red); color: white; }
+        .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
+        .btn-videos:hover { background-color: var(--bio-blue); color: white; }
 
         /* ========================
            3. UI LAYER (SIDEBAR)
@@ -156,15 +161,15 @@
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        /* Flèche de Scroll (gauche) */
+        /* FLÈCHE SCROLL */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
             color: var(--neon-green);
         }
         #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
-
-        /* Sidebar (droite) */
+        
+        /* SIDEBAR */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
@@ -195,10 +200,23 @@
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
-        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
+        
+        /* Texte HD Flottant */
+        .static-hd-text { 
+            color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; 
+            animation: float-text 3s ease-in-out infinite; /* Animation Flottement */
+        }
+
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
+
+        /* Animation Clignement */
+        @keyframes eye-blink {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+        .blink-now { transform-origin: center; animation: eye-blink 0.2s linear; }
 
         .floating-msg { position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold; pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 9990; font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap; }
         @keyframes floatAndFade { 0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); } 100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); } }
@@ -250,7 +268,7 @@
         /* Animation Rare Flash sur le mot entier */
         .btn-final-devis .center-text { 
             color: var(--neon-green); 
-            animation: rare-flash 6s infinite; /* Clignote toutes les 6s */
+            animation: rare-flash 6s infinite;
         }
         @keyframes rare-flash {
             0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
@@ -422,6 +440,8 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -431,7 +451,7 @@
     </div>
 
     <script>
-        // --- GESTION NAVIGATION ---
+        // --- GESTION NAVIGATION & HISTORIQUE (SPA) ---
         window.history.replaceState({page: 'intro'}, "", "");
 
         function handleNavigation(targetId) {
@@ -466,6 +486,14 @@
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
+                    
+                    // RESTART LOOP FLÈCHE
+                    if(scrollHintInterval) clearInterval(scrollHintInterval);
+                    scrollHintInterval = setInterval(() => {
+                        scrollHint.classList.remove('play-anim');
+                        void scrollHint.offsetHeight;
+                        scrollHint.classList.add('play-anim');
+                    }, 5000);
 
                     const v = document.querySelector('#feed video');
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
@@ -474,6 +502,7 @@
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
+                    if(scrollHintInterval) clearInterval(scrollHintInterval);
                     startM(imageFinalMatrix);
                 }
             } else {
@@ -492,7 +521,8 @@
             else handleNavigation(page);
         });
 
-        // --- PRELOAD & MATRIX & ANIMATIONS (Identique précédent) ---
+
+        // --- PRELOAD ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
@@ -502,6 +532,7 @@
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
+        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -530,7 +561,9 @@
         function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
         startM(introMatrix); 
 
-        // UI ANIMATIONS
+        // --- UI ANIMATIONS & LOOP SCROLL ---
+        let scrollHintInterval;
+
         setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
         setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
         setInterval(() => { const eye = document.querySelector('.eye-btn-main svg'); if(eye) { eye.classList.add('blink-now'); setTimeout(() => eye.classList.remove('blink-now'), 300); } }, 4000);
@@ -550,34 +583,85 @@
             document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
         }
 
-        function openContactForm(e) { e.preventDefault(); document.getElementById('contact-modal').classList.add('active'); const soundBtn = document.getElementById('sound-btn'); if(soundBtn) soundBtn.style.display = 'none'; }
-        function closeContactForm() { document.getElementById('contact-modal').classList.remove('active'); const feed = document.getElementById('feed'); if(feed.classList.contains('active')) { document.getElementById('sound-btn').style.display = 'block'; } }
+        // --- CONTACT ---
+        function openContactForm(e) {
+            e.preventDefault();
+            document.getElementById('contact-modal').classList.add('active');
+            // Cacher le bouton son quand le contact est ouvert pour éviter conflit
+            const soundBtn = document.getElementById('sound-btn');
+            if(soundBtn) soundBtn.style.display = 'none';
+        }
+        function closeContactForm() {
+            document.getElementById('contact-modal').classList.remove('active');
+            // Restaurer le bouton son si on est dans le feed (sauf si on est sur la section finale)
+            const feed = document.getElementById('feed');
+            if(feed.classList.contains('active')) {
+                document.getElementById('sound-btn').style.display = 'block';
+            }
+        }
 
+        // --- IMAGES LOGIC ---
         let currentImgIndex = 0; let currentGallery = [];
-        function openImageModal(id) { currentGallery = galleries[id]; const img = document.getElementById('full-img'); currentImgIndex = 0; img.src = currentGallery[0]; document.getElementById('image-modal').classList.add('active'); history.pushState({page: 'image-modal'}, "", ""); }
-        function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); history.back(); }
-        function nextImageStep() { const img = document.getElementById('full-img'); img.classList.add('anim-bump'); setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); setTimeout(() => { img.classList.remove('anim-bump'); }, 250); }
+        function openImageModal(id) {
+            currentGallery = galleries[id];
+            const img = document.getElementById('full-img');
+            currentImgIndex = 0; img.src = currentGallery[0];
+            document.getElementById('image-modal').classList.add('active');
+            history.pushState({page: 'image-modal'}, "", "");
+        }
+        function closeImageModal() { 
+            document.getElementById('image-modal').classList.remove('active');
+            history.back();
+        }
+        function nextImageStep() {
+            const img = document.getElementById('full-img'); img.classList.add('anim-bump');
+            setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
+            setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
+        }
 
-        function turnOffTv() { document.body.classList.add('turn-off-anim'); setTimeout(() => { window.location.reload(); }, 600); }
+        // --- RESET TV ---
+        function turnOffTv() {
+            document.body.classList.add('turn-off-anim');
+            setTimeout(() => {
+                window.location.reload(); 
+            }, 600); 
+        }
 
+        // --- OBSERVER (SON & FLÈCHE) ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
             const soundBtn = document.getElementById('sound-btn');
+            const scrollHint = document.getElementById('scroll-hint');
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // SI C'EST LA SECTION FINALE
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
+                            // CACHER SON & FLÈCHE
                             soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
-                        } else { 
+                            scrollHint.style.opacity = '0';
+                            if(scrollHintInterval) clearInterval(scrollHintInterval);
+                        }
+                        else { 
                             stopM(videoFinalMatrix); 
+                            // REAFFICHER
                             soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            // Relance boucle flèche
+                            if(scrollHintInterval) clearInterval(scrollHintInterval);
+                            scrollHintInterval = setInterval(() => {
+                                scrollHint.classList.remove('play-anim');
+                                void scrollHint.offsetHeight;
+                                scrollHint.classList.add('play-anim');
+                            }, 5000);
                         }
                         return;
                     }
+
                     const video = entry.target.querySelector('video');
                     if (!video) return;
                     if (entry.isIntersecting) {
