@@ -68,83 +68,53 @@
 
 
         /* ========================
-           INTRO LAYER
+           LAYERS (INTRO, BIO, ETC.)
            ======================== */
-        .intro-layer {
+        .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 5000; background-color: #000;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 0.5s ease;
+            display: none; /* Tout caché par défaut, géré par JS */
+            opacity: 0; transition: opacity 0.5s ease;
         }
+        .layer.active { display: flex; opacity: 1; pointer-events: auto; }
+        
+        /* Spécifique pour les feeds qui ne sont pas flex center */
+        #feed.active, #image-feed.active { display: block; opacity: 1; pointer-events: auto; }
+
+
+        /* INTRO STYLE */
+        .intro-layer { z-index: 5000; background-color: #000; justify-content: center; align-items: center; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
-        .hero-image {
-            position: absolute; z-index: 1; width: 250px; 
-            bottom: 50%; left: 50%; transform: translateX(-50%); 
-            animation: floatTop 4s ease-in-out infinite; pointer-events: none;
-        }
-        @keyframes floatTop {
-            0% { transform: translateX(-50%) translateY(-35px); }
-            50% { transform: translateX(-50%) translateY(-50px); }
-            100% { transform: translateX(-50%) translateY(-35px); }
-        }
-        #matrix-canvas {
-            position: absolute; top: 80px; left: 0; width: 320px; height: 60vh;
-            z-index: 5; pointer-events: none; opacity: 0.8;
-            -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-        }
-        .center-box {
-            position: relative; z-index: 10; width: 100%; height: 100%;
-            background-color: #000; border: 2px solid var(--white);
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: 0.3s;
-        }
-        .center-text {
-            color: var(--white); font-family: var(--font-title); font-size: 2.5rem; 
-            letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
-        }
+        .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
+        @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
+        #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 60vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
+        .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
+        .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
 
-        /* ========================
-           BIO LAYER
-           ======================== */
-        .bio-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 4000; background-color: #000;
-            display: flex; flex-direction: column; justify-content: space-evenly; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
-            text-align: center; padding: 10px; 
-        }
-        .bio-active { opacity: 1; pointer-events: auto; }
+        /* BIO STYLE */
+        .bio-layer { z-index: 4000; background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
-        .bio-title { font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
-        @media (max-width: 600px) { .bio-title { font-size: 14vw; } .bio-text { font-size: 6vw; } }
+        @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
+        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
+        @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
-        .choice-btn {
-            padding: 15px 10px; width: 45%; max-width: 180px; 
-            font-family: var(--font-title); font-size: 1.8rem;
-            background: black; border: 2px solid; cursor: pointer; color: white;
-            animation: float-shake 3s ease-in-out infinite; 
-        }
+        .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
         .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
         .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
 
 
-        /* ========================
-           UI LAYER
-           ======================== */
-        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
-        .ui-visible { opacity: 1; pointer-events: auto; }
+        /* UI LAYER */
+        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; position: fixed; width: 100%; height: 100%; z-index: 6000; }
+        .ui-layer.active { opacity: 1; pointer-events: auto; }
         
-        .fixed-sidebar { position: fixed; z-index: 6500; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
+        .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -159,28 +129,16 @@
         .sound-toggle, .close-modal {
             font-family: var(--font-title); font-size: 1.5rem;
             text-transform: uppercase; padding: 5px 15px; 
-            border: 1px solid var(--white); 
+            border: 1px solid var(--neon-green); 
             background: rgba(0,0,0,0.5); color: var(--white);
             cursor: pointer; backdrop-filter: blur(4px);
             transition: 0.3s;
         }
+        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; color: var(--neon-green); }
         
-        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; border-color: var(--neon-green); color: var(--neon-green); }
-        
-        /* Croix spécifique */
-        .close-modal { 
-            position: absolute; top: 20px; right: 20px; z-index: 6001;
-            /* Reset button default */
-            display: flex; align-items: center; justify-content: center;
-        }
-        .close-modal:hover {
-            border-color: var(--neon-pink); color: var(--neon-pink);
-            box-shadow: 0 0 15px var(--neon-pink);
-        }
-
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
-        .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
+        .ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
         .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
@@ -192,60 +150,77 @@
         .shaking { animation: shake 0.4s ease-in-out; }
 
 
-        /* ========================
-           4. FEED VIDEO
-           ======================== */
-        #feed { position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
-        #feed.feed-active { opacity: 1; pointer-events: auto; }
+        /* FEED VIDEO & IMAGE */
+        #feed, #image-feed { position: fixed; top: 0; left: 0; height: 100vh; width: 100vw; overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth; background: #000; z-index: 3000; display: none; }
+        
+        #image-feed { padding: 20px; flex-direction: column; align-items: center; gap: 40px; display: none; } /* Override display flex plus tard via JS */
+        
         .video-section { height: 100vh; width: 100vw; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
         .video-section.active video { opacity: 1; }
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* SECTION FINALE */
-        .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; }
+        /* SECTION FINALE & BOUTONS */
+        .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; scroll-snap-align: start; min-height: 100vh; }
         .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
         .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 10; width: 100%; max-width: 320px; }
         
-        .btn-final-devis { width: 300px; height: 80px; border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); box-shadow: 0 0 20px var(--neon-green); }
+        .btn-final-devis { 
+            width: 300px; height: 80px; 
+            border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); 
+            box-shadow: 0 0 20px var(--neon-green);
+            text-decoration: none; /* Pas de soulignement */
+        }
         .btn-final-devis .center-text { color: var(--neon-green); }
-        .btn-final-devis:hover { animation: subtle-shake 0.3s infinite; }
+        /* Pas de shake au hover */
 
         .btn-final-off { width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,0,0,0.1); animation: neon-flicker 2s infinite; }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
-        .btn-final-off:hover { animation: subtle-shake 0.3s infinite; }
+        /* Pas de shake au hover */
 
-
-        /* ========================
-           5. IMAGE FEED LAYER
-           ======================== */
-        #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 3000; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
-        #image-feed.feed-active { opacity: 1; pointer-events: auto; }
-        
-        .feed-instruction {
-            font-family: var(--font-title); font-size: 3rem; color: var(--white);
-            text-align: center; margin-top: 10px; margin-bottom: 20px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-            animation: text-flicker 3s infinite alternate;
-        }
-
+        /* IMAGE FEED SPECIFIQUE */
+        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; }
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; }
         .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
 
         /* FULL SCREEN IMAGE MODAL */
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 6000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 7000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .image-modal.active { opacity: 1; pointer-events: auto; }
-        
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        
-        /* Animation BUMP */
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
-
-        /* TEXTE "TAP POUR TRANSFORMER" */
         .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); animation: text-flicker 2s infinite; pointer-events: none; width: 100%; text-align: center; }
+
+        /* CROIX MODAL STYLISÉE */
+        .close-modal { 
+            position: absolute; top: 20px; right: 20px; z-index: 7001;
+            border: 1px solid var(--neon-green); 
+            color: red; /* Emoji rouge ou couleur texte */
+            font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+
+
+        /* CONTACT FORM MODAL */
+        .contact-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 8000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .contact-modal.active { opacity: 1; pointer-events: auto; }
+        .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
+        .contact-input, .contact-msg { 
+            background: #111; border: 1px solid var(--neon-green); color: white; 
+            padding: 15px; font-family: var(--font-text); font-size: 1rem; 
+        }
+        .contact-submit {
+            background: var(--neon-green); color: black; border: none; padding: 15px;
+            font-family: var(--font-title); font-size: 1.5rem; cursor: pointer;
+        }
 
     </style>
 </head>
@@ -263,19 +238,19 @@
         </defs>
     </svg>
 
-    <!-- INTRO -->
-    <div class="intro-layer" id="intro-layer">
+    <!-- 1. INTRO -->
+    <div id="intro-layer" class="layer intro-layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
-            <div class="center-box" id="enter-btn">
+            <div class="center-box" onclick="navigateTo('bio')">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
     </div>
 
-    <!-- BIO LAYER -->
-    <div class="bio-layer" id="bio-layer">
+    <!-- 2. BIO LAYER -->
+    <div id="bio-layer" class="layer bio-layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
@@ -289,13 +264,13 @@
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
-            <button class="choice-btn btn-images" id="image-access-btn">IMAGES</button>
-            <button class="choice-btn btn-videos" id="video-access-btn">VIDÉOS</button>
+            <button class="choice-btn btn-images" onclick="navigateTo('image-feed')">IMAGES</button>
+            <button class="choice-btn btn-videos" onclick="navigateTo('feed')">VIDÉOS</button>
         </div>
     </div>
 
     <!-- UI LAYER -->
-    <div class="ui-layer" id="ui-layer">
+    <div id="ui-layer" class="ui-layer">
         <button class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         <div class="fixed-sidebar">
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
@@ -316,8 +291,8 @@
         </div>
     </div>
 
-    <!-- FEED VIDEO -->
-    <main class="feed-container" id="feed">
+    <!-- 3. FEED VIDEO -->
+    <main id="feed" class="layer">
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video></section>
@@ -330,7 +305,7 @@
         <section class="video-section final-section">
             <canvas id="matrix-canvas-final" class="matrix-bg"></canvas>
             <div class="final-container">
-                <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
+                <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
@@ -340,22 +315,21 @@
         </section>
     </main>
 
-    <!-- IMAGE FEED -->
-    <main id="image-feed">
+    <!-- 4. IMAGE FEED -->
+    <main id="image-feed" class="layer" style="display:none; flex-direction:column;">
         <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
         
-        <!-- Miniatures -->
         <div class="thumb-container" onclick="openImageModal(1)"><img src="img1_1.webp" class="thumb-img"></div>
         <div class="thumb-container" onclick="openImageModal(2)"><img src="img2_1.webp" class="thumb-img"></div>
         <div class="thumb-container" onclick="openImageModal(3)"><img src="img3_1.webp" class="thumb-img"></div>
         <div class="thumb-container" onclick="openImageModal(4)"><img src="img4_1.webp" class="thumb-img"></div>
         <div class="thumb-container" onclick="openImageModal(5)"><img src="img5_1.webp" class="thumb-img"></div>
 
-        <!-- FOOTER IMAGES (AVEC MATRIX) -->
+        <!-- FOOTER IMAGES -->
         <section class="final-section">
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
-            <div class="final-container" style="padding: 100px 0;"> <!-- Padding pour l'espace -->
-                <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
+            <div class="final-container" style="padding: 100px 0;">
+                <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
@@ -365,15 +339,109 @@
         </section>
     </main>
 
-    <!-- MODAL PLEIN ECRAN -->
+    <!-- 5. MODAL PLEIN ECRAN -->
     <div class="image-modal" id="image-modal">
-        <div class="close-modal" onclick="closeImageModal()">X</div>
+        <div class="close-modal" onclick="closeImageModal()">❌</div>
         <div class="tap-hint">TAP POUR TRANSFORMER</div>
         <img src="" id="full-img" class="modal-img" onclick="nextImageStep()">
     </div>
 
+    <!-- 6. MODAL CONTACT -->
+    <div class="contact-modal" id="contact-modal">
+        <div class="close-modal" onclick="closeContactForm()">❌</div>
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
+        <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
+            <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
+            <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
+            <textarea name="message" placeholder="RACONTE-MOI TOUT..." rows="5" class="contact-msg" required></textarea>
+            <button type="submit" class="contact-submit">ENVOYER</button>
+        </form>
+    </div>
+
     <script>
-        // --- DONNEES ---
+        // --- GESTION NAVIGATION & HISTORIQUE (SPA) ---
+        // Etats: intro, bio, feed, image-feed, image-modal
+        
+        // Initialisation de l'historique
+        window.history.replaceState({page: 'intro'}, "", "");
+
+        function navigateTo(targetId) {
+            // 1. Masquer tous les layers
+            document.querySelectorAll('.layer').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.layer').forEach(el => el.style.display = 'none');
+            
+            // 2. Gestion Spécifique UI
+            const ui = document.getElementById('ui-layer');
+            if (targetId === 'feed' || targetId === 'image-feed') {
+                ui.classList.add('active');
+            } else {
+                ui.classList.remove('active');
+            }
+
+            // Gestion Œil (Caché sur Image Feed)
+            const eye = document.getElementById('eye-container');
+            if (targetId === 'image-feed') eye.classList.add('hidden');
+            else if (targetId === 'feed') eye.classList.remove('hidden');
+
+            // 3. Afficher le bon layer
+            const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            
+            // Pour les sections feed/image-feed qui utilisent display flex/block différemment
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'intro' || targetId === 'bio') target.style.display = 'flex';
+            else target.style.display = 'block';
+
+            // Petit délai pour l'opacité (transition)
+            setTimeout(() => target.classList.add('active'), 10);
+
+            // 4. Logique Spécifique Vidéo
+            if (targetId === 'feed') {
+                const v = target.querySelector('video');
+                if (v) { v.muted=true; v.play().catch(e=>{}); }
+                initObserver(); // Lance Matrix Fin Vidéo
+            }
+            if (targetId === 'image-feed') {
+                startM(imageFinalMatrix); // Lance Matrix Fin Image
+            }
+
+            // 5. PUSH STATE (Sauf si c'est un retour arrière)
+            if (!history.state || history.state.page !== targetId) {
+                history.pushState({page: targetId}, "", "");
+            }
+        }
+
+        // ECOUTEUR DE "RETOUR ARRIÈRE" DU NAVIGATEUR
+        window.addEventListener('popstate', function(event) {
+            if (event.state) {
+                // On simule la navigation mais sans pushState
+                const page = event.state.page;
+                
+                // Masquer tout
+                document.querySelectorAll('.layer').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.layer').forEach(el => el.style.display = 'none');
+                document.getElementById('image-modal').classList.remove('active');
+                document.getElementById('contact-modal').classList.remove('active');
+
+                // Afficher la page demandée
+                const targetId = page === 'intro' ? 'intro-layer' : (page === 'bio' ? 'bio-layer' : page);
+                const target = document.getElementById(targetId);
+                
+                if (page === 'image-feed') target.style.display = 'flex';
+                else if (page === 'intro' || page === 'bio') target.style.display = 'flex';
+                else target.style.display = 'block';
+                
+                setTimeout(() => target.classList.add('active'), 10);
+
+                // UI
+                const ui = document.getElementById('ui-layer');
+                if (page === 'feed' || page === 'image-feed') ui.classList.add('active');
+                else ui.classList.remove('active');
+            }
+        });
+
+
+        // --- PRELOAD IMAGES ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
@@ -381,33 +449,18 @@
             4: ['img4_1.webp', 'img4_2.webp', 'img4_3.webp', 'img4_4.webp'],
             5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp']
         };
-
-        // PRELOAD
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX ENGINE (GENERIC) ---
+        // --- MATRIX ENGINES ---
         function createMatrix(canvasId) {
-            const canvas = document.getElementById(canvasId);
-            if(!canvas) return null;
+            const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
-            
-            // Resize dynamique
             const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-            resize();
-            window.addEventListener('resize', resize);
-
-            const fontSize = 12;
-            let columns = canvas.width / fontSize;
-            let drops = [];
+            resize(); window.addEventListener('resize', resize);
+            const fontSize = 12; let columns = canvas.width / fontSize; let drops = [];
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-            function initDrops() {
-                columns = canvas.width / fontSize;
-                drops = [];
-                for(let i=0; i<columns; i++) drops[i] = 1;
-            }
+            function initDrops() { columns = canvas.width / fontSize; drops = []; for(let i=0; i<columns; i++) drops[i] = 1; }
             initDrops();
-
             function draw() {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
                 ctx.fillStyle = '#39ff14'; ctx.font = fontSize + 'px monospace';
@@ -420,24 +473,19 @@
             }
             return { draw, interval: null };
         }
-
-        // INSTANCES MATRIX
         const introMatrix = createMatrix('matrix-canvas');
         const videoFinalMatrix = createMatrix('matrix-canvas-final');
         const imageFinalMatrix = createMatrix('matrix-canvas-images');
-
-        // Helpers start/stop
-        function startM(instance) { if(instance && !instance.interval) instance.interval = setInterval(instance.draw, 50); }
-        function stopM(instance) { if(instance && instance.interval) { clearInterval(instance.interval); instance.interval = null; } }
-
-        // Start Intro
-        startM(introMatrix);
-
+        function startM(inst) { if(inst && !inst.interval) inst.interval = setInterval(inst.draw, 50); }
+        function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
+        
+        startM(introMatrix); // Start Intro
 
         // --- UI ANIMATIONS ---
         setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
         setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
         function animateBtn(btn, c) { btn.classList.add(c); setTimeout(() => btn.classList.remove(c), 1000); }
+        
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
@@ -452,35 +500,17 @@
             document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
         }
 
-        // --- NAVIGATION ---
-        document.getElementById('enter-btn').addEventListener('click', function() {
-            const intro = document.getElementById('intro-layer'); intro.classList.add('glitch-out'); stopM(introMatrix);
-            setTimeout(() => { intro.style.display='none'; intro.classList.remove('glitch-out'); document.getElementById('bio-layer').classList.add('bio-active'); }, 400);
-        });
-        
-        // Vers VIDEO
-        document.getElementById('video-access-btn').addEventListener('click', function() {
-            const bio = document.getElementById('bio-layer'); bio.classList.add('glitch-out');
-            setTimeout(() => {
-                bio.style.display='none'; bio.classList.remove('glitch-out');
-                document.getElementById('ui-layer').classList.add('ui-visible');
-                const feed = document.getElementById('feed'); feed.classList.add('feed-active');
-                const v = feed.querySelector('video'); if(v) { v.muted=true; v.play().then(()=>v.parentElement.classList.add('active')).catch(console.log); }
-                initObserver(); // Observer lance le matrix video fin si besoin
-            }, 400);
-        });
-
-        // Vers IMAGES
-        document.getElementById('image-access-btn').addEventListener('click', function() {
-            const bio = document.getElementById('bio-layer'); bio.classList.add('glitch-out');
-            setTimeout(() => {
-                bio.style.display='none'; bio.classList.remove('glitch-out');
-                document.getElementById('ui-layer').classList.add('ui-visible');
-                document.getElementById('eye-container').classList.add('hidden');
-                document.getElementById('image-feed').classList.add('feed-active');
-                startM(imageFinalMatrix); // On lance le matrix footer images car c'est scrollable
-            }, 400);
-        });
+        // --- CONTACT MODAL ---
+        function openContactForm(e) {
+            e.preventDefault();
+            const modal = document.getElementById('contact-modal');
+            modal.classList.add('active');
+            history.pushState({page: 'contact'}, "", ""); // Ajout historique
+        }
+        function closeContactForm() {
+            document.getElementById('contact-modal').classList.remove('active');
+            history.back(); // Retour en arrière
+        }
 
         // --- IMAGES LOGIC ---
         let currentImgIndex = 0; let currentGallery = [];
@@ -490,43 +520,31 @@
             const img = document.getElementById('full-img');
             currentImgIndex = 0; img.src = currentGallery[0];
             modal.classList.add('active');
+            history.pushState({page: 'image-modal'}, "", ""); // Ajout historique
         }
-        function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); }
+        function closeImageModal() { 
+            document.getElementById('image-modal').classList.remove('active');
+            history.back();
+        }
         function nextImageStep() {
             const img = document.getElementById('full-img'); img.classList.add('anim-bump');
             setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
             setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
         }
 
-        // --- RESET ---
+        // --- RESET TV ---
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
-                // Reset views
-                const feed = document.getElementById('feed');
-                const imgFeed = document.getElementById('image-feed');
-                const ui = document.getElementById('ui-layer');
-                const bio = document.getElementById('bio-layer');
-                const intro = document.getElementById('intro-layer');
-
-                feed.scrollTo(0, 0); feed.classList.remove('feed-active');
-                imgFeed.scrollTo(0,0); imgFeed.classList.remove('feed-active');
-                document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
-                
-                // Stop end matrices
+                navigateTo('intro'); // Retour case départ
                 stopM(videoFinalMatrix);
-                // Note: imageFinalMatrix might still be running but hidden, we restart intro anyway.
-
-                ui.classList.remove('ui-visible');
-                bio.classList.remove('bio-active'); bio.style.display='flex';
-                intro.style.display='flex'; intro.style.opacity='1';
-                
-                startM(introMatrix); // Restart intro
+                stopM(imageFinalMatrix);
+                startM(introMatrix);
                 setTimeout(() => { document.body.classList.remove('turn-off-anim'); }, 100); 
             }, 600); 
         }
 
-        // --- OBSERVER (VIDEO) ---
+        // --- OBSERVER ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
