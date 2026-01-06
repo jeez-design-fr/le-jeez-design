@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Work du Jeez</title>
     
-    <!-- IMPORTS FONTS GOOGLE -->
+    <!-- RETOUR AUX POLICES ORIGINALES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Rubik 80s Fade (Titres) + Share Tech Mono (Textes style technique) -->
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -17,12 +16,12 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            --black: #050505;
+            --black: #000000;
             --white: #ffffff;
             
-            /* DEFINITION DES FONTS */
-            --font-title: 'Rubik 80s Fade', cursive;  /* Titres et Boutons */
-            --font-text: 'Share Tech Mono', monospace; /* Texte Bio (Style Lubrifont/Tech) */
+            /* FONTS ORIGINALES */
+            --font-title: 'Bebas Neue', sans-serif;
+            --font-text: 'Rajdhani', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -82,11 +81,11 @@
             100% { transform: translateX(-50%) translateY(-35px); }
         }
 
-        /* Matrix sous le bouton */
+        /* Matrix Intro (Sous le bouton) */
         #matrix-canvas {
             position: absolute; top: 80px; left: 0;
             width: 320px; height: 60vh;
-            z-index: 5; pointer-events: none; opacity: 0.8; /* Plus visible en vert */
+            z-index: 5; pointer-events: none; opacity: 0.8;
             -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
@@ -101,10 +100,9 @@
         }
         .center-text {
             color: var(--white); 
-            font-family: var(--font-title); /* RUBIK 80s */
-            font-size: 2.2rem; /* Ajusté pour Rubik */
+            font-family: var(--font-title); 
+            font-size: 2.5rem; 
             letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
-            line-height: 1;
         }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
@@ -133,30 +131,26 @@
         }
 
         .bio-text {
-            font-family: var(--font-text); /* SHARE TECH MONO */
+            font-family: var(--font-title); /* Style Titre pour tout le texte Brutalist */
             text-transform: uppercase; 
-            line-height: 1.4;
+            line-height: 1.2;
             letter-spacing: 1px;
-            font-size: 1.1rem; /* Taille de base */
+            font-size: 1.5rem; 
         }
-        /* Mobile adjustment */
-        @media (max-width: 600px) { .bio-text { font-size: 4vw; } }
+        @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
 
         .bio-title {
-            font-family: var(--font-title); /* RUBIK 80s */
-            font-size: 3.5rem; 
+            font-size: 4rem; 
             color: var(--neon-green);
             margin-bottom: 5px;
-            line-height: 1;
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
         }
-        @media (max-width: 600px) { .bio-title { font-size: 12vw; } }
+        @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
 
         .bio-p { color: var(--white); margin: 0; }
 
-        /* Le texte "Fais ton choix" */
         .flicker-text {
-            font-family: var(--font-title); /* Style titre */
+            font-family: var(--font-title);
             color: var(--white);
             font-size: 2rem;
             margin-top: 15px;
@@ -174,20 +168,17 @@
         }
 
         .choice-btn {
-            padding: 12px 10px;
+            padding: 15px 10px;
             width: 45%; max-width: 180px; 
-            font-family: var(--font-title); /* RUBIK 80s */
-            font-size: 1.5rem; /* Taille réduite demandée */
+            font-family: var(--font-title);
+            font-size: 1.8rem;
             background: black; border: 2px solid;
             cursor: pointer; 
             text-transform: uppercase; letter-spacing: 2px;
             color: white;
-            /* Animation Flottement Lent */
             animation: float-shake 3s ease-in-out infinite; 
-            line-height: 1;
         }
 
-        /* Animation Flottement/Lévitation (Lent) */
         @keyframes float-shake {
             0% { transform: translateY(0px) rotate(0deg); }
             33% { transform: translateY(-3px) rotate(1deg); }
@@ -196,7 +187,7 @@
         }
         
         .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); animation-delay: 0s; }
-        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; /* Décalage */ }
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
 
 
         /* ========================
@@ -234,10 +225,9 @@
         .sound-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
-            cursor: pointer; font-family: var(--font-title); font-size: 1.2rem;
+            cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
             text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
-            padding-top: 8px;
         }
 
         .fixed-eye-container {
@@ -250,7 +240,7 @@
 
         .static-hd-text {
             color: var(--white); font-family: var(--font-title); font-size: 1.2rem; letter-spacing: 1px;
-            margin-bottom: 5px; text-shadow: 2px 2px 0px #000;
+            margin-bottom: 8px; text-shadow: 2px 2px 0px #000;
         }
         .eye-btn-main {
             width: 70px; height: 70px; border-radius: 50%;
@@ -316,21 +306,32 @@
             video.horizontal { object-fit: cover; }
         }
 
-        /* SECTION FINALE */
+        /* SECTION FINALE AVEC MATRIX FULLSCREEN */
         .final-section {
+            position: relative; /* Important pour le canvas absolu */
             background-color: #000;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             gap: 30px;
         }
+        
+        /* Matrix de fin */
+        #matrix-canvas-final {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.3; pointer-events: none;
+        }
+
+        /* Conteneur au dessus du matrix */
         .final-container {
             display: flex; flex-direction: column; gap: 30px; align-items: center;
             width: 100%; max-width: 320px;
+            z-index: 10; /* Au dessus du matrix */
         }
         .btn-final-devis { width: 300px; height: 80px; }
         .btn-final-off {
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--white);
             display: flex; justify-content: center; align-items: center;
             cursor: pointer; transition: 0.3s;
+            background: #000; /* Fond noir pour cacher le matrix derrière le bouton */
         }
         .btn-final-off:hover { border-color: red; box-shadow: 0 0 20px red; background: rgba(255,0,0,0.1); }
         .btn-final-off svg { width: 35px; height: 35px; fill: var(--white); transition: 0.3s; }
@@ -367,7 +368,7 @@
     <div class="bio-layer" id="bio-layer">
         
         <div class="bio-content">
-            <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
+            <h1 class="bio-text bio-title">BIENVENUE SUR MON FEED !</h1>
             
             <p class="bio-text bio-p">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
             <p class="bio-text bio-p">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
@@ -443,8 +444,10 @@
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
         </section>
 
-        <!-- SECTION FINALE -->
+        <!-- SECTION FINALE AVEC MATRIX FULLSCREEN -->
         <section class="video-section final-section">
+            <canvas id="matrix-canvas-final"></canvas>
+            
             <div class="final-container">
                 <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
@@ -457,7 +460,7 @@
     </main>
 
     <script>
-        // --- MATRIX RAIN ---
+        // --- MATRIX RAIN (INTRO - PETIT) ---
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 320; 
@@ -473,7 +476,7 @@
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#39ff14'; /* VERT NEON */
+            ctx.fillStyle = '#39ff14'; /* VERT */
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
                 const text = characters.charAt(Math.floor(Math.random() * characters.length));
@@ -485,6 +488,40 @@
         function startMatrix() { if(matrixInterval) clearInterval(matrixInterval); matrixInterval = setInterval(drawMatrix, 50); }
         function stopMatrix() { if(matrixInterval) clearInterval(matrixInterval); }
         startMatrix();
+
+
+        // --- MATRIX RAIN (FINAL - FULLSCREEN) ---
+        const canvasFinal = document.getElementById('matrix-canvas-final');
+        const ctxFinal = canvasFinal.getContext('2d');
+        canvasFinal.width = window.innerWidth;
+        canvasFinal.height = window.innerHeight;
+        
+        const columnsFinal = canvasFinal.width / fontSize;
+        const dropsFinal = [];
+        for (let i = 0; i < columnsFinal; i++) dropsFinal[i] = 1;
+        let matrixIntervalFinal;
+
+        function drawMatrixFinal() {
+            ctxFinal.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
+            ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
+            ctxFinal.fillStyle = '#39ff14'; 
+            ctxFinal.font = fontSize + 'px monospace';
+            for (let i = 0; i < dropsFinal.length; i++) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                ctxFinal.fillText(text, i * fontSize, dropsFinal[i] * fontSize);
+                if (dropsFinal[i] * fontSize > canvasFinal.height && Math.random() > 0.975) dropsFinal[i] = 0;
+                dropsFinal[i]++;
+            }
+        }
+        function startMatrixFinal() {
+            // Resize dynamique
+            canvasFinal.width = window.innerWidth;
+            canvasFinal.height = window.innerHeight;
+            if(matrixIntervalFinal) clearInterval(matrixIntervalFinal); 
+            matrixIntervalFinal = setInterval(drawMatrixFinal, 50); 
+        }
+        function stopMatrixFinal() { if(matrixIntervalFinal) clearInterval(matrixIntervalFinal); }
+
 
         // --- ANIMATIONS UI ---
         setInterval(() => {
@@ -573,13 +610,16 @@
                 feed.classList.remove('feed-active');
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 
+                // STOP MATRIX FINAL
+                stopMatrixFinal();
+
                 ui.classList.remove('ui-visible');
                 bio.classList.remove('bio-active');
-                bio.style.display = 'flex'; // Reset display flex pour l'alignement
+                bio.style.display = 'flex'; 
 
                 intro.style.display = 'flex';
                 intro.style.opacity = '1';
-                startMatrix();
+                startMatrix(); // RESTART MATRIX INTRO
 
                 setTimeout(() => { document.body.classList.remove('turn-off-anim'); }, 100); 
             }, 600); 
@@ -592,8 +632,14 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // SI C'EST LA SECTION FINALE
                     if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) eyeContainer.classList.add('hidden');
+                        if(entry.isIntersecting) {
+                            eyeContainer.classList.add('hidden');
+                            startMatrixFinal(); // START MATRIX FINAL
+                        } else {
+                            stopMatrixFinal(); // ECONOMIE PERF
+                        }
                         return;
                     }
 
