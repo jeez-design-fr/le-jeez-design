@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Work du Jeez</title>
     
-    <!-- RETOUR AUX POLICES ORIGINALES -->
+    <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
@@ -19,7 +19,6 @@
             --black: #000000;
             --white: #ffffff;
             
-            /* FONTS ORIGINALES */
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -69,7 +68,7 @@
 
 
         /* ========================
-           1. INTRO LAYER
+           INTRO LAYER
            ======================== */
         .intro-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -110,7 +109,7 @@
 
 
         /* ========================
-           2. BIO LAYER
+           BIO LAYER
            ======================== */
         .bio-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -121,16 +120,10 @@
         }
         .bio-active { opacity: 1; pointer-events: auto; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
-        
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
-        @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        
-        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
-        @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
-        
-        .bio-p { color: var(--white); margin: 0; }
+        .bio-title { font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; text-shadow: 0 0 10px rgba(57, 255, 20, 0.3); }
+        @media (max-width: 600px) { .bio-title { font-size: 14vw; } .bio-text { font-size: 6vw; } }
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
-        @media (max-width: 600px) { .flicker-text { font-size: 8vw; } }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
@@ -146,11 +139,12 @@
 
 
         /* ========================
-           3. UI LAYER
+           UI LAYER
            ======================== */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
         
+        /* Sidebar au dessus du modal pour que les boutons restent cliquables */
         .fixed-sidebar { position: fixed; z-index: 6500; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
@@ -209,11 +203,23 @@
 
 
         /* ========================
-           5. IMAGE FEED LAYER (NOUVEAU)
+           5. IMAGE FEED LAYER
            ======================== */
         #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 3000; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
         #image-feed.feed-active { opacity: 1; pointer-events: auto; }
         
+        /* Titre du Feed Images */
+        .feed-instruction {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: var(--white);
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            animation: text-flicker 3s infinite alternate;
+        }
+
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; }
         .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
@@ -228,7 +234,22 @@
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
 
-        .tap-hint { position: absolute; top: 20px; color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black; animation: text-flicker 2s infinite; pointer-events: none; }
+        /* TEXTE "TAP POUR TRANSFORMER" EN BAS */
+        .tap-hint { 
+            position: absolute; 
+            bottom: 50px; /* Position alignée avec l'emplacement de l'œil */
+            left: 50%; 
+            transform: translateX(-50%);
+            color: white; 
+            font-family: var(--font-title); 
+            font-size: 1.5rem; 
+            letter-spacing: 2px; 
+            text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); 
+            animation: text-flicker 2s infinite; 
+            pointer-events: none; 
+            width: 100%; text-align: center;
+        }
+
         .close-modal { position: absolute; top: 20px; right: 20px; color: white; font-family: var(--font-title); font-size: 2rem; cursor: pointer; z-index: 6001; }
 
     </style>
@@ -326,6 +347,7 @@
 
     <!-- IMAGE FEED (5 MINIATURES) -->
     <main id="image-feed">
+        <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
         <!-- Miniature 1 (5 images) -->
         <div class="thumb-container" onclick="openImageModal(1)">
             <img src="img1_1.webp" class="thumb-img">
@@ -351,8 +373,12 @@
     <!-- MODAL PLEIN ECRAN -->
     <div class="image-modal" id="image-modal">
         <div class="close-modal" onclick="closeImageModal()">X</div>
-        <div class="tap-hint">TAP POUR TRANSFORMER</div>
+        
+        <!-- Image changeante -->
         <img src="" id="full-img" class="modal-img" onclick="nextImageStep()">
+        
+        <!-- Texte en bas -->
+        <div class="tap-hint">TAP POUR TRANSFORMER</div>
     </div>
 
     <script>
@@ -456,15 +482,12 @@
 
         // --- LOGIQUE IMAGE TRANSFORM (GALERIES MULTIPLES) ---
         let currentImgIndex = 0;
-        let currentGallery = []; // La galerie en cours de visionnage
+        let currentGallery = []; 
 
         function openImageModal(galleryId) {
-            // Charger la liste correspondante
             currentGallery = galleries[galleryId];
-            
             const modal = document.getElementById('image-modal');
             const img = document.getElementById('full-img');
-            
             currentImgIndex = 0;
             img.src = currentGallery[0];
             modal.classList.add('active');
@@ -475,13 +498,10 @@
         function nextImageStep() {
             const img = document.getElementById('full-img');
             img.classList.add('anim-bump');
-            
             setTimeout(() => {
-                // Utiliser currentGallery au lieu d'une liste unique
                 currentImgIndex = (currentImgIndex + 1) % currentGallery.length;
                 img.src = currentGallery[currentImgIndex];
             }, 100); 
-
             setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
         }
 
