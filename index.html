@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Work du Jeez</title>
     
+    <!-- IMPORT DES NOUVELLES POLICES (Teko + Chakra Petch) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -14,8 +16,12 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            --black: #000000;
+            --black: #050505; /* Noir très légèrement teinté pour la profondeur */
             --white: #ffffff;
+            
+            /* DEFINITION DES FONTS */
+            --font-title: 'Teko', sans-serif;       /* Pour les gros titres */
+            --font-text: 'Chakra Petch', sans-serif; /* Pour le texte courant */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,7 +29,7 @@
         body {
             background-color: var(--black);
             color: var(--white);
-            font-family: 'Rajdhani', sans-serif;
+            font-family: var(--font-text); /* Par défaut Chakra Petch */
             overflow: hidden; 
             width: 100vw; height: 100vh;
         }
@@ -92,124 +98,108 @@
             -webkit-tap-highlight-color: transparent;
         }
         .center-text {
-            color: var(--white); font-family: 'Bebas Neue'; font-size: 2.5rem; 
-            letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
+            color: var(--white); 
+            font-family: var(--font-title); /* FONT BRUTALIST */
+            font-size: 3.5rem; /* Plus gros avec Teko */
+            letter-spacing: 1px; margin: 0; pointer-events: none; transition: 0.3s;
+            line-height: 1;
+            padding-top: 5px; /* Ajustement optique pour Teko */
         }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
 
         /* ========================
-           2. BIO LAYER (RESPONSIVE & BRUTALIST)
+           2. BIO LAYER (Nouvelles Fonts)
            ======================== */
         .bio-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 4000; background-color: #000;
             display: flex; flex-direction: column; 
-            /* Distribution équitable de l'espace vertical */
             justify-content: space-evenly; 
             align-items: center;
             opacity: 0; pointer-events: none;
             transition: opacity 0.5s ease;
             text-align: center;
-            padding: 10px; /* Padding minimal pour ne pas coller aux bords */
+            padding: 10px; 
         }
         .bio-active { opacity: 1; pointer-events: auto; }
 
         .bio-content {
             display: flex; flex-direction: column;
-            gap: 1.5vh; /* Espace vertical en % de la hauteur d'écran */
+            gap: 1.5vh; 
             width: 100%; max-width: 500px;
         }
 
         .bio-text {
-            font-family: 'Bebas Neue', sans-serif;
-            text-transform: uppercase; /* TOUT EN MAJUSCULE */
-            line-height: 1.2;
+            font-family: var(--font-text); /* FONT CYBERPUNK */
+            text-transform: uppercase; 
+            line-height: 1.3;
             letter-spacing: 1px;
+            font-weight: 600; /* Un peu plus gras pour la lisibilité */
         }
 
-        /* Titre Vert */
         .bio-title {
-            font-size: 8vw; /* Taille adaptative mobile */
+            font-family: var(--font-title); /* FONT BRUTALIST */
+            font-size: 15vw; /* Très gros sur mobile */
             color: var(--neon-green);
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            line-height: 0.9;
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
         }
-        /* Sur grand écran on limite la taille */
-        @media (min-width: 600px) { .bio-title { font-size: 3rem; } }
+        @media (min-width: 600px) { .bio-title { font-size: 5rem; } }
 
         .bio-p {
-            font-size: 5vw; /* Taille adaptative mobile */
+            font-size: 4.5vw; 
             color: var(--white);
             margin: 0;
         }
-        @media (min-width: 600px) { .bio-p { font-size: 1.5rem; } }
+        @media (min-width: 600px) { .bio-p { font-size: 1.3rem; } }
 
-        /* Texte qui brille aléatoirement */
         .flicker-text {
+            font-family: var(--font-title); /* Style titre pour l'appel à l'action */
             color: var(--white);
-            font-size: 4vw;
-            margin-top: 20px;
+            font-size: 8vw;
+            margin-top: 10px;
             animation: text-flicker 3s infinite alternate;
         }
-        @media (min-width: 600px) { .flicker-text { font-size: 1.2rem; } }
+        @media (min-width: 600px) { .flicker-text { font-size: 2.5rem; } }
 
         @keyframes text-flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
-                opacity: 1;
-            }
-            20%, 24%, 55% {
-                text-shadow: none;
-                opacity: 0.3;
-            }
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; }
+            20%, 24%, 55% { text-shadow: none; opacity: 0.3; }
         }
 
-        /* BOUTONS CHOIX */
         .choice-container {
-            display: flex; 
-            gap: 20px;
-            width: 100%;
-            justify-content: center;
-            margin-top: 10px;
+            display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px;
         }
 
         .choice-btn {
-            padding: 15px 5px;
-            width: 45%; max-width: 180px; /* Prend de la place sur mobile */
-            font-family: 'Bebas Neue'; font-size: 1.8rem;
+            padding: 10px 5px;
+            width: 45%; max-width: 180px; 
+            font-family: var(--font-title); /* FONT BRUTALIST */
+            font-size: 2.2rem; /* Teko est petit, on grossit */
             background: black; border: 2px solid;
             cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 2px;
+            text-transform: uppercase; letter-spacing: 1px;
             color: white;
-            /* Animation constante */
             animation: constant-shake 0.2s infinite; 
+            line-height: 1;
+            padding-top: 8px; /* Ajustement Teko */
         }
 
-        /* Animation Shake/Glitch constante */
         @keyframes constant-shake {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            75% { transform: translate(-1px, 1px); }
+            0% { transform: translate(0, 0); } 25% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); } 75% { transform: translate(-1px, 1px); }
             100% { transform: translate(1px, -1px); }
         }
         
-        .btn-images { 
-            border-color: var(--neon-pink); 
-            box-shadow: 0 0 15px var(--neon-pink); 
-            animation-duration: 0.25s; /* Rythme différent */
-        }
-        .btn-videos { 
-            border-color: var(--neon-blue); 
-            box-shadow: 0 0 15px var(--neon-blue); 
-            animation-duration: 0.2s;
-        }
+        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); animation-duration: 0.25s; }
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-duration: 0.2s; }
 
 
         /* ========================
-           3. UI LAYER (Interface)
+           3. UI LAYER
            ======================== */
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
@@ -243,9 +233,10 @@
         .sound-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
-            cursor: pointer; font-family: 'Bebas Neue'; font-size: 1.5rem;
+            cursor: pointer; font-family: var(--font-title); font-size: 1.8rem; /* Teko */
             text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
+            padding-top: 8px;
         }
 
         .fixed-eye-container {
@@ -257,8 +248,8 @@
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
         .static-hd-text {
-            color: var(--white); font-family: 'Bebas Neue'; font-size: 1.2rem; letter-spacing: 1px;
-            margin-bottom: 8px; text-shadow: 2px 2px 0px #000;
+            color: var(--white); font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 1px;
+            margin-bottom: 5px; text-shadow: 2px 2px 0px #000;
         }
         .eye-btn-main {
             width: 70px; height: 70px; border-radius: 50%;
@@ -274,7 +265,7 @@
         .floating-msg {
             position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold;
             pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 3000;
-            font-family: 'Bebas Neue'; text-shadow: 2px 2px 0px black; white-space: nowrap;
+            font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap;
         }
         @keyframes floatAndFade {
             0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); }
@@ -309,6 +300,10 @@
             border-bottom: 1px solid #111;
             overflow: hidden;
         }
+        /* INFO SUR VIDEO (OPTIONNEL SI TU VEUX DU TEXTE) */
+        .info-overlay h2 { font-family: var(--font-title); }
+        .info-overlay p { font-family: var(--font-text); }
+
         video {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -371,7 +366,7 @@
         </div>
     </div>
 
-    <!-- BIO LAYER (RESPONSIVE BRUTALIST) -->
+    <!-- BIO LAYER -->
     <div class="bio-layer" id="bio-layer">
         
         <div class="bio-content">
@@ -379,16 +374,17 @@
             
             <p class="bio-text bio-p">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
             <p class="bio-text bio-p">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text bio-p" style="color: #ddd;">(MACHINE DE GUERRE)</p>
+            <p class="bio-text bio-p" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text bio-p">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text bio-p" style="color: #ddd;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
+            <p class="bio-text bio-p" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             
-            <br>
+            <!-- Espaceur visuel -->
+            <div style="height: 10px;"></div>
             
             <p class="bio-text bio-p">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text bio-p">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
             
-            <p class="bio-text flicker-text">EN ATTENDANT FAIS TON CHOIX !</p>
+            <p class="flicker-text">EN ATTENDANT FAIS TON CHOIX !</p>
         </div>
 
         <div class="choice-container">
@@ -536,7 +532,6 @@
 
         // --- NAVIGATION LOGIC ---
         
-        // 1. CLIC INTRO -> BIO
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
@@ -545,29 +540,22 @@
             setTimeout(() => {
                 intro.style.display = 'none';
                 intro.classList.remove('glitch-out');
-                
-                // Afficher la Bio
                 const bio = document.getElementById('bio-layer');
                 bio.classList.add('bio-active');
             }, 400);
         });
 
-        // 2. CLIC VIDEOS -> FEED
         document.getElementById('video-access-btn').addEventListener('click', function() {
             const bio = document.getElementById('bio-layer');
-            // Petit effet de glitch sur la bio aussi avant de partir
             bio.classList.add('glitch-out');
             
             setTimeout(() => {
-                bio.style.display = 'none'; // On cache la bio
+                bio.style.display = 'none';
                 bio.classList.remove('glitch-out');
-
-                // On affiche l'interface principale
                 document.getElementById('ui-layer').classList.add('ui-visible');
                 const feed = document.getElementById('feed');
                 feed.classList.add('feed-active');
                 
-                // Lancement vidéo
                 const firstVideo = feed.querySelector('video');
                 if(firstVideo) {
                     firstVideo.muted = true;
@@ -577,7 +565,6 @@
             }, 400);
         });
 
-        // --- TV OFF (RESET) ---
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
@@ -586,17 +573,14 @@
                 const bio = document.getElementById('bio-layer');
                 const intro = document.getElementById('intro-layer');
 
-                // Reset Scroll & Videos
                 feed.scrollTo(0, 0); 
                 feed.classList.remove('feed-active');
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 
-                // Cacher UI & Bio
                 ui.classList.remove('ui-visible');
                 bio.classList.remove('bio-active');
-                bio.style.display = 'flex'; // Reset display pour prochaine fois
+                bio.style.display = 'flex'; // Reset display flex pour l'alignement
 
-                // Montrer Intro
                 intro.style.display = 'flex';
                 intro.style.opacity = '1';
                 startMatrix();
@@ -605,7 +589,6 @@
             }, 600); 
         }
 
-        // --- OBSERVER ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
