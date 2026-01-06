@@ -75,7 +75,6 @@
             100% { transform: translateX(-50%) translateY(-35px); }
         }
 
-        /* Matrix sous le bouton */
         #matrix-canvas {
             position: absolute; top: 80px; left: 0;
             width: 320px; height: 60vh;
@@ -84,7 +83,6 @@
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
 
-        /* Bouton Intro */
         .center-box {
             position: relative; z-index: 10; width: 100%; height: 100%;
             background-color: #000; border: 2px solid var(--white);
@@ -102,55 +100,112 @@
 
 
         /* ========================
-           2. BIO LAYER (NOUVEAU)
+           2. BIO LAYER (RESPONSIVE & BRUTALIST)
            ======================== */
         .bio-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 4000; background-color: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; /* Caché au départ */
+            display: flex; flex-direction: column; 
+            /* Distribution équitable de l'espace vertical */
+            justify-content: space-evenly; 
+            align-items: center;
+            opacity: 0; pointer-events: none;
             transition: opacity 0.5s ease;
             text-align: center;
-            padding: 20px;
+            padding: 10px; /* Padding minimal pour ne pas coller aux bords */
         }
         .bio-active { opacity: 1; pointer-events: auto; }
 
+        .bio-content {
+            display: flex; flex-direction: column;
+            gap: 1.5vh; /* Espace vertical en % de la hauteur d'écran */
+            width: 100%; max-width: 500px;
+        }
+
         .bio-text {
-            max-width: 600px;
-            font-size: 1.2rem; line-height: 1.6;
-            margin-bottom: 50px;
+            font-family: 'Bebas Neue', sans-serif;
+            text-transform: uppercase; /* TOUT EN MAJUSCULE */
+            line-height: 1.2;
+            letter-spacing: 1px;
         }
-        .bio-text h1 {
-            font-family: 'Bebas Neue'; font-size: 3rem; color: var(--neon-purple);
-            margin-bottom: 30px; letter-spacing: 2px;
-        }
-        .bio-text p { margin-bottom: 15px; color: #ddd; }
-        .highlight { color: var(--neon-green); font-weight: bold; text-transform: uppercase; }
 
-        /* Conteneur des boutons choix */
+        /* Titre Vert */
+        .bio-title {
+            font-size: 8vw; /* Taille adaptative mobile */
+            color: var(--neon-green);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+        /* Sur grand écran on limite la taille */
+        @media (min-width: 600px) { .bio-title { font-size: 3rem; } }
+
+        .bio-p {
+            font-size: 5vw; /* Taille adaptative mobile */
+            color: var(--white);
+            margin: 0;
+        }
+        @media (min-width: 600px) { .bio-p { font-size: 1.5rem; } }
+
+        /* Texte qui brille aléatoirement */
+        .flicker-text {
+            color: var(--white);
+            font-size: 4vw;
+            margin-top: 20px;
+            animation: text-flicker 3s infinite alternate;
+        }
+        @media (min-width: 600px) { .flicker-text { font-size: 1.2rem; } }
+
+        @keyframes text-flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+                opacity: 1;
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+                opacity: 0.3;
+            }
+        }
+
+        /* BOUTONS CHOIX */
         .choice-container {
-            display: flex; gap: 40px;
-            flex-wrap: wrap; justify-content: center;
+            display: flex; 
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
         }
 
-        /* Boutons Choix (Base) */
         .choice-btn {
-            padding: 15px 40px;
-            font-family: 'Bebas Neue'; font-size: 2rem;
-            background: transparent; border: 2px solid;
-            cursor: pointer; transition: 0.3s;
+            padding: 15px 5px;
+            width: 45%; max-width: 180px; /* Prend de la place sur mobile */
+            font-family: 'Bebas Neue'; font-size: 1.8rem;
+            background: black; border: 2px solid;
+            cursor: pointer; 
             text-transform: uppercase; letter-spacing: 2px;
             color: white;
-            position: relative; overflow: hidden;
+            /* Animation constante */
+            animation: constant-shake 0.2s infinite; 
+        }
+
+        /* Animation Shake/Glitch constante */
+        @keyframes constant-shake {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(1px, 1px); }
+            50% { transform: translate(-1px, -1px); }
+            75% { transform: translate(-1px, 1px); }
+            100% { transform: translate(1px, -1px); }
         }
         
-        /* Bouton IMAGES (Rouge) */
-        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
-        .btn-images:hover { background: var(--neon-pink); color: white; box-shadow: 0 0 30px var(--neon-pink); transform: scale(1.05); }
-
-        /* Bouton VIDEOS (Bleu) */
-        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
-        .btn-videos:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 30px var(--neon-blue); transform: scale(1.05); }
+        .btn-images { 
+            border-color: var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink); 
+            animation-duration: 0.25s; /* Rythme différent */
+        }
+        .btn-videos { 
+            border-color: var(--neon-blue); 
+            box-shadow: 0 0 15px var(--neon-blue); 
+            animation-duration: 0.2s;
+        }
 
 
         /* ========================
@@ -309,33 +364,31 @@
     <div class="intro-layer" id="intro-layer">
         <div class="intro-container">
             <img src="surfer.png" class="hero-image">
-            <!-- CANVAS MATRIX -->
             <canvas id="matrix-canvas"></canvas>
-            <!-- BOUTON INTRO -->
             <div class="center-box" id="enter-btn">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
     </div>
 
-    <!-- BIO LAYER (Sas d'entrée) -->
+    <!-- BIO LAYER (RESPONSIVE BRUTALIST) -->
     <div class="bio-layer" id="bio-layer">
-        <div class="bio-text">
-            <h1>Bienvenue sur mon Feed !</h1>
-            <p>
-                Tu trouveras ici une partie de mon travail,<br>
-                production de A à Z avec mon propre matériel<br>
-                <span class="highlight">(machine de guerre)</span>
-            </p>
-            <p>
-                optimisé avec de l'I.A<br>
-                <span class="highlight">(on gagne du temps et de l'argent pas mal non ?)</span>
-            </p>
+        
+        <div class="bio-content">
+            <h1 class="bio-text bio-title">BIENVENUE SUR MON FEED !</h1>
+            
+            <p class="bio-text bio-p">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
+            <p class="bio-text bio-p">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text bio-p" style="color: #ddd;">(MACHINE DE GUERRE)</p>
+            <p class="bio-text bio-p">OPTIMISÉ AVEC DE L'I.A</p>
+            <p class="bio-text bio-p" style="color: #ddd;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
+            
             <br>
-            <p>N'hésite pas à me contacter pour qu'on réalise ton projet !</p>
-            <p>On se retrouve de l'autre côté !</p>
-            <br>
-            <p style="font-style: italic; opacity: 0.7;">En attendant fais ton choix !</p>
+            
+            <p class="bio-text bio-p">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
+            <p class="bio-text bio-p">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
+            
+            <p class="bio-text flicker-text">EN ATTENDANT FAIS TON CHOIX !</p>
         </div>
 
         <div class="choice-container">
