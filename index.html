@@ -29,19 +29,19 @@
             background-color: var(--black);
             color: var(--white);
             font-family: var(--font-text);
-            overflow: hidden; /* Le body ne scroll pas */
+            overflow: hidden; /* Body bloqué, ce sont les sections qui scrollent */
             width: 100vw; height: 100vh;
-            position: fixed; /* Fixe le body pour éviter le rebond sur mobile */
+            position: fixed; /* Anti-rebond iOS */
         }
 
-        /* --- ANIMATIONS GLOBALES --- */
+        /* --- ANIMATIONS --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
             80% { transform: scale(0, 0.002); }
             100% { transform: scale(0, 0); }
         }
-        .turn-off-anim { animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; pointer-events: none; }
+        .turn-off-anim { animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; pointer-events: none; z-index: 9999; }
 
         .glitch-out {
             animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
@@ -61,19 +61,47 @@
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-
         /* ========================
-           LAYERS (INTRO & BIO)
+           SYSTEME DE LAYERS (CRITIQUE POUR LE SCROLL)
            ======================== */
         .layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; opacity: 0; transition: opacity 0.5s ease;
-            overflow: hidden; /* Intro et Bio ne scrollent pas */
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; /* Caché physiquement par défaut */
+            opacity: 0; 
+            transition: opacity 0.4s ease;
+            z-index: 10;
         }
-        .layer.active { display: flex; opacity: 1; pointer-events: auto; }
 
-        /* INTRO */
-        .intro-layer { z-index: 5000; background-color: #000; justify-content: center; align-items: center; }
+        /* Quand actif : Visible + Cliquable + Scrollable si besoin */
+        .layer.active {
+            display: flex; /* ou block selon le besoin */
+            opacity: 1;
+            pointer-events: auto !important; /* Force le clic */
+            z-index: 100;
+        }
+
+        /* Feeds scrollables */
+        #feed, #image-feed {
+            display: none; /* Important */
+            overflow-y: auto !important; /* Scroll activé */
+            -webkit-overflow-scrolling: touch; /* Fluidité iOS */
+            touch-action: pan-y;
+        }
+        
+        #feed.active { display: block; } /* Vidéo needs block */
+        #image-feed.active { 
+            display: flex; /* Image needs flex column */
+            flex-direction: column; 
+            align-items: center; 
+            padding-top: 20px;
+            gap: 40px;
+        }
+
+
+        /* ========================
+           INTRO
+           ======================== */
+        .intro-layer { background-color: #000; justify-content: center; align-items: center; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
@@ -83,8 +111,11 @@
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-        /* BIO */
-        .bio-layer { z-index: 4000; background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
+
+        /* ========================
+           BIO
+           ======================== */
+        .bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
@@ -101,61 +132,11 @@
 
 
         /* ========================
-           3. SCROLLABLE FEEDS (CORRECTION SCROLL)
+           UI (SIDEBAR, SON, OEUIL)
            ======================== */
-        #feed, #image-feed {
-            position: fixed; top: 0; left: 0; 
-            width: 100%; height: 100%;
-            background: #000;
-            opacity: 0; 
-            pointer-events: none; /* Bloqué par défaut */
-            transition: opacity 0.5s ease;
-            z-index: 3000; /* Niveau de base */
-            
-            /* C'EST ICI QUE LA MAGIE DU SCROLL OPÈRE */
-            overflow-y: auto !important; 
-            -webkit-overflow-scrolling: touch; /* Pour iOS */
-            touch-action: pan-y;
-            overscroll-behavior: contain;
-        }
-
-        /* QUAND ACTIF, ON LE MET AU DESSUS DE TOUT ET ON ACTIVE LE SCROLL */
-        #feed.feed-active, #image-feed.feed-active { 
-            opacity: 1; 
-            pointer-events: auto !important;
-            z-index: 6000; /* Au dessus de l'intro (5000) et de la bio (4000) */
-            display: block; /* Force l'affichage */
-        }
-        
-        #image-feed.feed-active {
-            display: flex; /* Flex pour les images */
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: flex-start;
-            padding-top: 20px;
-            gap: 40px;
-        }
-
-        /* Vidéo Scroll Snap */
-        #feed { scroll-snap-type: y mandatory; }
-        .video-section { 
-            height: 100vh; width: 100%; 
-            scroll-snap-align: start; 
-            position: relative; display: flex; justify-content: center; align-items: center; 
-            background: #000; border-bottom: 1px solid #111; overflow: hidden;
-            flex-shrink: 0; /* Ne pas écraser */
-        }
-        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
-        .video-section.active video { opacity: 1; }
-        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
-        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
-
-
-        /* ========================
-           UI ELEMENTS (SIDEBAR, BUTTONS)
-           ======================== */
-        .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; position: fixed; width: 100%; height: 100%; z-index: 7000; /* Toujours au dessus des feeds */ }
-        .ui-layer.active { opacity: 1; pointer-events: auto; }
+        /* UI est un layer spécial qui reste visible sur feed et image-feed */
+        #ui-layer { z-index: 7000; pointer-events: none; } /* Laisse passer les clics sauf sur les boutons */
+        #ui-layer.active { display: block; opacity: 1; }
         
         .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; pointer-events: auto; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
@@ -169,17 +150,16 @@
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink); }
 
         .sound-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 7005; /* Au dessus de tout */
+            position: fixed; top: 20px; right: 20px; z-index: 7005;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
             cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
             text-transform: uppercase; padding: 5px 15px; 
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
-            padding-top: 8px; display: none; /* Caché par défaut */
+            padding-top: 8px; display: none; pointer-events: auto;
         }
 
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 7000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
-        .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
-        .ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
+        .fixed-eye-container.visible { opacity: 1; pointer-events: auto; }
         .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
@@ -192,34 +172,14 @@
 
 
         /* ========================
-           SECTION FINALE (COMMUN)
+           FEED VIDEO
            ======================== */
-        .final-section { 
-            position: relative; background-color: #000; 
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0;
-        }
-        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
-        .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 20; width: 100%; max-width: 320px; position: relative; }
-        
-        .btn-final-devis { 
-            width: 300px; height: 80px; 
-            border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); 
-            box-shadow: 0 0 20px var(--neon-green);
-            text-decoration: none; display: flex; justify-content: center; align-items: center;
-            border-style: solid; border-width: 2px;
-            cursor: pointer; pointer-events: auto; /* Force le clic */
-        }
-        .btn-final-devis .center-text { color: var(--neon-green); }
-        
-        .btn-final-off { 
-            width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
-            display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; background: rgba(255,0,0,0.1); 
-            animation: neon-flicker 2s infinite; 
-            pointer-events: auto; /* Force le clic */
-        }
-        .btn-final-off svg { width: 35px; height: 35px; fill: red; }
+        #feed { scroll-snap-type: y mandatory; }
+        .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
+        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
+        .video-section.active video { opacity: 1; }
+        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
+        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
 
         /* ========================
@@ -231,16 +191,49 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
             animation: text-flicker 3s infinite alternate; flex-shrink: 0;
         }
-        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; }
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
         .thumb-container:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
 
 
         /* ========================
+           SECTION FINALE (COMMUN)
+           ======================== */
+        .final-section { 
+            position: relative; background-color: #000; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0;
+        }
+        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
+        .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 20; width: 100%; max-width: 320px; position: relative; pointer-events: auto; }
+        
+        .btn-final-devis { 
+            width: 300px; height: 80px; 
+            border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); 
+            box-shadow: 0 0 20px var(--neon-green);
+            text-decoration: none; display: flex; justify-content: center; align-items: center;
+            border-style: solid; border-width: 2px;
+            cursor: pointer; pointer-events: auto;
+        }
+        .btn-final-devis .center-text { color: var(--neon-green); }
+        
+        .btn-final-off { 
+            width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
+            display: flex; justify-content: center; align-items: center; 
+            cursor: pointer; background: rgba(255,0,0,0.1); 
+            animation: neon-flicker 2s infinite; 
+            pointer-events: auto;
+        }
+        .btn-final-off svg { width: 35px; height: 35px; fill: red; }
+
+
+        /* ========================
            MODALS
            ======================== */
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 8000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-        .image-modal.active { opacity: 1; pointer-events: auto; }
+        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 8000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .image-modal.active { display: flex; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
@@ -250,15 +243,14 @@
         .close-modal { 
             position: absolute; top: 20px; right: 20px; z-index: 8001;
             border: 1px solid var(--neon-green); background: rgba(0,0,0,0.5);
-            color: red; /* Emoji rouge */
-            font-size: 1.5rem; padding: 5px 15px; cursor: pointer;
+            color: red; font-size: 1.5rem; padding: 5px 15px; cursor: pointer;
             backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
         /* CONTACT FORM MODAL */
-        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
-        .contact-modal.active { opacity: 1; pointer-events: auto; }
+        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .contact-modal.active { display: flex; animation: fadeIn 0.3s; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
         .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
         .contact-submit { background: var(--neon-green); color: black; border: none; padding: 15px; font-family: var(--font-title); font-size: 1.5rem; cursor: pointer; }
@@ -280,18 +272,18 @@
     </svg>
 
     <!-- 1. INTRO -->
-    <div id="intro-layer" class="layer intro-layer active">
+    <div id="intro-layer" class="layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
-            <div class="center-box" onclick="navigateTo('bio')">
+            <div class="center-box" onclick="handleNavigation('bio')">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer bio-layer">
+    <div id="bio-layer" class="layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
@@ -305,16 +297,14 @@
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
-            <button class="choice-btn btn-images" onclick="navigateTo('image-feed')">IMAGES</button>
-            <button class="choice-btn btn-videos" onclick="navigateTo('feed')">VIDÉOS</button>
+            <button class="choice-btn btn-images" onclick="handleNavigation('image-feed')">IMAGES</button>
+            <button class="choice-btn btn-videos" onclick="handleNavigation('feed')">VIDÉOS</button>
         </div>
     </div>
 
-    <!-- UI LAYER (SIDEBAR) -->
+    <!-- UI LAYER -->
     <div id="ui-layer" class="ui-layer">
-        <!-- BOUTON SON (Sera caché/affiché via JS) -->
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
-        
         <div class="fixed-sidebar">
             <a href="tel:0635256900" class="side-btn" id="phone-btn" onclick="animateBtn(this, 'glow-active-green')">
                 <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-1.57 1.97c-2.83-1.49-5.15-3.8-6.62-6.62l1.97-1.57c.23-.24.31-.56.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3.28 3 3.93 3 4.74c0 9.27 7.56 16.83 16.83 16.83.81 0 1.46-.65 1.46-1.19v-3.72c0-.54-.44-.98-.98-.98z"/></svg>
@@ -326,9 +316,7 @@
                 <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
             </button>
         </div>
-        
-        <!-- ŒIL (Sera caché/affiché via JS) -->
-        <div class="fixed-eye-container" id="eye-container">
+        <div id="eye-container" class="fixed-eye-container">
             <span class="static-hd-text">VOIR EN HD</span>
             <a href="#" id="dynamic-eye-btn" target="_blank" class="eye-btn-main">
                 <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
@@ -371,7 +359,7 @@
         <div class="thumb-container" onclick="openImageModal(5)"><img src="img5_1.webp" class="thumb-img"></div>
 
         <!-- FOOTER IMAGES -->
-        <section class="final-section" style="margin-top: 50px;">
+        <section class="final-section" style="margin-top: 50px; width: 100%;">
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
             <div class="final-container" style="padding: 100px 0;">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
@@ -396,7 +384,7 @@
         <div class="close-modal" onclick="closeContactForm()">❌</div>
         
         <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
-        <form action="https://formspree.io/f/TON_CODE_ICI" method="POST" class="contact-form">
+        <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
             <textarea name="message" placeholder="RACONTE-MOI TOUT..." rows="5" class="contact-msg" required></textarea>
@@ -405,100 +393,85 @@
     </div>
 
     <script>
-        // --- GESTION NAVIGATION & HISTORIQUE (SPA) ---
+        // --- GESTION NAVIGATION & HISTORIQUE ROBUSTE ---
         window.history.replaceState({page: 'intro'}, "", "");
 
-        function navigateTo(targetId) {
-            // Cacher les layers de base
+        function handleRoute(page) {
+            // 1. Reset Total : Tout cacher
             document.querySelectorAll('.layer').forEach(el => {
                 el.classList.remove('active');
-                if(el.id !== 'feed' && el.id !== 'image-feed') el.style.display = 'none';
+                el.style.display = 'none'; // Force display none
             });
+            document.getElementById('ui-layer').classList.remove('active');
+            document.getElementById('ui-layer').style.display = 'none';
+            document.getElementById('image-modal').classList.remove('active');
+            document.getElementById('contact-modal').classList.remove('active');
+
+            // 2. Afficher la page demandée
+            let targetId = '';
+            if (page === 'intro') targetId = 'intro-layer';
+            else if (page === 'bio') targetId = 'bio-layer';
+            else if (page === 'feed') targetId = 'feed';
+            else if (page === 'image-feed') targetId = 'image-feed';
+            else if (page === 'contact') targetId = 'contact-modal'; 
+            else if (page === 'image-modal') targetId = 'image-modal';
+
+            const target = document.getElementById(targetId);
             
-            // Gestion UI Layer
+            // Gestion display spécifique
+            if (page === 'image-feed') target.style.display = 'flex';
+            else if (page === 'feed') target.style.display = 'block';
+            else target.style.display = 'flex'; // Intro/Bio/Modals
+
+            // Force reflow pour l'animation
+            void target.offsetWidth;
+            target.classList.add('active');
+
+            // 3. Gestion UI (Sidebar) & Logic
             const ui = document.getElementById('ui-layer');
-            if (targetId === 'feed' || targetId === 'image-feed') {
-                ui.classList.add('active');
+            const soundBtn = document.getElementById('sound-btn');
+            const eye = document.getElementById('eye-container');
+
+            if (page === 'feed' || page === 'image-feed') {
+                ui.style.display = 'block';
+                setTimeout(() => ui.classList.add('active'), 10);
+                
+                if (page === 'feed') {
+                    soundBtn.style.display = 'block';
+                    eye.classList.remove('hidden');
+                    eye.classList.add('visible');
+                    // Matrix Video Start
+                    const v = document.querySelector('#feed video');
+                    if(v) { v.muted=true; v.play().catch(e=>{}); }
+                    initObserver();
+                } else {
+                    soundBtn.style.display = 'none';
+                    eye.classList.remove('visible');
+                    eye.classList.add('hidden');
+                    startM(imageFinalMatrix);
+                }
             } else {
+                // UI Cachée sur intro/bio
                 ui.classList.remove('active');
             }
 
-            // Gestion Bouton Son & Œil
-            const soundBtn = document.getElementById('sound-btn');
-            const eye = document.getElementById('eye-container');
-            
-            if(targetId === 'feed') {
-                soundBtn.style.display = 'block';
-                eye.classList.remove('hidden');
-            } else {
-                soundBtn.style.display = 'none'; // Caché sur Image Feed
-                eye.classList.add('hidden'); // Caché sur Image Feed
+            // Cas spécial Modals (On garde l'UI dessous mais inactive)
+            if (page === 'contact' || page === 'image-modal') {
+                // Rien de spécial, ils sont z-index > 7000
             }
+        }
 
-            // Affichage Cible
-            const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
-            
-            // Reset Layout Displays
-            if (targetId === 'image-feed') {
-                target.style.display = 'flex'; // Important pour images
-                startM(imageFinalMatrix);
-            } else if (targetId === 'feed') {
-                target.style.display = 'block'; // Important pour scroll snap video
-                const v = target.querySelector('video');
-                if (v) { v.muted=true; v.play().catch(e=>{}); }
-                initObserver(); 
-            } else if (targetId === 'intro' || targetId === 'bio') {
-                target.style.display = 'flex';
-            }
-
-            // Force reflow
-            void target.offsetWidth; 
-            target.classList.add('feed-active'); // Pour feed/image-feed
-            target.classList.add('active'); // Pour intro/bio
-
-            if (!history.state || history.state.page !== targetId) {
-                history.pushState({page: targetId}, "", "");
-            }
+        // ENTRY POINTS
+        function navigateTo(page) {
+            history.pushState({page: page}, "", "");
+            handleRoute(page);
         }
 
         window.addEventListener('popstate', function(event) {
             if (event.state) {
-                const page = event.state.page;
-                // Tout fermer
-                document.querySelectorAll('.layer').forEach(el => {
-                    el.classList.remove('active');
-                    el.classList.remove('feed-active');
-                    el.style.display = 'none';
-                });
-                document.getElementById('image-modal').classList.remove('active');
-                document.getElementById('contact-modal').classList.remove('active');
-
-                // Rouvrir
-                const targetId = page === 'intro' ? 'intro-layer' : (page === 'bio' ? 'bio-layer' : page);
-                const target = document.getElementById(targetId);
-                
-                if (page === 'image-feed') { target.style.display = 'flex'; startM(imageFinalMatrix); }
-                else if (page === 'feed') { target.style.display = 'block'; }
-                else target.style.display = 'flex';
-                
-                setTimeout(() => target.classList.add('active'), 10);
-                if(page === 'feed' || page === 'image-feed') target.classList.add('feed-active');
-
-                // UI
-                const ui = document.getElementById('ui-layer');
-                const soundBtn = document.getElementById('sound-btn');
-                const eye = document.getElementById('eye-container');
-
-                if (page === 'feed' || page === 'image-feed') ui.classList.add('active');
-                else ui.classList.remove('active');
-
-                if(page === 'feed') {
-                    soundBtn.style.display = 'block';
-                    eye.classList.remove('hidden');
-                } else {
-                    soundBtn.style.display = 'none';
-                    eye.classList.add('hidden');
-                }
+                handleRoute(event.state.page);
+            } else {
+                handleRoute('intro'); // Fallback
             }
         });
 
@@ -540,14 +513,12 @@
         const imageFinalMatrix = createMatrix('matrix-canvas-images');
         function startM(inst) { if(inst && !inst.interval) inst.interval = setInterval(inst.draw, 50); }
         function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
-        
         startM(introMatrix); 
 
         // --- UI ANIMATIONS ---
         setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
         setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
         function animateBtn(btn, c) { btn.classList.add(c); setTimeout(() => btn.classList.remove(c), 1000); }
-        
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
@@ -562,46 +533,43 @@
             document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
         }
 
-        // --- CONTACT MODAL ---
+        // --- CONTACT ---
         function openContactForm(e) {
             e.preventDefault();
-            const modal = document.getElementById('contact-modal');
-            modal.classList.add('active');
-            history.pushState({page: 'contact'}, "", ""); 
+            navigateTo('contact');
         }
         function closeContactForm() {
-            document.getElementById('contact-modal').classList.remove('active');
-            history.back(); 
+            history.back();
         }
 
-        // --- IMAGES LOGIC ---
+        // --- IMAGES ---
         let currentImgIndex = 0; let currentGallery = [];
         function openImageModal(id) {
             currentGallery = galleries[id];
-            const modal = document.getElementById('image-modal');
             const img = document.getElementById('full-img');
             currentImgIndex = 0; img.src = currentGallery[0];
-            modal.classList.add('active');
-            history.pushState({page: 'image-modal'}, "", "");
+            navigateTo('image-modal');
         }
-        function closeImageModal() { 
-            document.getElementById('image-modal').classList.remove('active');
-            history.back();
-        }
+        function closeImageModal() { history.back(); }
         function nextImageStep() {
             const img = document.getElementById('full-img'); img.classList.add('anim-bump');
             setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
             setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
         }
 
-        // --- RESET TV ---
+        // --- TV OFF ---
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
-                navigateTo('intro'); 
+                // RESET TOTAL VIA NAVIGATION
+                navigateTo('intro');
+                
+                // RESET SPECIFIQUE
+                document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
                 stopM(videoFinalMatrix);
                 stopM(imageFinalMatrix);
                 startM(introMatrix);
+                
                 setTimeout(() => { document.body.classList.remove('turn-off-anim'); }, 100); 
             }, 600); 
         }
@@ -614,14 +582,14 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) { eyeContainer.classList.add('hidden'); startM(videoFinalMatrix); }
+                        if(entry.isIntersecting) { eyeContainer.classList.remove('visible'); eyeContainer.classList.add('hidden'); startM(videoFinalMatrix); }
                         else { stopM(videoFinalMatrix); }
                         return;
                     }
                     const video = entry.target.querySelector('video');
                     if (!video) return;
                     if (entry.isIntersecting) {
-                        eyeContainer.classList.remove('hidden');
+                        eyeContainer.classList.remove('hidden'); eyeContainer.classList.add('visible');
                         video.play().catch(e => {}); entry.target.classList.add('active');
                         const link = entry.target.getAttribute('data-link'); eyeBtn.href = link ? link : "#";
                     } else {
