@@ -33,7 +33,7 @@
             width: 100vw; height: 100vh;
         }
 
-        /* --- ANIMATIONS GLOBALES --- */
+        /* --- ANIMATIONS --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -144,7 +144,6 @@
         .ui-layer { opacity: 0; pointer-events: none; transition: opacity 1s 0.5s; }
         .ui-visible { opacity: 1; pointer-events: auto; }
         
-        /* Sidebar au dessus du modal pour que les boutons restent cliquables */
         .fixed-sidebar { position: fixed; z-index: 6500; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; }
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
@@ -156,11 +155,27 @@
         .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue); }
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink); }
 
-        .sound-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 100;
-            background: rgba(0,0,0,0.5); color: var(--neon-green);
-            cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
-            text-transform: uppercase; padding: 5px 15px; border: 1px solid var(--neon-green);
+        /* BOUTON SON ET CROIX (STYLE COMMUN) */
+        .sound-toggle, .close-modal {
+            font-family: var(--font-title); font-size: 1.5rem;
+            text-transform: uppercase; padding: 5px 15px; 
+            border: 1px solid var(--white); 
+            background: rgba(0,0,0,0.5); color: var(--white);
+            cursor: pointer; backdrop-filter: blur(4px);
+            transition: 0.3s;
+        }
+        
+        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 100; border-color: var(--neon-green); color: var(--neon-green); }
+        
+        /* Croix spécifique */
+        .close-modal { 
+            position: absolute; top: 20px; right: 20px; z-index: 6001;
+            /* Reset button default */
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close-modal:hover {
+            border-color: var(--neon-pink); color: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
         }
 
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
@@ -189,8 +204,8 @@
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
         /* SECTION FINALE */
-        .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        #matrix-canvas-final { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
+        .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; }
+        .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
         .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 10; width: 100%; max-width: 320px; }
         
         .btn-final-devis { width: 300px; height: 80px; border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); box-shadow: 0 0 20px var(--neon-green); }
@@ -208,14 +223,9 @@
         #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; z-index: 3000; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 40px; }
         #image-feed.feed-active { opacity: 1; pointer-events: auto; }
         
-        /* Titre du Feed Images */
         .feed-instruction {
-            font-family: var(--font-title);
-            font-size: 3rem;
-            color: var(--white);
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 20px;
+            font-family: var(--font-title); font-size: 3rem; color: var(--white);
+            text-align: center; margin-top: 10px; margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
             animation: text-flicker 3s infinite alternate;
         }
@@ -234,23 +244,8 @@
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
 
-        /* TEXTE "TAP POUR TRANSFORMER" EN BAS */
-        .tap-hint { 
-            position: absolute; 
-            bottom: 50px; /* Position alignée avec l'emplacement de l'œil */
-            left: 50%; 
-            transform: translateX(-50%);
-            color: white; 
-            font-family: var(--font-title); 
-            font-size: 1.5rem; 
-            letter-spacing: 2px; 
-            text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); 
-            animation: text-flicker 2s infinite; 
-            pointer-events: none; 
-            width: 100%; text-align: center;
-        }
-
-        .close-modal { position: absolute; top: 20px; right: 20px; color: white; font-family: var(--font-title); font-size: 2rem; cursor: pointer; z-index: 6001; }
+        /* TEXTE "TAP POUR TRANSFORMER" */
+        .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); animation: text-flicker 2s infinite; pointer-events: none; width: 100%; text-align: center; }
 
     </style>
 </head>
@@ -333,7 +328,7 @@
 
         <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
-            <canvas id="matrix-canvas-final"></canvas>
+            <canvas id="matrix-canvas-final" class="matrix-bg"></canvas>
             <div class="final-container">
                 <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
@@ -345,44 +340,40 @@
         </section>
     </main>
 
-    <!-- IMAGE FEED (5 MINIATURES) -->
+    <!-- IMAGE FEED -->
     <main id="image-feed">
         <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
-        <!-- Miniature 1 (5 images) -->
-        <div class="thumb-container" onclick="openImageModal(1)">
-            <img src="img1_1.webp" class="thumb-img">
-        </div>
-        <!-- Miniature 2 (3 images) -->
-        <div class="thumb-container" onclick="openImageModal(2)">
-            <img src="img2_1.webp" class="thumb-img">
-        </div>
-        <!-- Miniature 3 (5 images) -->
-        <div class="thumb-container" onclick="openImageModal(3)">
-            <img src="img3_1.webp" class="thumb-img">
-        </div>
-        <!-- Miniature 4 (4 images) -->
-        <div class="thumb-container" onclick="openImageModal(4)">
-            <img src="img4_1.webp" class="thumb-img">
-        </div>
-        <!-- Miniature 5 (6 images) -->
-        <div class="thumb-container" onclick="openImageModal(5)">
-            <img src="img5_1.webp" class="thumb-img">
-        </div>
+        
+        <!-- Miniatures -->
+        <div class="thumb-container" onclick="openImageModal(1)"><img src="img1_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(2)"><img src="img2_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(3)"><img src="img3_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(4)"><img src="img4_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(5)"><img src="img5_1.webp" class="thumb-img"></div>
+
+        <!-- FOOTER IMAGES (AVEC MATRIX) -->
+        <section class="final-section">
+            <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
+            <div class="final-container" style="padding: 100px 0;"> <!-- Padding pour l'espace -->
+                <a href="mailto:gabriel.ortiz.pro31@gmail.com" class="center-box btn-final-devis">
+                    <h1 class="center-text">DEVIS GRATUIT</h1>
+                </a>
+                <div class="btn-final-off" onclick="turnOffTv()">
+                    <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- MODAL PLEIN ECRAN -->
     <div class="image-modal" id="image-modal">
         <div class="close-modal" onclick="closeImageModal()">X</div>
-        
-        <!-- Image changeante -->
-        <img src="" id="full-img" class="modal-img" onclick="nextImageStep()">
-        
-        <!-- Texte en bas -->
         <div class="tap-hint">TAP POUR TRANSFORMER</div>
+        <img src="" id="full-img" class="modal-img" onclick="nextImageStep()">
     </div>
 
     <script>
-        // --- DONNEES GALERIES (LISTES) ---
+        // --- DONNEES ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
@@ -391,53 +382,59 @@
             5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp']
         };
 
-        // --- PRELOAD TOUTES LES IMAGES ---
-        for (const key in galleries) {
-            galleries[key].forEach(src => {
-                const i = new Image();
-                i.src = src;
-            });
-        }
+        // PRELOAD
+        for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX RAIN ---
-        const canvas = document.getElementById('matrix-canvas'); const ctx = canvas.getContext('2d');
-        canvas.width = 320; canvas.height = window.innerHeight;
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; const fontSize = 12;
-        const columns = canvas.width / fontSize; const drops = []; for(let i=0; i<columns; i++) drops[i]=1;
-        let matrixInterval;
-        function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#39ff14'; ctx.font = fontSize + 'px monospace';
-            for(let i=0; i<drops.length; i++) {
-                const text = characters.charAt(Math.floor(Math.random()*characters.length));
-                ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-                if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
-                drops[i]++;
+        // --- MATRIX ENGINE (GENERIC) ---
+        function createMatrix(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            if(!canvas) return null;
+            const ctx = canvas.getContext('2d');
+            
+            // Resize dynamique
+            const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+            resize();
+            window.addEventListener('resize', resize);
+
+            const fontSize = 12;
+            let columns = canvas.width / fontSize;
+            let drops = [];
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+            function initDrops() {
+                columns = canvas.width / fontSize;
+                drops = [];
+                for(let i=0; i<columns; i++) drops[i] = 1;
             }
-        }
-        function startMatrix() { if(matrixInterval) clearInterval(matrixInterval); matrixInterval = setInterval(drawMatrix, 50); }
-        function stopMatrix() { if(matrixInterval) clearInterval(matrixInterval); }
-        startMatrix();
+            initDrops();
 
-        // MATRIX FINAL
-        const canvasFinal = document.getElementById('matrix-canvas-final'); const ctxFinal = canvasFinal.getContext('2d');
-        canvasFinal.width = window.innerWidth; canvasFinal.height = window.innerHeight;
-        const columnsFinal = canvasFinal.width / fontSize; const dropsFinal = []; for(let i=0; i<columnsFinal; i++) dropsFinal[i]=1;
-        let matrixIntervalFinal;
-        function drawMatrixFinal() {
-            ctxFinal.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctxFinal.fillRect(0, 0, canvasFinal.width, canvasFinal.height);
-            ctxFinal.fillStyle = '#39ff14'; ctxFinal.font = fontSize + 'px monospace';
-            for(let i=0; i<dropsFinal.length; i++) {
-                const text = characters.charAt(Math.floor(Math.random()*characters.length));
-                ctxFinal.fillText(text, i*fontSize, dropsFinal[i]*fontSize);
-                if(dropsFinal[i]*fontSize > canvasFinal.height && Math.random() > 0.975) dropsFinal[i]=0;
-                dropsFinal[i]++;
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#39ff14'; ctx.font = fontSize + 'px monospace';
+                for(let i=0; i<drops.length; i++) {
+                    const text = characters.charAt(Math.floor(Math.random()*characters.length));
+                    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+                    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
+                    drops[i]++;
+                }
             }
+            return { draw, interval: null };
         }
-        function startMatrixFinal() { canvasFinal.width = window.innerWidth; canvasFinal.height = window.innerHeight; if(matrixIntervalFinal) clearInterval(matrixIntervalFinal); matrixIntervalFinal = setInterval(drawMatrixFinal, 50); }
-        function stopMatrixFinal() { if(matrixIntervalFinal) clearInterval(matrixIntervalFinal); }
 
-        // --- ANIMATIONS UI ---
+        // INSTANCES MATRIX
+        const introMatrix = createMatrix('matrix-canvas');
+        const videoFinalMatrix = createMatrix('matrix-canvas-final');
+        const imageFinalMatrix = createMatrix('matrix-canvas-images');
+
+        // Helpers start/stop
+        function startM(instance) { if(instance && !instance.interval) instance.interval = setInterval(instance.draw, 50); }
+        function stopM(instance) { if(instance && instance.interval) { clearInterval(instance.interval); instance.interval = null; } }
+
+        // Start Intro
+        startM(introMatrix);
+
+
+        // --- UI ANIMATIONS ---
         setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
         setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
         function animateBtn(btn, c) { btn.classList.add(c); setTimeout(() => btn.classList.remove(c), 1000); }
@@ -457,9 +454,11 @@
 
         // --- NAVIGATION ---
         document.getElementById('enter-btn').addEventListener('click', function() {
-            const intro = document.getElementById('intro-layer'); intro.classList.add('glitch-out'); stopMatrix(); 
+            const intro = document.getElementById('intro-layer'); intro.classList.add('glitch-out'); stopM(introMatrix);
             setTimeout(() => { intro.style.display='none'; intro.classList.remove('glitch-out'); document.getElementById('bio-layer').classList.add('bio-active'); }, 400);
         });
+        
+        // Vers VIDEO
         document.getElementById('video-access-btn').addEventListener('click', function() {
             const bio = document.getElementById('bio-layer'); bio.classList.add('glitch-out');
             setTimeout(() => {
@@ -467,9 +466,11 @@
                 document.getElementById('ui-layer').classList.add('ui-visible');
                 const feed = document.getElementById('feed'); feed.classList.add('feed-active');
                 const v = feed.querySelector('video'); if(v) { v.muted=true; v.play().then(()=>v.parentElement.classList.add('active')).catch(console.log); }
-                initObserver();
+                initObserver(); // Observer lance le matrix video fin si besoin
             }, 400);
         });
+
+        // Vers IMAGES
         document.getElementById('image-access-btn').addEventListener('click', function() {
             const bio = document.getElementById('bio-layer'); bio.classList.add('glitch-out');
             setTimeout(() => {
@@ -477,56 +478,55 @@
                 document.getElementById('ui-layer').classList.add('ui-visible');
                 document.getElementById('eye-container').classList.add('hidden');
                 document.getElementById('image-feed').classList.add('feed-active');
+                startM(imageFinalMatrix); // On lance le matrix footer images car c'est scrollable
             }, 400);
         });
 
-        // --- LOGIQUE IMAGE TRANSFORM (GALERIES MULTIPLES) ---
-        let currentImgIndex = 0;
-        let currentGallery = []; 
-
-        function openImageModal(galleryId) {
-            currentGallery = galleries[galleryId];
+        // --- IMAGES LOGIC ---
+        let currentImgIndex = 0; let currentGallery = [];
+        function openImageModal(id) {
+            currentGallery = galleries[id];
             const modal = document.getElementById('image-modal');
             const img = document.getElementById('full-img');
-            currentImgIndex = 0;
-            img.src = currentGallery[0];
+            currentImgIndex = 0; img.src = currentGallery[0];
             modal.classList.add('active');
         }
-
         function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); }
-        
         function nextImageStep() {
-            const img = document.getElementById('full-img');
-            img.classList.add('anim-bump');
-            setTimeout(() => {
-                currentImgIndex = (currentImgIndex + 1) % currentGallery.length;
-                img.src = currentGallery[currentImgIndex];
-            }, 100); 
+            const img = document.getElementById('full-img'); img.classList.add('anim-bump');
+            setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
             setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
         }
 
-        // --- TV OFF ---
+        // --- RESET ---
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
+                // Reset views
                 const feed = document.getElementById('feed');
                 const imgFeed = document.getElementById('image-feed');
                 const ui = document.getElementById('ui-layer');
                 const bio = document.getElementById('bio-layer');
                 const intro = document.getElementById('intro-layer');
+
                 feed.scrollTo(0, 0); feed.classList.remove('feed-active');
-                imgFeed.classList.remove('feed-active');
+                imgFeed.scrollTo(0,0); imgFeed.classList.remove('feed-active');
                 document.querySelectorAll('video').forEach(v => { v.pause(); v.currentTime = 0; });
-                stopMatrixFinal();
+                
+                // Stop end matrices
+                stopM(videoFinalMatrix);
+                // Note: imageFinalMatrix might still be running but hidden, we restart intro anyway.
+
                 ui.classList.remove('ui-visible');
                 bio.classList.remove('bio-active'); bio.style.display='flex';
                 intro.style.display='flex'; intro.style.opacity='1';
-                startMatrix();
+                
+                startM(introMatrix); // Restart intro
                 setTimeout(() => { document.body.classList.remove('turn-off-anim'); }, 100); 
             }, 600); 
         }
 
-        // --- OBSERVER ---
+        // --- OBSERVER (VIDEO) ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
@@ -534,8 +534,8 @@
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) { eyeContainer.classList.add('hidden'); startMatrixFinal(); }
-                        else { stopMatrixFinal(); }
+                        if(entry.isIntersecting) { eyeContainer.classList.add('hidden'); startM(videoFinalMatrix); }
+                        else { stopM(videoFinalMatrix); }
                         return;
                     }
                     const video = entry.target.querySelector('video');
