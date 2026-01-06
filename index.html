@@ -14,8 +14,8 @@
         :root {
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
-            --neon-pink: #ff0078;
-            --neon-blue: #007eff;
+            --neon-pink: #ff007f;
+            --neon-blue: #00f3ff;
             --black: #000000;
             --white: #ffffff;
             --font-title: 'Bebas Neue', sans-serif;
@@ -33,7 +33,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS GLOBALES --- */
+        /* --- ANIMATIONS --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -55,54 +55,57 @@
             100% { transform: translate(0); }
         }
 
-        /* --- UI ANIMATIONS --- */
         @keyframes neon-flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; }
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-        @keyframes precious-glow {
-            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
-            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
-        }
-
-        @keyframes rare-flash {
-            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            93%, 95% { opacity: 0.3; text-shadow: none; }
-        }
-
-        @keyframes float-text {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* ANIMATION CLIGNEMENT ŒIL */
+        /* --- ANIMATION CLIGNEMENT OEIL --- */
         @keyframes eye-blink {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
         }
-        .blink-now { transform-origin: center; animation: eye-blink 0.2s linear; }
+        .blink-now { 
+            transform-origin: center; 
+            animation: eye-blink 0.2s linear; 
+        }
 
-
-        /* ANIMATION FLÈCHE SCROLL */
-        @keyframes scroll-hint-anim {
+        /* --- ANIMATION FLÈCHE SCROLL --- */
+        @keyframes scroll-hint-flow {
             0% { opacity: 0; transform: translateY(-20px); }
             20% { opacity: 1; transform: translateY(0); }
             80% { opacity: 1; transform: translateY(20px); }
             100% { opacity: 0; transform: translateY(40px); }
         }
-        .play-anim { animation: scroll-hint-anim 2s ease-in-out forwards; }
-
 
         /* ========================
            SYSTEME DE LAYERS
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; opacity: 0; transition: opacity 0.4s ease;
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.4s ease;
             z-index: 10;
         }
-        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
+        
+        .layer.active {
+            opacity: 1;
+            pointer-events: auto;
+            display: flex;
+            z-index: 100;
+        }
+
+        /* Feeds scrollables */
+        #feed, #image-feed {
+            display: none; 
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-y;
+        }
+        #feed.active { display: block; } 
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+
 
         /* ========================
            1. INTRO
@@ -124,41 +127,51 @@
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; animation: precious-glow 4s ease-in-out infinite; }
+        
+        /* Titre Bio avec Glow Précieux */
+        .bio-title { 
+            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
+            animation: precious-glow 4s ease-in-out infinite; 
+        }
+        @keyframes precious-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
+            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
+        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
+        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
-        .btn-images:hover { background-color: var(--bio-red); color: white; }
-        .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
-        .btn-videos:hover { background-color: var(--bio-blue); color: white; }
+        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
 
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
         #ui-layer { 
-            z-index: 9000; /* TRÈS HAUT */
+            z-index: 9000; /* TRÈS HAUT POUR ÊTRE AU DESSUS DES IMAGES */
             pointer-events: none; display: none;
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        /* FLÈCHE SCROLL (GAUCHE) */
+        /* Flèche de Scroll (gauche) */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
             color: var(--neon-green);
         }
-        /* S'assure que le SVG a une taille */
-        #scroll-hint svg { width: 50px; height: 50px; fill: currentColor; filter: drop-shadow(0 0 8px var(--neon-green)); }
+        #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
+        /* Sidebar (droite) */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
-            pointer-events: auto; z-index: 9001; 
+            pointer-events: auto; /* Active les clics sur les boutons */
+            z-index: 9001; 
         }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -182,7 +195,7 @@
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
-        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; animation: float-text 3s ease-in-out infinite; }
+        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
@@ -193,7 +206,7 @@
         .shaking { animation: shake 0.4s ease-in-out; }
 
         /* ========================
-           4. FEEDS
+           4. FEEDS (SCROLLABLE)
            ======================== */
         #feed, #image-feed {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -203,9 +216,11 @@
             z-index: 3000;
             display: none; 
         }
+        
         #feed.active { display: block; }
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
+        /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
         .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
@@ -232,7 +247,15 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
+        /* Animation Rare Flash sur le mot entier */
+        .btn-final-devis .center-text { 
+            color: var(--neon-green); 
+            animation: rare-flash 6s infinite; /* Clignote toutes les 6s */
+        }
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
         
         .btn-final-off { 
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
@@ -259,7 +282,7 @@
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-        /* CONTACT FORM */
+        /* CONTACT MODAL (Z-INDEX 10000 POUR ÊTRE AU DESSUS DE TOUT) */
         .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .contact-modal.active { display: flex; animation: fadeIn 0.3s; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
@@ -283,7 +306,7 @@
     </svg>
 
     <!-- 1. INTRO -->
-    <div id="intro-layer" class="layer active">
+    <div id="intro-layer" class="intro-layer layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
@@ -294,7 +317,7 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer">
+    <div id="bio-layer" class="bio-layer layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
@@ -408,28 +431,24 @@
     </div>
 
     <script>
-        // --- GESTION NAVIGATION & HISTORIQUE (SPA) ---
+        // --- GESTION NAVIGATION ---
         window.history.replaceState({page: 'intro'}, "", "");
 
-        let scrollHintInterval;
-
         function handleNavigation(targetId) {
-            // Reset
-            document.querySelectorAll('.layer').forEach(el => {
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
-            
-            // Affichage Cible
+
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            
             if (targetId === 'image-feed') target.style.display = 'flex';
             else if (targetId === 'feed') target.style.display = 'block';
             else target.style.display = 'flex';
 
             setTimeout(() => target.classList.add('active'), 10);
 
-            // Gestion UI Layer
+            // GESTION UI LAYER
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -447,13 +466,6 @@
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
-                    
-                    if(scrollHintInterval) clearInterval(scrollHintInterval);
-                    scrollHintInterval = setInterval(() => {
-                        scrollHint.classList.remove('play-anim');
-                        void scrollHint.offsetHeight;
-                        scrollHint.classList.add('play-anim');
-                    }, 5000);
 
                     const v = document.querySelector('#feed video');
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
@@ -462,7 +474,6 @@
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
-                    if(scrollHintInterval) clearInterval(scrollHintInterval);
                     startM(imageFinalMatrix);
                 }
             } else {
@@ -481,7 +492,7 @@
             else handleNavigation(page);
         });
 
-        // --- PRELOAD & MATRIX & ANIMATIONS ---
+        // --- PRELOAD & MATRIX & ANIMATIONS (Identique précédent) ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
@@ -539,27 +550,21 @@
             document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
         }
 
-        // --- CONTACT ---
         function openContactForm(e) { e.preventDefault(); document.getElementById('contact-modal').classList.add('active'); const soundBtn = document.getElementById('sound-btn'); if(soundBtn) soundBtn.style.display = 'none'; }
         function closeContactForm() { document.getElementById('contact-modal').classList.remove('active'); const feed = document.getElementById('feed'); if(feed.classList.contains('active')) { document.getElementById('sound-btn').style.display = 'block'; } }
 
-        // --- IMAGES ---
         let currentImgIndex = 0; let currentGallery = [];
         function openImageModal(id) { currentGallery = galleries[id]; const img = document.getElementById('full-img'); currentImgIndex = 0; img.src = currentGallery[0]; document.getElementById('image-modal').classList.add('active'); history.pushState({page: 'image-modal'}, "", ""); }
         function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); history.back(); }
         function nextImageStep() { const img = document.getElementById('full-img'); img.classList.add('anim-bump'); setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); setTimeout(() => { img.classList.remove('anim-bump'); }, 250); }
 
-        // --- RESET ---
         function turnOffTv() { document.body.classList.add('turn-off-anim'); setTimeout(() => { window.location.reload(); }, 600); }
 
-        // --- OBSERVER ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
             const soundBtn = document.getElementById('sound-btn');
-            const scrollHint = document.getElementById('scroll-hint');
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.target.classList.contains('final-section')) {
@@ -567,17 +572,9 @@
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
                             soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
-                            scrollHint.style.opacity = '0';
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
                         } else { 
                             stopM(videoFinalMatrix); 
                             soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
-                            scrollHintInterval = setInterval(() => {
-                                scrollHint.classList.remove('play-anim');
-                                void scrollHint.offsetHeight;
-                                scrollHint.classList.add('play-anim');
-                            }, 5000);
                         }
                         return;
                     }
