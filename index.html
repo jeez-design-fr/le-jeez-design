@@ -65,22 +65,33 @@
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; 
             opacity: 0; 
-            pointer-events: none; /* Important pour ne pas bloquer les clics */
             transition: opacity 0.4s ease;
             z-index: 10;
-            display: none; /* Caché physiquement */
         }
         
-        /* Quand actif */
         .layer.active {
             opacity: 1;
             pointer-events: auto;
-            display: flex; /* Par défaut flex pour centrage */
+            display: flex;
             z-index: 100;
         }
 
-        /* INTRO */
+        /* Feeds scrollables */
+        #feed, #image-feed {
+            display: none; 
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-y;
+        }
+        #feed.active { display: block; } 
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+
+
+        /* ========================
+           1. INTRO
+           ======================== */
         #intro-layer { background-color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
@@ -91,7 +102,9 @@
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-        /* BIO */
+        /* ========================
+           2. BIO
+           ======================== */
         #bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
@@ -106,11 +119,22 @@
         .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
         .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
 
-        /* UI LAYER */
-        #ui-layer { z-index: 7000; pointer-events: none; }
-        #ui-layer.active { display: block; opacity: 1; } /* Block car éléments positionnés en absolute/fixed */
+        /* ========================
+           3. UI LAYER (SIDEBAR)
+           ======================== */
+        #ui-layer { 
+            z-index: 9000; /* TRÈS HAUT POUR ÊTRE AU DESSUS DES IMAGES */
+            pointer-events: none; 
+        }
+        #ui-layer.active { display: block; opacity: 1; } 
         
-        .fixed-sidebar { position: fixed; right: 15px; bottom: 35%; display: flex; flex-direction: column; gap: 25px; align-items: center; pointer-events: auto; }
+        .fixed-sidebar { 
+            position: fixed; right: 15px; bottom: 35%; 
+            display: flex; flex-direction: column; gap: 25px; align-items: center; 
+            pointer-events: auto; /* Active les clics sur les boutons */
+            z-index: 9001; 
+        }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -121,9 +145,16 @@
         .glow-active-blue { background: var(--neon-blue) !important; color: black !important; box-shadow: 0 0 25px var(--neon-blue); }
         .glow-active-red { background: var(--neon-pink) !important; color: white !important; box-shadow: 0 0 25px var(--neon-pink); }
 
-        .sound-toggle { position: fixed; top: 20px; right: 20px; z-index: 7005; background: rgba(0,0,0,0.5); color: var(--neon-green); cursor: pointer; font-family: var(--font-title); font-size: 1.5rem; text-transform: uppercase; padding: 5px 15px; border: 1px solid var(--neon-green); backdrop-filter: blur(4px); padding-top: 8px; display: none; pointer-events: auto; }
+        .sound-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 9005;
+            background: rgba(0,0,0,0.5); color: var(--neon-green);
+            cursor: pointer; font-family: var(--font-title); font-size: 1.5rem;
+            text-transform: uppercase; padding: 5px 15px; 
+            border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
+            padding-top: 8px; display: none; pointer-events: auto;
+        }
 
-        .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 7000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
+        .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
         .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
@@ -131,19 +162,25 @@
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
 
-        .floating-msg { position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold; pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 8000; font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap; }
+        .floating-msg { position: fixed; color: var(--neon-green); font-size: 1.5rem; font-weight: bold; pointer-events: none; animation: floatAndFade 1.2s forwards; z-index: 9990; font-family: var(--font-title); text-shadow: 2px 2px 0px black; white-space: nowrap; }
         @keyframes floatAndFade { 0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); } 100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); } }
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
 
-        /* FEEDS */
+        /* ========================
+           4. FEEDS (SCROLLABLE)
+           ======================== */
         #feed, #image-feed {
-            overflow-y: auto !important; -webkit-overflow-scrolling: touch; touch-action: pan-y;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
             z-index: 3000;
+            display: none; 
         }
         
-        #feed.active { display: block !important; }
-        #image-feed.active { display: flex !important; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+        #feed.active { display: block; }
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
         /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
@@ -169,17 +206,21 @@
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
         /* MODALS */
-        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 8000; display: none; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9500; display: none; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .image-modal.active { display: flex; opacity: 1; pointer-events: auto; }
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
         .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); animation: text-flicker 2s infinite; pointer-events: none; width: 100%; text-align: center; }
         
-        .close-modal { position: absolute; top: 20px; right: 20px; z-index: 8001; border: 1px solid var(--neon-green); background: rgba(0,0,0,0.5); color: red; font-size: 1.5rem; padding: 5px 15px; cursor: pointer; backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; }
+        .close-modal { 
+            position: absolute; top: 20px; right: 20px; z-index: 9501;
+            border: 1px solid var(--neon-green); background: rgba(0,0,0,0.5);
+            color: red; font-size: 1.5rem; padding: 5px 15px; cursor: pointer; backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+        }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9000; display: none; flex-direction: column; justify-content: center; align-items: center; }
+        .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9500; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .contact-modal.active { display: flex; animation: fadeIn 0.3s; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
         .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
@@ -202,33 +243,44 @@
     </svg>
 
     <!-- 1. INTRO -->
-    <div id="intro-layer" class="layer intro-layer active">
+    <div id="intro-layer" class="intro-layer layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
-            <div id="enter-btn" class="center-box">
+            <div class="center-box" onclick="handleNavigation('bio')">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
     </div>
 
-    <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer bio-layer">
+    <!-- 2. BIO LAYER (MODIFIE TON TEXTE ICI) -->
+    <div id="bio-layer" class="bio-layer layer">
         <div class="bio-content">
+            
+            <!-- TITRE -->
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
+            
+            <!-- PARAGRAPHE 1 -->
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
             <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            
+            <!-- SOUS-TEXTE GRIS -->
             <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
+            
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
             <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
+            
             <div style="height: 10px;"></div>
+            
+            <!-- PARAGRAPHE 2 -->
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
-            <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
+            
+            <!-- CLIGNOTANT -->
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
-            <button id="image-access-btn" class="choice-btn btn-images">IMAGES</button>
-            <button id="video-access-btn" class="choice-btn btn-videos">VIDÉOS</button>
+            <button class="choice-btn btn-images" onclick="handleNavigation('image-feed')">IMAGES</button>
+            <button class="choice-btn btn-videos" onclick="handleNavigation('feed')">VIDÉOS</button>
         </div>
     </div>
 
@@ -312,8 +364,9 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
-        <!-- REMPLACE TON_CODE_ICI PAR TON LIEN FORMSPREE -->
-        <form action="https://formspree.io/f/TON_CODE_ICI" method="POST" class="contact-form">
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
+        <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
             <textarea name="message" placeholder="RACONTE-MOI TOUT..." rows="5" class="contact-msg" required></textarea>
@@ -322,58 +375,26 @@
     </div>
 
     <script>
-        // --- CENTRAL NAVIGATION & HISTORY CONTROLLER ---
-        // Le coeur du système pour éviter les écrans noirs
-        
+        // --- GESTION NAVIGATION ---
         window.history.replaceState({page: 'intro'}, "", "");
 
-        function navigateTo(targetId) {
-            // Push state d'abord
-            history.pushState({page: targetId}, "", "");
-            renderPage(targetId);
-        }
-
-        function renderPage(targetId) {
-            // 1. Hide EVERYTHING first
-            document.querySelectorAll('.layer').forEach(el => {
+        function handleNavigation(targetId) {
+            // 1. Masquer tout par défaut
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
-            document.getElementById('ui-layer').classList.remove('active');
-            document.getElementById('image-modal').classList.remove('active');
-            document.getElementById('contact-modal').classList.remove('active');
 
-            // 2. Resolve Target & Display Logic
-            let elToShow = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            // 2. Affichage ciblé
+            const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // Si c'est un modal (contact/image), on garde le fond (feed ou image-feed)
-            if (targetId === 'contact' || targetId === 'image-modal') {
-                // On ne cache pas tout si on ouvre un modal, on laisse le fond actuel visible
-                // Mais pour simplifier, ici on les traite comme des layers overlay
-                if(targetId === 'contact') document.getElementById('contact-modal').classList.add('active');
-                if(targetId === 'image-modal') document.getElementById('image-modal').classList.add('active');
-                return; // Stop ici pour les modals
-            }
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'feed') target.style.display = 'block';
+            else target.style.display = 'flex';
 
-            // Affichage spécifique
-            if (targetId === 'image-feed') {
-                elToShow.style.display = 'flex'; // Important pour centrer contenu
-                startM(imageFinalMatrix);
-            } else if (targetId === 'feed') {
-                elToShow.style.display = 'block'; // Important pour scroll
-                const v = elToShow.querySelector('video');
-                if(v) { v.muted=true; v.play().catch(e=>{}); }
-                initObserver();
-            } else {
-                elToShow.style.display = 'flex'; // Intro/Bio
-            }
+            setTimeout(() => target.classList.add('active'), 10);
 
-            // Force reflow and activate
-            void elToShow.offsetWidth;
-            elToShow.classList.add('active');
-
-            // 3. UI Management
+            // 3. Gestion UI Layer
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -382,55 +403,30 @@
                 ui.style.display = 'block';
                 setTimeout(() => ui.classList.add('active'), 10);
                 
-                if (targetId === 'feed') {
+                if(targetId === 'feed') {
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
+                    const v = document.querySelector('#feed video');
+                    if(v) { v.muted=true; v.play().catch(e=>{}); }
+                    initObserver(); 
                 } else {
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
+                    startM(imageFinalMatrix);
                 }
             } else {
-                ui.style.display = 'none';
                 ui.classList.remove('active');
+            }
+
+            if (!history.state || history.state.page !== targetId) {
+                history.pushState({page: targetId}, "", "");
             }
         }
 
-        // Handle Browser Back/Forward
         window.addEventListener('popstate', function(event) {
             const page = event.state ? event.state.page : 'intro';
-            renderPage(page);
-        });
-
-
-        // --- EVENT LISTENERS (CLICK) ---
-        // Intro Button
-        document.getElementById('enter-btn').addEventListener('click', function() {
-            const intro = document.getElementById('intro-layer');
-            intro.classList.add('glitch-out');
-            stopM(introMatrix);
-            setTimeout(() => {
-                intro.classList.remove('glitch-out');
-                navigateTo('bio'); // Use central nav
-            }, 400);
-        });
-
-        // Bio Buttons
-        document.getElementById('video-access-btn').addEventListener('click', function() {
-            const bio = document.getElementById('bio-layer');
-            bio.classList.add('glitch-out');
-            setTimeout(() => {
-                bio.classList.remove('glitch-out');
-                navigateTo('feed');
-            }, 400);
-        });
-
-        document.getElementById('image-access-btn').addEventListener('click', function() {
-            const bio = document.getElementById('bio-layer');
-            bio.classList.add('glitch-out');
-            setTimeout(() => {
-                bio.classList.remove('glitch-out');
-                navigateTo('image-feed');
-            }, 400);
+            if(page === 'intro') { document.getElementById('intro-layer').style.display='flex'; setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10); }
+            else handleNavigation(page);
         });
 
 
@@ -444,7 +440,7 @@
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX ENGINE ---
+        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -495,7 +491,6 @@
         function openContactForm(e) {
             e.preventDefault();
             document.getElementById('contact-modal').classList.add('active');
-            // Pas de pushState ici pour simplifier, c'est un overlay
         }
         function closeContactForm() {
             document.getElementById('contact-modal').classList.remove('active');
@@ -508,9 +503,11 @@
             const img = document.getElementById('full-img');
             currentImgIndex = 0; img.src = currentGallery[0];
             document.getElementById('image-modal').classList.add('active');
+            history.pushState({page: 'image-modal'}, "", "");
         }
         function closeImageModal() { 
             document.getElementById('image-modal').classList.remove('active');
+            history.back();
         }
         function nextImageStep() {
             const img = document.getElementById('full-img'); img.classList.add('anim-bump');
@@ -522,8 +519,7 @@
         function turnOffTv() {
             document.body.classList.add('turn-off-anim');
             setTimeout(() => {
-                // RESET TOTAL
-                window.location.reload(); // Le plus sûr pour tout nettoyer
+                window.location.reload(); 
             }, 600); 
         }
 
