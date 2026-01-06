@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Work du Jeez</title>
     
-    <!-- IMPORT DES NOUVELLES POLICES (Teko + Chakra Petch) -->
+    <!-- IMPORTS FONTS GOOGLE -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Rubik 80s Fade (Titres) + Share Tech Mono (Textes style technique) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+80s+Fade&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -16,12 +17,12 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            --black: #050505; /* Noir très légèrement teinté pour la profondeur */
+            --black: #050505;
             --white: #ffffff;
             
             /* DEFINITION DES FONTS */
-            --font-title: 'Teko', sans-serif;       /* Pour les gros titres */
-            --font-text: 'Chakra Petch', sans-serif; /* Pour le texte courant */
+            --font-title: 'Rubik 80s Fade', cursive;  /* Titres et Boutons */
+            --font-text: 'Share Tech Mono', monospace; /* Texte Bio (Style Lubrifont/Tech) */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,7 +30,7 @@
         body {
             background-color: var(--black);
             color: var(--white);
-            font-family: var(--font-text); /* Par défaut Chakra Petch */
+            font-family: var(--font-text);
             overflow: hidden; 
             width: 100vw; height: 100vh;
         }
@@ -81,10 +82,11 @@
             100% { transform: translateX(-50%) translateY(-35px); }
         }
 
+        /* Matrix sous le bouton */
         #matrix-canvas {
             position: absolute; top: 80px; left: 0;
             width: 320px; height: 60vh;
-            z-index: 5; pointer-events: none; opacity: 0.6;
+            z-index: 5; pointer-events: none; opacity: 0.8; /* Plus visible en vert */
             -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
             mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
         }
@@ -99,18 +101,17 @@
         }
         .center-text {
             color: var(--white); 
-            font-family: var(--font-title); /* FONT BRUTALIST */
-            font-size: 3.5rem; /* Plus gros avec Teko */
-            letter-spacing: 1px; margin: 0; pointer-events: none; transition: 0.3s;
+            font-family: var(--font-title); /* RUBIK 80s */
+            font-size: 2.2rem; /* Ajusté pour Rubik */
+            letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s;
             line-height: 1;
-            padding-top: 5px; /* Ajustement optique pour Teko */
         }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
 
         /* ========================
-           2. BIO LAYER (Nouvelles Fonts)
+           2. BIO LAYER
            ======================== */
         .bio-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -132,38 +133,36 @@
         }
 
         .bio-text {
-            font-family: var(--font-text); /* FONT CYBERPUNK */
+            font-family: var(--font-text); /* SHARE TECH MONO */
             text-transform: uppercase; 
-            line-height: 1.3;
+            line-height: 1.4;
             letter-spacing: 1px;
-            font-weight: 600; /* Un peu plus gras pour la lisibilité */
+            font-size: 1.1rem; /* Taille de base */
         }
+        /* Mobile adjustment */
+        @media (max-width: 600px) { .bio-text { font-size: 4vw; } }
 
         .bio-title {
-            font-family: var(--font-title); /* FONT BRUTALIST */
-            font-size: 15vw; /* Très gros sur mobile */
+            font-family: var(--font-title); /* RUBIK 80s */
+            font-size: 3.5rem; 
             color: var(--neon-green);
             margin-bottom: 5px;
-            line-height: 0.9;
+            line-height: 1;
             text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
         }
-        @media (min-width: 600px) { .bio-title { font-size: 5rem; } }
+        @media (max-width: 600px) { .bio-title { font-size: 12vw; } }
 
-        .bio-p {
-            font-size: 4.5vw; 
-            color: var(--white);
-            margin: 0;
-        }
-        @media (min-width: 600px) { .bio-p { font-size: 1.3rem; } }
+        .bio-p { color: var(--white); margin: 0; }
 
+        /* Le texte "Fais ton choix" */
         .flicker-text {
-            font-family: var(--font-title); /* Style titre pour l'appel à l'action */
+            font-family: var(--font-title); /* Style titre */
             color: var(--white);
-            font-size: 8vw;
-            margin-top: 10px;
+            font-size: 2rem;
+            margin-top: 15px;
             animation: text-flicker 3s infinite alternate;
         }
-        @media (min-width: 600px) { .flicker-text { font-size: 2.5rem; } }
+        @media (max-width: 600px) { .flicker-text { font-size: 8vw; } }
 
         @keyframes text-flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; }
@@ -175,27 +174,29 @@
         }
 
         .choice-btn {
-            padding: 10px 5px;
+            padding: 12px 10px;
             width: 45%; max-width: 180px; 
-            font-family: var(--font-title); /* FONT BRUTALIST */
-            font-size: 2.2rem; /* Teko est petit, on grossit */
+            font-family: var(--font-title); /* RUBIK 80s */
+            font-size: 1.5rem; /* Taille réduite demandée */
             background: black; border: 2px solid;
             cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 1px;
+            text-transform: uppercase; letter-spacing: 2px;
             color: white;
-            animation: constant-shake 0.2s infinite; 
+            /* Animation Flottement Lent */
+            animation: float-shake 3s ease-in-out infinite; 
             line-height: 1;
-            padding-top: 8px; /* Ajustement Teko */
         }
 
-        @keyframes constant-shake {
-            0% { transform: translate(0, 0); } 25% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); } 75% { transform: translate(-1px, 1px); }
-            100% { transform: translate(1px, -1px); }
+        /* Animation Flottement/Lévitation (Lent) */
+        @keyframes float-shake {
+            0% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-3px) rotate(1deg); }
+            66% { transform: translateY(3px) rotate(-1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
         }
         
-        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); animation-duration: 0.25s; }
-        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-duration: 0.2s; }
+        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); animation-delay: 0s; }
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; /* Décalage */ }
 
 
         /* ========================
@@ -233,7 +234,7 @@
         .sound-toggle {
             position: fixed; top: 20px; right: 20px; z-index: 100;
             background: rgba(0,0,0,0.5); color: var(--neon-green);
-            cursor: pointer; font-family: var(--font-title); font-size: 1.8rem; /* Teko */
+            cursor: pointer; font-family: var(--font-title); font-size: 1.2rem;
             text-transform: uppercase; letter-spacing: 2px; padding: 5px 15px;
             border: 1px solid var(--neon-green); backdrop-filter: blur(4px);
             padding-top: 8px;
@@ -248,7 +249,7 @@
         .ui-visible .fixed-eye-container { opacity: 1; pointer-events: auto; }
 
         .static-hd-text {
-            color: var(--white); font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 1px;
+            color: var(--white); font-family: var(--font-title); font-size: 1.2rem; letter-spacing: 1px;
             margin-bottom: 5px; text-shadow: 2px 2px 0px #000;
         }
         .eye-btn-main {
@@ -300,10 +301,6 @@
             border-bottom: 1px solid #111;
             overflow: hidden;
         }
-        /* INFO SUR VIDEO (OPTIONNEL SI TU VEUX DU TEXTE) */
-        .info-overlay h2 { font-family: var(--font-title); }
-        .info-overlay p { font-family: var(--font-text); }
-
         video {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -370,7 +367,7 @@
     <div class="bio-layer" id="bio-layer">
         
         <div class="bio-content">
-            <h1 class="bio-text bio-title">BIENVENUE SUR MON FEED !</h1>
+            <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             
             <p class="bio-text bio-p">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
             <p class="bio-text bio-p">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
@@ -378,13 +375,12 @@
             <p class="bio-text bio-p">OPTIMISÉ AVEC DE L'I.A</p>
             <p class="bio-text bio-p" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             
-            <!-- Espaceur visuel -->
             <div style="height: 10px;"></div>
             
             <p class="bio-text bio-p">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text bio-p">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
             
-            <p class="flicker-text">EN ATTENDANT FAIS TON CHOIX !</p>
+            <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
 
         <div class="choice-container">
@@ -477,7 +473,7 @@
         function drawMatrix() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ffffff'; 
+            ctx.fillStyle = '#39ff14'; /* VERT NEON */
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
                 const text = characters.charAt(Math.floor(Math.random() * characters.length));
