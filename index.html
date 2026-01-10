@@ -126,6 +126,8 @@
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
+        
+        /* CORRECTION DU BOUTON INTRO : AJOUT ID */
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
@@ -138,21 +140,13 @@
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        
-        /* Titre Bio avec Glow Précieux */
-        .bio-title { 
-            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
-            animation: precious-glow 4s ease-in-out infinite; 
-        }
+        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; animation: precious-glow 4s ease-in-out infinite; }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
-        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        
-        /* COULEURS DES BOUTONS BIO */
         .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
         .btn-images:hover { background-color: var(--bio-red); color: white; }
         .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
@@ -161,13 +155,9 @@
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
-        #ui-layer { 
-            z-index: 9000; /* TRÈS HAUT POUR ÊTRE AU DESSUS DES IMAGES */
-            pointer-events: none; display: none;
-        }
+        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        /* FLÈCHE SCROLL (GAUCHE) */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -175,14 +165,11 @@
         }
         #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
-        /* Sidebar (droite) */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
-            pointer-events: auto; /* Active les clics sur les boutons */
-            z-index: 9001; 
+            pointer-events: auto; z-index: 9001; 
         }
-        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -227,11 +214,9 @@
             z-index: 3000;
             display: none; 
         }
-        
         #feed.active { display: block; }
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
-        /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
         .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
@@ -239,7 +224,6 @@
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* IMAGE ITEMS */
         .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
         .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
@@ -258,11 +242,7 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        /* Animation Rare Flash sur le mot entier */
-        .btn-final-devis .center-text { 
-            color: var(--neon-green); 
-            animation: rare-flash 6s infinite;
-        }
+        .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
         
         .btn-final-off { 
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
@@ -289,7 +269,7 @@
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
-        /* CONTACT MODAL (Z-INDEX 10000 POUR ÊTRE AU DESSUS DE TOUT) */
+        /* CONTACT MODAL */
         .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .contact-modal.active { display: flex; animation: fadeIn 0.3s; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
@@ -317,7 +297,7 @@
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
-            <div class="center-box" onclick="handleNavigation('bio')">
+            <div id="enter-btn" class="center-box"> <!-- ID REMIS ICI -->
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
@@ -338,8 +318,8 @@
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
-            <button class="choice-btn btn-images" onclick="handleNavigation('image-feed')">IMAGES</button>
-            <button class="choice-btn btn-videos" onclick="handleNavigation('feed')">VIDÉOS</button>
+            <button id="image-access-btn" class="choice-btn btn-images">IMAGES</button>
+            <button id="video-access-btn" class="choice-btn btn-videos">VIDÉOS</button>
         </div>
     </div>
 
@@ -347,7 +327,6 @@
     <div id="ui-layer" class="ui-layer">
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
-        <!-- FLÈCHE DE SCROLL (GAUCHE) -->
         <div id="scroll-hint" style="position: fixed; left: 15px; bottom: 35%; opacity: 0; pointer-events: none; color: var(--neon-green); z-index: 7000;">
             <svg viewBox="0 0 24 24" style="width:40px; height:40px; fill:currentColor; filter: drop-shadow(0 0 5px var(--neon-green));"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
         </div>
@@ -429,8 +408,6 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
-        
-        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -512,7 +489,36 @@
             else handleNavigation(page);
         });
 
-        // --- PRELOAD ---
+        // --- EVENTS CLICK ---
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            const intro = document.getElementById('intro-layer');
+            intro.classList.add('glitch-out');
+            stopM(introMatrix);
+            setTimeout(() => {
+                intro.classList.remove('glitch-out');
+                handleNavigation('bio');
+            }, 400);
+        });
+
+        document.getElementById('video-access-btn').addEventListener('click', function() {
+            const bio = document.getElementById('bio-layer');
+            bio.classList.add('glitch-out');
+            setTimeout(() => {
+                bio.classList.remove('glitch-out');
+                handleNavigation('feed');
+            }, 400);
+        });
+
+        document.getElementById('image-access-btn').addEventListener('click', function() {
+            const bio = document.getElementById('bio-layer');
+            bio.classList.add('glitch-out');
+            setTimeout(() => {
+                bio.classList.remove('glitch-out');
+                handleNavigation('image-feed');
+            }, 400);
+        });
+
+        // --- PRELOAD & MATRIX & ANIMATIONS ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
@@ -522,7 +528,6 @@
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -582,11 +587,8 @@
         function closeContactForm() {
             document.getElementById('contact-modal').classList.remove('active');
             // Restaurer le bouton son si on est dans le feed (sauf si on est sur la section finale)
-            // Mais l'observer s'en chargera au scroll, pour l'instant on le laisse caché ou on check l'état
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) {
-                // Check si on est à la fin ou pas n'est pas facile ici, 
-                // on le remet, l'observer le cachera si on est en bas au prochain scroll
                 document.getElementById('sound-btn').style.display = 'block';
             }
         }
@@ -635,12 +637,21 @@
                             // CACHER LE SON QUAND ON ARRIVE EN BAS
                             soundBtn.style.opacity = '0';
                             setTimeout(() => soundBtn.style.display = 'none', 300);
+                            scrollHint.style.opacity = '0';
+                            if(scrollHintInterval) clearInterval(scrollHintInterval);
                         }
                         else { 
                             stopM(videoFinalMatrix); 
                             // REAFFICHER LE SON QUAND ON REMONTE
                             soundBtn.style.display = 'block';
                             setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            // Relance boucle flèche
+                            if(scrollHintInterval) clearInterval(scrollHintInterval);
+                            scrollHintInterval = setInterval(() => {
+                                scrollHint.classList.remove('play-anim');
+                                void scrollHint.offsetHeight;
+                                scrollHint.classList.add('play-anim');
+                            }, 5000);
                         }
                         return;
                     }
