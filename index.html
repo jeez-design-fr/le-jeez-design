@@ -14,13 +14,10 @@
         :root {
             --neon-green: #39ff14;
             --neon-purple: #bc13fe;
-            --neon-pink: #ff007f;
-            --neon-blue: #00f3ff;
-            --bio-red: #ff0000;
-            --bio-blue: #003dff;
+            --neon-pink: #ff007f; /* COULEUR COEUR */
+            --neon-blue: #00f3ff; /* COULEUR MAIL */
             --black: #000000;
             --white: #ffffff;
-            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -33,7 +30,7 @@
             font-family: var(--font-text);
             overflow: hidden; 
             width: 100vw; height: 100vh;
-            position: fixed; /* Anti-rebond iOS */
+            position: fixed;
         }
 
         /* --- ANIMATIONS GLOBALES --- */
@@ -103,18 +100,21 @@
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; 
-            opacity: 0; 
-            transition: opacity 0.4s ease;
+            display: none; opacity: 0; transition: opacity 0.4s ease;
             z-index: 10;
         }
-        
-        .layer.active {
-            opacity: 1;
-            pointer-events: auto;
-            display: flex; /* Flex par défaut pour centrage */
-            z-index: 100;
+        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
+
+        /* Feeds scrollables */
+        #feed, #image-feed {
+            display: none; 
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; 
+            touch-action: pan-y;
         }
+        #feed.active { display: block; } 
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+
 
         /* ========================
            1. INTRO
@@ -136,23 +136,32 @@
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; animation: precious-glow 4s ease-in-out infinite; }
+        
+        .bio-title { 
+            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
+            animation: precious-glow 4s ease-in-out infinite; 
+        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
+        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
-        .btn-images:hover { background-color: var(--bio-red); color: white; }
-        .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
-        .btn-videos:hover { background-color: var(--bio-blue); color: white; }
+        
+        /* BOUTON IMAGES (Comme le COEUR - Neon Pink) */
+        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
+        .btn-images:hover { background-color: var(--neon-pink); color: white; }
+        
+        /* BOUTON VIDEOS (Comme le MAIL - Neon Blue) */
+        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
+        .btn-videos:hover { background-color: var(--neon-blue); color: black; /* Texte noir sur Cyan pour lisibilité */ }
 
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
         #ui-layer { 
-            z-index: 9000; pointer-events: none; display: none; /* CACHÉ PAR DÉFAUT */
+            z-index: 9000; pointer-events: none; display: none;
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
@@ -169,6 +178,7 @@
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
             pointer-events: auto; z-index: 9001; 
         }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -214,8 +224,8 @@
             display: none; 
         }
         
-        #feed.active { display: block; } /* VIDEO = BLOCK */
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; } /* IMAGE = FLEX */
+        #feed.active { display: block; }
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
         /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
@@ -244,7 +254,14 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
+        .btn-final-devis .center-text { 
+            color: var(--neon-green); 
+            animation: rare-flash 6s infinite;
+        }
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
         
         .btn-final-off { 
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
@@ -310,10 +327,10 @@
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
+            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄‍♂️✨</p>
+            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -326,12 +343,12 @@
     </div>
 
     <!-- UI LAYER -->
-    <div id="ui-layer">
+    <div id="ui-layer" class="ui-layer">
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
         <!-- FLÈCHE DE SCROLL (GAUCHE) -->
-        <div id="scroll-hint">
-            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        <div id="scroll-hint" style="position: fixed; left: 15px; bottom: 35%; opacity: 0; pointer-events: none; color: var(--neon-green); z-index: 7000;">
+            <svg viewBox="0 0 24 24" style="width:40px; height:40px; fill:currentColor; filter: drop-shadow(0 0 5px var(--neon-green));"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
         </div>
 
         <div class="fixed-sidebar">
@@ -411,6 +428,8 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -426,23 +445,21 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
-            // Reset ALL layers
-            document.querySelectorAll('.layer').forEach(el => {
+            // Reset
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
 
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // Set correct display type
             if (targetId === 'image-feed') target.style.display = 'flex';
             else if (targetId === 'feed') target.style.display = 'block';
             else target.style.display = 'flex';
 
             setTimeout(() => target.classList.add('active'), 10);
 
-            // GESTION UI LAYER VISIBILITY
+            // GESTION UI LAYER
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -456,7 +473,7 @@
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
                     
-                    // Trigger Arrow Anim
+                    // FLÈCHE SCROLL
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
@@ -472,7 +489,6 @@
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
                     initObserver(); 
                 } else {
-                    // Image Feed: Cache Son, Cache Oeil, Cache Fleche
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
@@ -593,8 +609,6 @@
             document.getElementById('contact-modal').classList.remove('active');
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) {
-                // Restore sound btn only if we are in video feed and not at the end
-                // Simplified: restore it, observer will hide it if needed
                 document.getElementById('sound-btn').style.display = 'block';
             }
         }
@@ -636,20 +650,23 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // FINAL SECTION LOGIC
+                    // SI C'EST LA SECTION FINALE
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
-                            // Hide UI elements at the bottom
-                            soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
+                            // CACHER LE SON QUAND ON ARRIVE EN BAS
+                            soundBtn.style.opacity = '0';
+                            setTimeout(() => soundBtn.style.display = 'none', 300);
                             scrollHint.style.opacity = '0';
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
-                        } else { 
+                        }
+                        else { 
                             stopM(videoFinalMatrix); 
-                            // Restore UI elements when leaving bottom
-                            soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            // Restart scroll hint loop
+                            // REAFFICHER LE SON QUAND ON REMONTE
+                            soundBtn.style.display = 'block';
+                            setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            // Relance boucle flèche
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
                             scrollHintInterval = setInterval(() => {
                                 scrollHint.classList.remove('play-anim');
