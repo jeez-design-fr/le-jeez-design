@@ -16,6 +16,8 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
+            --bio-red: #ff0000;
+            --bio-blue: #003dff;
             --black: #000000;
             --white: #ffffff;
             --font-title: 'Bebas Neue', sans-serif;
@@ -33,7 +35,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -60,41 +62,50 @@
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-        /* --- ANIMATION CLIGNEMENT OEIL --- */
+        /* Animation GLOW PRECIEUX (Bio Titre) */
+        @keyframes precious-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
+            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
+        }
+
+        /* Animation RARE FLASH (Devis) */
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
+
+        /* Animation CLIGNEMENT ŒIL */
         @keyframes eye-blink {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
         }
-        .blink-now { 
-            transform-origin: center; 
-            animation: eye-blink 0.2s linear; 
+        .blink-now { transform-origin: center; animation: eye-blink 0.2s linear; }
+
+        /* Animation FLOTTEMENT TEXTE HD */
+        @keyframes float-text {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
-        /* --- ANIMATION FLÈCHE SCROLL --- */
-        @keyframes scroll-hint-flow {
+        /* Animation FLÈCHE SCROLL */
+        @keyframes scroll-hint-anim {
             0% { opacity: 0; transform: translateY(-20px); }
             20% { opacity: 1; transform: translateY(0); }
             80% { opacity: 1; transform: translateY(20px); }
             100% { opacity: 0; transform: translateY(40px); }
         }
+        .play-anim { animation: scroll-hint-anim 2s ease-in-out forwards; }
+
 
         /* ========================
            SYSTEME DE LAYERS
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; 
-            opacity: 0; 
-            transition: opacity 0.4s ease;
+            display: none; opacity: 0; transition: opacity 0.4s ease;
             z-index: 10;
         }
-        
-        .layer.active {
-            opacity: 1;
-            pointer-events: auto;
-            display: flex;
-            z-index: 100;
-        }
+        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
 
         /* Feeds scrollables */
         #feed, #image-feed {
@@ -133,10 +144,6 @@
             font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
             animation: precious-glow 4s ease-in-out infinite; 
         }
-        @keyframes precious-glow {
-            0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
-            50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
-        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
         
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
@@ -144,8 +151,12 @@
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        .btn-images { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
-        .btn-videos { border-color: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); animation-delay: 1.5s; }
+        
+        /* COULEURS DES BOUTONS BIO */
+        .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
+        .btn-images:hover { background-color: var(--bio-red); color: white; }
+        .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
+        .btn-videos:hover { background-color: var(--bio-blue); color: white; }
 
         /* ========================
            3. UI LAYER (SIDEBAR)
@@ -156,7 +167,7 @@
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        /* Flèche de Scroll (gauche) */
+        /* FLÈCHE SCROLL (GAUCHE) */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -195,7 +206,7 @@
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
-        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
+        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; animation: float-text 3s ease-in-out infinite; }
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
@@ -250,11 +261,7 @@
         /* Animation Rare Flash sur le mot entier */
         .btn-final-devis .center-text { 
             color: var(--neon-green); 
-            animation: rare-flash 6s infinite; /* Clignote toutes les 6s */
-        }
-        @keyframes rare-flash {
-            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            93%, 95% { opacity: 0.3; text-shadow: none; }
+            animation: rare-flash 6s infinite;
         }
         
         .btn-final-off { 
@@ -306,7 +313,7 @@
     </svg>
 
     <!-- 1. INTRO -->
-    <div id="intro-layer" class="intro-layer layer active">
+    <div id="intro-layer" class="layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
@@ -317,14 +324,14 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="bio-layer layer">
+    <div id="bio-layer" class="layer bio-layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
+            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄‍♂️✨</p>
+            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -367,11 +374,11 @@
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtu.be/BrlSj83gMP4"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video></section>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtu.be/BrlSj83gMP4"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video></section>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/"><video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtu.be/q47H3s7y_C4?si=hVd__IjLCEqWBi97"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video></section>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video></section>
         <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video></section>
 
         <!-- SECTION FINALE (VIDEO) -->
@@ -422,6 +429,8 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -434,7 +443,10 @@
         // --- GESTION NAVIGATION ---
         window.history.replaceState({page: 'intro'}, "", "");
 
+        let scrollHintInterval;
+
         function handleNavigation(targetId) {
+            // Reset
             document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
                 if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
@@ -466,6 +478,13 @@
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
+                    
+                    if(scrollHintInterval) clearInterval(scrollHintInterval);
+                    scrollHintInterval = setInterval(() => {
+                        scrollHint.classList.remove('play-anim');
+                        void scrollHint.offsetHeight;
+                        scrollHint.classList.add('play-anim');
+                    }, 5000);
 
                     const v = document.querySelector('#feed video');
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
@@ -474,6 +493,7 @@
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
+                    if(scrollHintInterval) clearInterval(scrollHintInterval);
                     startM(imageFinalMatrix);
                 }
             } else {
@@ -492,16 +512,17 @@
             else handleNavigation(page);
         });
 
-        // --- PRELOAD & MATRIX & ANIMATIONS (Identique précédent) ---
+        // --- PRELOAD ---
         const galleries = {
-            1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp'],
-            2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp'],
+            1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
+            2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
             3: ['img3_1.webp', 'img3_2.webp', 'img3_3.webp', 'img3_4.webp', 'img3_5.webp'],
-            4: ['img4_1.webp', 'img4_2.webp', 'img4_3.webp', 'img4_4.webp'],
+            4: ['img4_1.webp', 'img4_2.webp', 'img4_3.webp', 'img4_4.webp', 'img4_5.webp'],
             5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp']
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
+        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -550,34 +571,80 @@
             document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
         }
 
-        function openContactForm(e) { e.preventDefault(); document.getElementById('contact-modal').classList.add('active'); const soundBtn = document.getElementById('sound-btn'); if(soundBtn) soundBtn.style.display = 'none'; }
-        function closeContactForm() { document.getElementById('contact-modal').classList.remove('active'); const feed = document.getElementById('feed'); if(feed.classList.contains('active')) { document.getElementById('sound-btn').style.display = 'block'; } }
+        // --- CONTACT ---
+        function openContactForm(e) {
+            e.preventDefault();
+            document.getElementById('contact-modal').classList.add('active');
+            // Cacher le bouton son quand le contact est ouvert pour éviter conflit
+            const soundBtn = document.getElementById('sound-btn');
+            if(soundBtn) soundBtn.style.display = 'none';
+        }
+        function closeContactForm() {
+            document.getElementById('contact-modal').classList.remove('active');
+            // Restaurer le bouton son si on est dans le feed (sauf si on est sur la section finale)
+            // Mais l'observer s'en chargera au scroll, pour l'instant on le laisse caché ou on check l'état
+            const feed = document.getElementById('feed');
+            if(feed.classList.contains('active')) {
+                // Check si on est à la fin ou pas n'est pas facile ici, 
+                // on le remet, l'observer le cachera si on est en bas au prochain scroll
+                document.getElementById('sound-btn').style.display = 'block';
+            }
+        }
 
+        // --- IMAGES LOGIC ---
         let currentImgIndex = 0; let currentGallery = [];
-        function openImageModal(id) { currentGallery = galleries[id]; const img = document.getElementById('full-img'); currentImgIndex = 0; img.src = currentGallery[0]; document.getElementById('image-modal').classList.add('active'); history.pushState({page: 'image-modal'}, "", ""); }
-        function closeImageModal() { document.getElementById('image-modal').classList.remove('active'); history.back(); }
-        function nextImageStep() { const img = document.getElementById('full-img'); img.classList.add('anim-bump'); setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); setTimeout(() => { img.classList.remove('anim-bump'); }, 250); }
+        function openImageModal(id) {
+            currentGallery = galleries[id];
+            const img = document.getElementById('full-img');
+            currentImgIndex = 0; img.src = currentGallery[0];
+            document.getElementById('image-modal').classList.add('active');
+            history.pushState({page: 'image-modal'}, "", "");
+        }
+        function closeImageModal() { 
+            document.getElementById('image-modal').classList.remove('active');
+            history.back();
+        }
+        function nextImageStep() {
+            const img = document.getElementById('full-img'); img.classList.add('anim-bump');
+            setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
+            setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
+        }
 
-        function turnOffTv() { document.body.classList.add('turn-off-anim'); setTimeout(() => { window.location.reload(); }, 600); }
+        // --- RESET TV ---
+        function turnOffTv() {
+            document.body.classList.add('turn-off-anim');
+            setTimeout(() => {
+                window.location.reload(); 
+            }, 600); 
+        }
 
+        // --- OBSERVER (SON DISPARITION) ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
             const soundBtn = document.getElementById('sound-btn');
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // SI C'EST LA SECTION FINALE
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
-                            soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
-                        } else { 
+                            // CACHER LE SON QUAND ON ARRIVE EN BAS
+                            soundBtn.style.opacity = '0';
+                            setTimeout(() => soundBtn.style.display = 'none', 300);
+                        }
+                        else { 
                             stopM(videoFinalMatrix); 
-                            soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            // REAFFICHER LE SON QUAND ON REMONTE
+                            soundBtn.style.display = 'block';
+                            setTimeout(() => soundBtn.style.opacity = '1', 10);
                         }
                         return;
                     }
+
                     const video = entry.target.querySelector('video');
                     if (!video) return;
                     if (entry.isIntersecting) {
@@ -604,4 +671,3 @@
     </script>
 </body>
 </html>
-
