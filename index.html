@@ -20,6 +20,7 @@
             --bio-blue: #003dff;
             --black: #000000;
             --white: #ffffff;
+            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -32,7 +33,7 @@
             font-family: var(--font-text);
             overflow: hidden; 
             width: 100vw; height: 100vh;
-            position: fixed;
+            position: fixed; /* Anti-rebond iOS */
         }
 
         /* --- ANIMATIONS GLOBALES --- */
@@ -102,21 +103,18 @@
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; opacity: 0; transition: opacity 0.4s ease;
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.4s ease;
             z-index: 10;
         }
-        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
-
-        /* Feeds scrollables */
-        #feed, #image-feed {
-            display: none; 
-            overflow-y: auto !important; 
-            -webkit-overflow-scrolling: touch; 
-            touch-action: pan-y;
+        
+        .layer.active {
+            opacity: 1;
+            pointer-events: auto;
+            display: flex; /* Flex par défaut pour centrage */
+            z-index: 100;
         }
-        #feed.active { display: block; } 
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
-
 
         /* ========================
            1. INTRO
@@ -126,8 +124,6 @@
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
-        
-        /* CORRECTION DU BOUTON INTRO : AJOUT ID */
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
@@ -155,9 +151,12 @@
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
-        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
+        #ui-layer { 
+            z-index: 9000; pointer-events: none; display: none; /* CACHÉ PAR DÉFAUT */
+        }
         #ui-layer.active { display: block; opacity: 1; } 
         
+        /* FLÈCHE SCROLL */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -214,9 +213,11 @@
             z-index: 3000;
             display: none; 
         }
-        #feed.active { display: block; }
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+        
+        #feed.active { display: block; } /* VIDEO = BLOCK */
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; } /* IMAGE = FLEX */
 
+        /* VIDEO ITEMS */
         #feed { scroll-snap-type: y mandatory; }
         .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
@@ -224,6 +225,7 @@
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
+        /* IMAGE ITEMS */
         .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
         .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
@@ -297,21 +299,21 @@
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
             <canvas id="matrix-canvas"></canvas>
-            <div id="enter-btn" class="center-box"> <!-- ID REMIS ICI -->
+            <div id="enter-btn" class="center-box">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
             </div>
         </div>
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer bio-layer">
+    <div id="bio-layer" class="layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
+            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
+            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄‍♂️✨</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -324,11 +326,12 @@
     </div>
 
     <!-- UI LAYER -->
-    <div id="ui-layer" class="ui-layer">
+    <div id="ui-layer">
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
-        <div id="scroll-hint" style="position: fixed; left: 15px; bottom: 35%; opacity: 0; pointer-events: none; color: var(--neon-green); z-index: 7000;">
-            <svg viewBox="0 0 24 24" style="width:40px; height:40px; fill:currentColor; filter: drop-shadow(0 0 5px var(--neon-green));"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+        <!-- FLÈCHE DE SCROLL (GAUCHE) -->
+        <div id="scroll-hint">
+            <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
         </div>
 
         <div class="fixed-sidebar">
@@ -423,21 +426,23 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
-            // Reset
-            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
+            // Reset ALL layers
+            document.querySelectorAll('.layer').forEach(el => {
                 el.classList.remove('active');
-                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
+                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
+                else el.style.display = 'none';
             });
 
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
+            // Set correct display type
             if (targetId === 'image-feed') target.style.display = 'flex';
             else if (targetId === 'feed') target.style.display = 'block';
             else target.style.display = 'flex';
 
             setTimeout(() => target.classList.add('active'), 10);
 
-            // GESTION UI LAYER
+            // GESTION UI LAYER VISIBILITY
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -451,7 +456,7 @@
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
                     
-                    // FLÈCHE SCROLL
+                    // Trigger Arrow Anim
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
@@ -467,6 +472,7 @@
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
                     initObserver(); 
                 } else {
+                    // Image Feed: Cache Son, Cache Oeil, Cache Fleche
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
@@ -580,15 +586,15 @@
         function openContactForm(e) {
             e.preventDefault();
             document.getElementById('contact-modal').classList.add('active');
-            // Cacher le bouton son quand le contact est ouvert pour éviter conflit
             const soundBtn = document.getElementById('sound-btn');
             if(soundBtn) soundBtn.style.display = 'none';
         }
         function closeContactForm() {
             document.getElementById('contact-modal').classList.remove('active');
-            // Restaurer le bouton son si on est dans le feed (sauf si on est sur la section finale)
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) {
+                // Restore sound btn only if we are in video feed and not at the end
+                // Simplified: restore it, observer will hide it if needed
                 document.getElementById('sound-btn').style.display = 'block';
             }
         }
@@ -620,32 +626,30 @@
             }, 600); 
         }
 
-        // --- OBSERVER (SON DISPARITION) ---
+        // --- OBSERVER ---
         function initObserver() {
             const sections = document.querySelectorAll('.video-section');
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
             const soundBtn = document.getElementById('sound-btn');
+            const scrollHint = document.getElementById('scroll-hint');
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    // SI C'EST LA SECTION FINALE
+                    // FINAL SECTION LOGIC
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
-                            // CACHER LE SON QUAND ON ARRIVE EN BAS
-                            soundBtn.style.opacity = '0';
-                            setTimeout(() => soundBtn.style.display = 'none', 300);
+                            // Hide UI elements at the bottom
+                            soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
                             scrollHint.style.opacity = '0';
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
-                        }
-                        else { 
+                        } else { 
                             stopM(videoFinalMatrix); 
-                            // REAFFICHER LE SON QUAND ON REMONTE
-                            soundBtn.style.display = 'block';
-                            setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            // Relance boucle flèche
+                            // Restore UI elements when leaving bottom
+                            soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            // Restart scroll hint loop
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
                             scrollHintInterval = setInterval(() => {
                                 scrollHint.classList.remove('play-anim');
