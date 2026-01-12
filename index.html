@@ -93,47 +93,32 @@
 
 
         /* ========================
-           GESTION DES COUCHES (LAYERS)
+           SYSTEME DE LAYERS
            ======================== */
         .layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: none; /* Caché par défaut */
-            opacity: 0; 
-            transition: opacity 0.5s ease;
-            z-index: 100;
+            display: none; opacity: 0; transition: opacity 0.4s ease;
+            z-index: 10;
         }
+        .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
 
-        .layer.active {
-            display: flex; /* Flex par défaut */
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* 1. INTRO LAYER */
-        #intro-layer {
-            background-color: #000;
-            flex-direction: column; justify-content: center; align-items: center;
-            z-index: 5000; /* Toujours au dessus au début */
-        }
-        
+        /* ========================
+           1. INTRO
+           ======================== */
+        #intro-layer { background-color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
-        
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-
-        /* 2. BIO LAYER */
-        #bio-layer {
-            background-color: #000;
-            flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px;
-            z-index: 4000;
-        }
-
+        /* ========================
+           2. BIO
+           ======================== */
+        #bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
@@ -149,43 +134,18 @@
         .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
         .btn-videos:hover { background-color: var(--bio-blue); color: white; }
 
-
-        /* 3. FEEDS (SCROLLABLE) */
-        #feed, #image-feed {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            overflow-y: auto !important; 
-            -webkit-overflow-scrolling: touch; touch-action: pan-y;
-            z-index: 3000;
-            display: none;
-            opacity: 0; transition: opacity 0.5s ease;
+        /* ========================
+           3. UI LAYER (SIDEBAR)
+           ======================== */
+        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
+        #ui-layer.active { display: block; opacity: 1; } 
+        
+        #scroll-hint {
+            position: fixed; left: 15px; bottom: 35%;
+            z-index: 9005; opacity: 0; pointer-events: none;
+            color: var(--neon-green);
         }
-
-        #feed.active { display: block; opacity: 1; pointer-events: auto; }
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; opacity: 1; pointer-events: auto; }
-
-        /* Video Section */
-        #feed { scroll-snap-type: y mandatory; }
-        .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
-        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
-        .video-section.active video { opacity: 1; }
-        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
-        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
-
-        /* Image Section */
-        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
-        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
-        .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
-        .thumb-img { width: 100%; display: block; }
-
-
-        /* 4. UI OVERLAYS (Sidebar, Son) */
-        #ui-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 9000; pointer-events: none;
-            display: none; opacity: 0; transition: opacity 0.5s;
-        }
-        #ui-layer.active { display: block; opacity: 1; }
+        #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
@@ -212,13 +172,6 @@
             transition: opacity 0.3s;
         }
 
-        #scroll-hint {
-            position: fixed; left: 15px; bottom: 35%;
-            z-index: 9005; opacity: 0; pointer-events: none;
-            color: var(--neon-green);
-        }
-        #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
-
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
@@ -231,6 +184,52 @@
         @keyframes floatAndFade { 0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); } 100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); } }
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
+
+        /* ========================
+           4. FEEDS (SCROLLABLE)
+           ======================== */
+        #feed, #image-feed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; touch-action: pan-y;
+            z-index: 3000;
+            display: none; 
+        }
+        
+        #feed.active { display: block; }
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
+
+        /* VIDEO ITEMS */
+        #feed { scroll-snap-type: y mandatory; }
+        .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
+        video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
+        .video-section.active video { opacity: 1; }
+        @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
+        @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
+
+        /* INFO OVERLAY (TITRES VIDÉOS) */
+        .info-overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 20px 80px 40px 20px; /* Padding droite pour éviter sidebar */
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            pointer-events: none; z-index: 2;
+        }
+        .info-overlay h2 {
+            font-family: var(--font-title); font-size: 3rem; color: var(--neon-green);
+            text-shadow: 2px 2px 0px var(--neon-purple); margin-bottom: 5px; transform: skew(-5deg);
+        }
+        .info-overlay p {
+            font-family: var(--font-text); font-size: 1.1rem; max-width: 600px;
+            color: #fff; text-shadow: 1px 1px 2px black; font-weight: 500;
+        }
+
+
+        /* IMAGE ITEMS */
+        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
+        .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
+        .thumb-img { width: 100%; display: block; }
 
         /* FIN */
         .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0; }
@@ -307,14 +306,14 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer">
+    <div id="bio-layer" class="layer bio-layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
+            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
+            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄‍♂️✨</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -355,13 +354,69 @@
 
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
-        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/"><video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video></section>
-        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video></section>
+        
+        <!-- VIDEO 1 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
+            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Bienvenue à la Cour Des Miracles</h2>
+                <p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 2 -->
+        <section class="video-section" data-link="https://youtube.com">
+            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Drag Show au FlashBack !</h2>
+                <p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor, DragQueen</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 3 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
+            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Rêve de gosse chez Warner Bros</h2>
+                <p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle pour Warner Music Group</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 4 -->
+        <section class="video-section" data-link="https://youtube.com">
+            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Entre Scooby-Doo et Mad Max</h2>
+                <p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother", du dessin animé entièrement réalisé par moi même, le groupe voulait une D.A entre Scooby-Doo & Mad Max, ça marche super bien !</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 5 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
+            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Trouble Makers !</h2>
+                <p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom, si l'univers pop culture vous parle il y a d'autres designs superbes sur la page de la dessinatrice @alinetaureau</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 6 -->
+        <section class="video-section" data-link="https://youtube.com">
+            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Caballo ? Tornadooo</h2>
+                <p>Clip de musique réalisé pour mon propre groupe T6 (mon frère et moi devant et derrière la caméra) J'ai aussi réalisé tous les clips sur la chaîne Youtube</p>
+            </div>
+        </section>
+
+        <!-- VIDEO 7 -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
+            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay">
+                <h2>Tekashi Tattoo</h2>
+                <p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo</p>
+            </div>
+        </section>
 
         <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
@@ -426,27 +481,21 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
-            // Reset ALL layers and modals
-            document.querySelectorAll('.layer').forEach(el => {
+            // Reset
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
-            document.getElementById('image-modal').classList.remove('active');
-            document.getElementById('contact-modal').classList.remove('active');
 
-            // Find target layer
-            let elToShow = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // Set correct display type
-            if (targetId === 'image-feed') elToShow.style.display = 'flex';
-            else if (targetId === 'feed') elToShow.style.display = 'block';
-            else elToShow.style.display = 'flex';
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'feed') target.style.display = 'block';
+            else target.style.display = 'flex';
 
-            // Show target
-            setTimeout(() => elToShow.classList.add('active'), 10);
+            setTimeout(() => target.classList.add('active'), 10);
 
-            // Gestion UI Layer
+            // GESTION UI LAYER
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -460,7 +509,7 @@
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
                     
-                    // Trigger Arrow Anim
+                    // FLÈCHE SCROLL
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
@@ -494,18 +543,11 @@
 
         window.addEventListener('popstate', function(event) {
             const page = event.state ? event.state.page : 'intro';
-            if(page === 'intro') { 
-                document.getElementById('intro-layer').style.display='flex'; 
-                setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10);
-                // Hide UI on back to intro
-                document.getElementById('ui-layer').classList.remove('active');
-                document.getElementById('ui-layer').style.display = 'none';
-            }
+            if(page === 'intro') { document.getElementById('intro-layer').style.display='flex'; setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10); }
             else handleNavigation(page);
         });
 
         // --- EVENTS CLICK ---
-        // Intro Button - FIX: Added ID to HTML div, event listener targets ID
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
@@ -603,6 +645,7 @@
             document.getElementById('contact-modal').classList.remove('active');
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) {
+                // Restore sound btn only if we are in video feed
                 document.getElementById('sound-btn').style.display = 'block';
             }
         }
