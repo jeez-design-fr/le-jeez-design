@@ -60,16 +60,9 @@
             100% { transform: translate(0); }
         }
 
-        /* Scintillement Bouton OFF */
         @keyframes neon-flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; }
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
-        }
-        
-        /* Scintillement Mot Devis */
-        @keyframes rare-flash {
-            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            93%, 95% { opacity: 0.3; text-shadow: none; }
         }
 
         /* Animation GLOW PRECIEUX (Bio Titre) */
@@ -78,12 +71,24 @@
             50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
         }
 
+        /* Animation RARE FLASH (Devis) */
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
+
         /* Animation CLIGNEMENT ŒIL */
         @keyframes eye-blink {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
         }
         .blink-now { transform-origin: center; animation: eye-blink 0.2s linear; }
+
+        /* Animation FLOTTEMENT TEXTE HD */
+        @keyframes float-text {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
 
         /* Animation FLÈCHE SCROLL */
         @keyframes scroll-hint-anim {
@@ -185,6 +190,7 @@
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
+        /* FLÈCHE SCROLL */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -192,11 +198,13 @@
         }
         #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
+        /* Sidebar (droite) */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
             pointer-events: auto; z-index: 9001; 
         }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -220,7 +228,7 @@
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
-        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
+        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; animation: float-text 3s ease-in-out infinite; }
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
@@ -229,7 +237,6 @@
         @keyframes floatAndFade { 0% { opacity: 1; transform: translate(-150%, -50%) scale(0.5); } 100% { opacity: 0; transform: translate(-150%, -250%) scale(1.5); } }
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
-
 
         /* ========================
            4. FEEDS (SCROLLABLE)
@@ -290,7 +297,15 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
+        /* Animation Rare Flash sur le mot entier */
+        .btn-final-devis .center-text { 
+            color: var(--neon-green); 
+            animation: rare-flash 6s infinite;
+        }
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
         
         .btn-final-off { 
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
@@ -298,7 +313,7 @@
             cursor: pointer; background: rgba(255,0,0,0.1); 
             animation: neon-flicker 2s infinite; 
             pointer-events: auto;
-            margin-top: 40px; /* Plus d'espace */
+            margin-top: 40px;
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
@@ -352,17 +367,17 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer">
+    <div id="bio-layer" class="layer bio-layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
             <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
+            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄✨</p>
+            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
-            <p class="bio-text"></p>
+            <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
@@ -412,11 +427,11 @@
         </section>
 
         <!-- VIDEO 2 -->
-        <section class="video-section" data-link="https://youtube.com">
-            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
+            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
             <div class="info-overlay">
-                <h2>Drag Show au FlashBack !</h2>
-                <p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor, Drag Queen vraiment géniale au show rodé qui se représente partout en France et aussi en Europe s'il vous plait !</p>
+                <h2>Trouble Makers !</h2>
+                <p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom, si l'univers pop culture vous parle il y a d'autres designs superbes sur la page de la dessinatrice @alinetaureau</p>
             </div>
         </section>
 
@@ -438,25 +453,16 @@
             </div>
         </section>
 
-        <!-- VIDEO 5 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
-            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Trouble Makers !</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom in the middle, si tu aimes l'univers culture pop et pas que il y a d'autres designs superbes sur la page de la dessinatrice @alinetaureau</p>
-            </div>
-        </section>
-
-        <!-- VIDEO 6 -->
+        <!-- VIDEO 5 (C'était la 6) -->
         <section class="video-section" data-link="https://youtube.com">
             <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
             <div class="info-overlay">
                 <h2>Caballo ? Tornadooo</h2>
-                <p>Clip de musique réalisé pour mon groupe de musique "T6" (mon frère et moi devant et derrière la caméra). J'ai aussi réalisé tous les clips sur la chaîne Youtube, c'est pas interdit de s'abonner ! 🤠</p>
+                <p>Clip de musique réalisé pour mon propre groupe T6 (mon frère et moi devant et derrière la caméra) J'ai aussi réalisé tous les clips sur la chaîne Youtube, c'est pas interdit de s'abonner ! 🤠</p>
             </div>
         </section>
 
-        <!-- VIDEO 7 -->
+        <!-- VIDEO 6 (C'était la 7) -->
         <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
             <div class="info-overlay">
@@ -513,6 +519,8 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
+        
+        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -528,11 +536,10 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
-            // Reset ALL layers and modals
-            document.querySelectorAll('.layer').forEach(el => {
+            // Reset
+            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
                 el.classList.remove('active');
-                if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
-                else el.style.display = 'none';
+                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
             });
             // Force reset modals
             document.getElementById('image-modal').classList.remove('active');
@@ -586,12 +593,17 @@
                         void scrollHint.offsetHeight;
                         scrollHint.classList.add('play-anim');
                     }, 5000);
+
+                    const v = document.querySelector('#feed video');
+                    if(v) { v.muted=true; v.play().catch(e=>{}); }
+                    initObserver(); 
                 } else {
                     // Image Feed: Cache Son, Cache Oeil, Cache Fleche
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
                     if(scrollHintInterval) clearInterval(scrollHintInterval);
+                    startM(imageFinalMatrix);
                 }
             } else {
                 ui.classList.remove('active');
@@ -616,6 +628,7 @@
         });
 
         // --- EVENTS CLICK ---
+        // Intro Button - FIX: Added ID to HTML div, event listener targets ID
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
@@ -644,7 +657,7 @@
             }, 400);
         });
 
-        // --- PRELOAD ---
+        // --- PRELOAD & MATRIX & ANIMATIONS ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
@@ -654,7 +667,6 @@
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -809,6 +821,3 @@
     </script>
 </body>
 </html>
-
-
-
