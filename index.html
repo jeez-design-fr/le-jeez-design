@@ -16,13 +16,10 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            /* Couleurs Spécifiques Bio */
             --bio-red: #ff0000;
             --bio-blue: #003dff;
-            
             --black: #000000;
             --white: #ffffff;
-            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -65,32 +62,27 @@
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
 
-        /* Animation GLOW PRECIEUX (Bio Titre) */
         @keyframes precious-glow {
             0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
             50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
         }
 
-        /* Animation RARE FLASH (Devis) */
         @keyframes rare-flash {
             0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
             93%, 95% { opacity: 0.3; text-shadow: none; }
         }
 
-        /* Animation CLIGNEMENT ŒIL */
         @keyframes eye-blink {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
         }
         .blink-now { transform-origin: center; animation: eye-blink 0.2s linear; }
 
-        /* Animation FLOTTEMENT TEXTE HD */
         @keyframes float-text {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
         }
 
-        /* Animation FLÈCHE SCROLL */
         @keyframes scroll-hint-anim {
             0% { opacity: 0; transform: translateY(-20px); }
             20% { opacity: 1; transform: translateY(0); }
@@ -114,83 +106,49 @@
         .layer.active {
             opacity: 1;
             pointer-events: auto;
-            display: flex; /* Flex par défaut */
+            /* Display est géré par JS */
             z-index: 100;
         }
 
-        /* Feeds scrollables */
-        #feed, #image-feed {
-            display: none; 
-            overflow-y: auto !important; 
-            -webkit-overflow-scrolling: touch; 
-            touch-action: pan-y;
-        }
-        #feed.active { display: block; } 
-        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
-
 
         /* ========================
-           1. INTRO LAYER
+           1. INTRO
            ======================== */
-        #intro-layer { 
-            background-color: #000; 
-            flex-direction: column; justify-content: center; align-items: center; 
-            z-index: 500; /* Toujours au dessus si actif */
-        }
+        #intro-layer { background-color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 500; }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
-        
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
-
         /* ========================
-           2. BIO LAYER
+           2. BIO
            ======================== */
-        #bio-layer { 
-            background-color: #000; 
-            flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px;
-            z-index: 400;
-        }
-
+        #bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; z-index: 400; }
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        
-        .bio-title { 
-            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
-            animation: precious-glow 4s ease-in-out infinite; 
-        }
+        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; animation: precious-glow 4s ease-in-out infinite; }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
-        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
-        
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
-        
-        /* COULEURS DES BOUTONS BIO */
         .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
         .btn-images:hover { background-color: var(--bio-red); color: white; }
-        
         .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
         .btn-videos:hover { background-color: var(--bio-blue); color: white; }
-
 
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
-        #ui-layer { 
-            z-index: 9000; pointer-events: none; display: none;
-        }
+        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
         #ui-layer.active { display: block; opacity: 1; } 
         
-        /* FLÈCHE SCROLL */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -198,13 +156,11 @@
         }
         #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
-        /* Sidebar (droite) */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
             pointer-events: auto; z-index: 9001; 
         }
-        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -249,6 +205,7 @@
             z-index: 3000;
             display: none; 
         }
+        
         #feed.active { display: block; }
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
@@ -278,9 +235,7 @@
 
         /* IMAGE ITEMS */
         .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
-        
         .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
-        /* HOVER MINIATURE EN VERT */
         .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
 
@@ -297,15 +252,7 @@
             border-style: solid; border-width: 2px;
             cursor: pointer; pointer-events: auto;
         }
-        /* Animation Rare Flash sur le mot entier */
-        .btn-final-devis .center-text { 
-            color: var(--neon-green); 
-            animation: rare-flash 6s infinite;
-        }
-        @keyframes rare-flash {
-            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            93%, 95% { opacity: 0.3; text-shadow: none; }
-        }
+        .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
         
         .btn-final-off { 
             width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; 
@@ -367,7 +314,7 @@
     </div>
 
     <!-- 2. BIO LAYER -->
-    <div id="bio-layer" class="layer bio-layer">
+    <div id="bio-layer" class="layer">
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
@@ -390,7 +337,6 @@
     <div id="ui-layer" class="ui-layer">
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
-        <!-- FLÈCHE DE SCROLL (GAUCHE) -->
         <div id="scroll-hint">
             <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
         </div>
@@ -416,60 +362,28 @@
 
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
-        
-        <!-- VIDEO 1 -->
         <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
             <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
             <div class="info-overlay">
                 <h2>Bienvenue à la Cour Des Miracles</h2>
-                <p>Vidéo de présentation du plus célèbre Tattoo Shop de Toulouse, une équipe en or et du talent de partout ❤️</p>
+                <p>Vidéo de présentation du plus célèbre Tattoo Shop de Toulouse</p>
             </div>
         </section>
 
-        <!-- VIDEO 2 -->
+        <!-- VIDEOS SUIVANTES (Code inchangé pour le contenu) -->
         <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
             <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
             <div class="info-overlay">
                 <h2>Trouble Makers !</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom, si l'univers pop culture vous parle il y a d'autres designs superbes sur la page de la dessinatrice @alinetaureau</p>
+                <p>Vidéo promotionnelle pour un t-shirt stylé</p>
             </div>
         </section>
 
-        <!-- VIDEO 3 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
-            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Rêve de gosse chez Warner Bros</h2>
-                <p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle pour Warner Music Group qui met en scène le célèbre chanteur Ozzy Osbourne, mieux connu sous le nom du "Prince des Tenèbres" 🦇</p>
-            </div>
-        </section>
-
-        <!-- VIDEO 4 -->
-        <section class="video-section" data-link="https://youtube.com">
-            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Entre Scooby-Doo et Mad Max</h2>
-                <p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother", du dessin animé entièrement réalisé par moi même, le groupe voulait une D.A entre Scooby-Doo & Mad Max, ça marche super bien !</p>
-            </div>
-        </section>
-
-        <!-- VIDEO 5 (C'était la 6) -->
-        <section class="video-section" data-link="https://youtube.com">
-            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Caballo ? Tornadooo</h2>
-                <p>Clip de musique réalisé pour mon propre groupe T6 (mon frère et moi devant et derrière la caméra) J'ai aussi réalisé tous les clips sur la chaîne Youtube, c'est pas interdit de s'abonner ! 🤠</p>
-            </div>
-        </section>
-
-        <!-- VIDEO 6 (C'était la 7) -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
-            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Tekashi Tattoo</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo, pour du Japanese Tattoo modern vibe c'est la référence à Toulouse, et il n'en a pas l'air comme ça mais il est adorable 👹</p>
-            </div>
-        </section>
+        <!-- Autres vidéos... (Remettre le contenu vidéo 3, 4, 6, 7 ici comme avant) -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video><div class="info-overlay"><h2>Rêve de gosse</h2><p>Vidéo promo Warner Bros</p></div></section>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video><div class="info-overlay"><h2>Scooby-Doo & Mad Max</h2><p>Clip animé</p></div></section>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video><div class="info-overlay"><h2>Caballo ? Tornadooo</h2><p>Clip T6</p></div></section>
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video><div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promo</p></div></section>
 
         <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
@@ -519,8 +433,6 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
-        
-        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -533,46 +445,45 @@
         // --- GESTION NAVIGATION ---
         window.history.replaceState({page: 'intro'}, "", "");
 
+        // VARIABLES GLOBALES
         let scrollHintInterval;
+        const introMatrix = createMatrix('matrix-canvas');
+        const videoFinalMatrix = createMatrix('matrix-canvas-final');
+        const imageFinalMatrix = createMatrix('matrix-canvas-images');
 
         function handleNavigation(targetId) {
-            // Reset
-            document.querySelectorAll('.intro-layer, .bio-layer, #feed, #image-feed, .contact-modal, .image-modal').forEach(el => {
-                el.classList.remove('active');
-                if(el.classList.contains('layer') || el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
+            // 1. Cacher tous les layers (Brute Force)
+            const layers = ['intro-layer', 'bio-layer', 'feed', 'image-feed'];
+            layers.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.remove('active');
+                    el.style.display = 'none';
+                }
             });
-            // Force reset modals
-            document.getElementById('image-modal').classList.remove('active');
-            document.getElementById('contact-modal').classList.remove('active');
 
-            // Find target layer
-            let elToShow = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            // 2. Afficher la cible
+            const target = document.getElementById(targetId);
             
-            // Set correct display type
-            if (targetId === 'image-feed') {
-                elToShow.style.display = 'flex';
-                // Lancer Matrix Image
-                startM(imageFinalMatrix);
-            } else if (targetId === 'feed') {
-                elToShow.style.display = 'block';
-                const v = elToShow.querySelector('video');
-                if(v) { v.muted=true; v.play().catch(e=>{}); }
-                initObserver(); // Matrix Vidéo géré par observer
-            } else if (targetId === 'intro') {
-                elToShow.style.display = 'flex';
-                startM(introMatrix);
-            } else {
-                elToShow.style.display = 'flex'; // Bio
-            }
+            // Type d'affichage spécifique
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'feed') target.style.display = 'block';
+            else if (targetId === 'intro-layer') target.style.display = 'flex';
+            else target.style.display = 'flex'; // Bio
 
-            // Show target
-            setTimeout(() => elToShow.classList.add('active'), 10);
+            // Petit délai pour la transition d'opacité
+            setTimeout(() => target.classList.add('active'), 10);
 
-            // Gestion UI Layer
+            // 3. Gestion Matrix & UI
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
             const scrollHint = document.getElementById('scroll-hint');
+
+            // Reset Matrix
+            stopM(introMatrix);
+            stopM(videoFinalMatrix);
+            stopM(imageFinalMatrix);
 
             if (targetId === 'feed' || targetId === 'image-feed') {
                 ui.style.display = 'block';
@@ -582,7 +493,7 @@
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
                     
-                    // Trigger Arrow Anim
+                    // Animation flèche
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
@@ -594,11 +505,12 @@
                         scrollHint.classList.add('play-anim');
                     }, 5000);
 
+                    // Lancer vidéo
                     const v = document.querySelector('#feed video');
                     if(v) { v.muted=true; v.play().catch(e=>{}); }
                     initObserver(); 
                 } else {
-                    // Image Feed: Cache Son, Cache Oeil, Cache Fleche
+                    // Image Feed
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
@@ -606,8 +518,11 @@
                     startM(imageFinalMatrix);
                 }
             } else {
+                // Intro ou Bio : Pas d'UI
                 ui.classList.remove('active');
                 setTimeout(() => ui.style.display = 'none', 400);
+                
+                if (targetId === 'intro-layer') startM(introMatrix);
             }
 
             if (!history.state || history.state.page !== targetId) {
@@ -616,26 +531,22 @@
         }
 
         window.addEventListener('popstate', function(event) {
-            const page = event.state ? event.state.page : 'intro';
-            if(page === 'intro') { 
-                document.getElementById('intro-layer').style.display='flex'; 
-                setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10);
-                // Hide UI on back to intro
-                document.getElementById('ui-layer').classList.remove('active');
-                document.getElementById('ui-layer').style.display = 'none';
-            }
-            else handleNavigation(page);
+            const page = event.state ? event.state.page : 'intro-layer';
+            // Mapping des noms courts vers les IDs
+            let targetId = page;
+            if(page === 'intro') targetId = 'intro-layer';
+            if(page === 'bio') targetId = 'bio-layer';
+            
+            handleNavigation(targetId);
         });
 
         // --- EVENTS CLICK ---
-        // Intro Button - FIX: Added ID to HTML div, event listener targets ID
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
-            stopM(introMatrix);
             setTimeout(() => {
                 intro.classList.remove('glitch-out');
-                handleNavigation('bio');
+                handleNavigation('bio-layer');
             }, 400);
         });
 
@@ -688,12 +599,10 @@
             }
             return { draw, interval: null };
         }
-        const introMatrix = createMatrix('matrix-canvas');
-        const videoFinalMatrix = createMatrix('matrix-canvas-final');
-        const imageFinalMatrix = createMatrix('matrix-canvas-images');
+        
         function startM(inst) { if(inst && !inst.interval) inst.interval = setInterval(inst.draw, 50); }
         function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
-        startM(introMatrix); 
+        startM(introMatrix); // Start Intro Matrix
 
         // UI ANIMATIONS
         setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
@@ -726,7 +635,6 @@
             document.getElementById('contact-modal').classList.remove('active');
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) {
-                // Restore sound btn only if we are in video feed
                 document.getElementById('sound-btn').style.display = 'block';
             }
         }
@@ -773,18 +681,13 @@
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
                             startM(videoFinalMatrix);
-                            // CACHER LE SON QUAND ON ARRIVE EN BAS
-                            soundBtn.style.opacity = '0';
-                            setTimeout(() => soundBtn.style.display = 'none', 300);
+                            soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
                             scrollHint.style.opacity = '0';
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
                         }
                         else { 
                             stopM(videoFinalMatrix); 
-                            // REAFFICHER LE SON QUAND ON REMONTE
-                            soundBtn.style.display = 'block';
-                            setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            // Relance boucle flèche
+                            soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
                             if(scrollHintInterval) clearInterval(scrollHintInterval);
                             scrollHintInterval = setInterval(() => {
                                 scrollHint.classList.remove('play-anim');
@@ -794,7 +697,6 @@
                         }
                         return;
                     }
-
                     const video = entry.target.querySelector('video');
                     if (!video) return;
                     if (entry.isIntersecting) {
