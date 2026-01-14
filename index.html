@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Le Work du Jeez</title>
-
+    
     <link rel="icon" type="image/png" href="favicon.png">
     
     <!-- FONTS -->
@@ -18,6 +18,7 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
+            
             /* Couleurs Spécifiques Bio */
             --bio-red: #ff0000;
             --bio-blue: #003dff;
@@ -95,6 +96,13 @@
             100% { opacity: 0; transform: translateY(40px); }
         }
         .play-anim { animation: scroll-hint-anim 2s ease-in-out forwards; }
+        
+        /* Animation Scintillement Texte Image */
+        @keyframes overlay-flicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 5px var(--neon-green); }
+            50% { opacity: 0.8; text-shadow: 0 0 15px var(--neon-green); }
+            70% { opacity: 0.6; text-shadow: none; }
+        }
 
 
         /* ========================
@@ -111,7 +119,7 @@
         .layer.active {
             opacity: 1;
             pointer-events: auto;
-            display: flex; /* Flex par défaut */
+            display: flex;
             z-index: 100;
         }
 
@@ -132,7 +140,7 @@
         #intro-layer { 
             background-color: #000; 
             flex-direction: column; justify-content: center; align-items: center; 
-            z-index: 500; /* Toujours au dessus si actif */
+            z-index: 500;
         }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
@@ -183,10 +191,12 @@
            3. UI LAYER (SIDEBAR)
            ======================== */
         #ui-layer { 
-            z-index: 9000; pointer-events: none; display: none;
+            z-index: 9000; /* TRÈS HAUT POUR ÊTRE AU DESSUS DES IMAGES */
+            pointer-events: none; display: none;
         }
         #ui-layer.active { display: block; opacity: 1; } 
         
+        /* Flèche de Scroll (gauche) */
         #scroll-hint {
             position: fixed; left: 15px; bottom: 35%;
             z-index: 9005; opacity: 0; pointer-events: none;
@@ -194,11 +204,13 @@
         }
         #scroll-hint svg { width: 40px; height: 40px; fill: currentColor; filter: drop-shadow(0 0 5px var(--neon-green)); }
 
+        /* Sidebar (droite) */
         .fixed-sidebar { 
             position: fixed; right: 15px; bottom: 35%; 
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
             pointer-events: auto; z-index: 9001; 
         }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -222,7 +234,9 @@
         .fixed-eye-container { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); z-index: 9000; display: flex; flex-direction: column; align-items: center; opacity: 0; pointer-events: none; transition: opacity 1s 1s; }
         .fixed-eye-container.hidden { opacity: 0 !important; pointer-events: none !important; }
         #ui-layer.active .fixed-eye-container { opacity: 1; pointer-events: auto; }
-        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; }
+        .static-hd-text { color: var(--white); font-family: var(--font-title); font-size: 1.2rem; margin-bottom: 8px; animation: float-text 3s ease-in-out infinite; }
+        @keyframes float-text { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
         .eye-btn-main { width: 70px; height: 70px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 2px solid var(--neon-green); color: var(--neon-green); display: flex; justify-content: center; align-items: center; text-decoration: none; backdrop-filter: blur(8px); }
         .eye-btn-main svg { width: 35px; height: 35px; fill: currentColor; }
         .eye-btn-main:hover { transform: scale(1.2); background: var(--neon-green); color: #000; box-shadow: 0 0 30px var(--neon-green); }
@@ -271,13 +285,27 @@
             color: #fff; text-shadow: 1px 1px 2px black; font-weight: 500;
         }
 
-        /* IMAGE ITEMS */
-        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
-        
-        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
+        /* IMAGE ITEMS (MODIFIÉS) */
+        .thumb-container { 
+            width: 100%; max-width: 400px; border: 1px solid #333; 
+            cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; 
+        }
         /* HOVER MINIATURE EN VERT */
         .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
         .thumb-img { width: 100%; display: block; }
+        
+        /* OVERLAY CLIQUE SUR L'IMAGE */
+        .overlay-center {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-family: var(--font-title); font-size: 2.5rem; color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            pointer-events: none; text-align: center; width: 100%;
+            animation: overlay-flicker 2s infinite;
+        }
+        @keyframes overlay-flicker {
+            0%, 100% { opacity: 1; text-shadow: 0 0 5px var(--neon-green); }
+            50% { opacity: 0.7; text-shadow: none; }
+        }
 
         /* FIN */
         .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0; }
@@ -300,7 +328,7 @@
             cursor: pointer; background: rgba(255,0,0,0.1); 
             animation: neon-flicker 2s infinite; 
             pointer-events: auto;
-            margin-top: 40px; /* Plus d'espace */
+            margin-top: 40px;
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
@@ -358,13 +386,13 @@
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
             <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
             <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄✨</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
-            <p class="bio-text"></p>
+            <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
             <p class="flicker-text">FAIS TON CHOIX</p>
         </div>
         <div class="choice-container">
@@ -403,59 +431,26 @@
 
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
-        
-        <!-- VIDEO 1 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
-            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Bienvenue à la Cour Des Miracles</h2>
-                <p>Vidéo de présentation du plus célèbre Tattoo Shop de Toulouse, une équipe en or et du talent de partout ❤️</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Bienvenue à la Cour Des Miracles</h2><p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse</p></div>
         </section>
-
-        <!-- VIDEO 2 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/">
-            <video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Trouble Makers !</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom in the middle, si tu aimes l'univers culture pop et pas que il y a d'autres designs superbes sur la page de la dessinatrice @alinetaureau</p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Drag Show au FlashBack !</h2><p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor</p></div>
         </section>
-
-        <!-- VIDEO 3 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
-            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Rêve de gosse chez Warner Bros</h2>
-                <p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle pour Warner Music Group qui met en scène le célèbre chanteur Ozzy Osbourne, mieux connu sous le nom du "Prince des Tenèbres" 🦇</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Rêve de gosse chez Warner Bros</h2><p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle</p></div>
         </section>
-
-        <!-- VIDEO 4 -->
-        <section class="video-section" data-link="https://youtu.be/9zjvYZG_kUc?si=nEC-pygepUW5_I_m">
-            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Entre Scooby-Doo et Mad Max</h2>
-                <p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother", du dessin animé entièrement réalisé par moi même, le groupe voulait une D.A entre Scooby-Doo & Mad Max, ça marche super bien !</p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Entre Scooby-Doo et Mad Max</h2><p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother"</p></div>
         </section>
-
-        <!-- VIDEO 5 -->
-        <section class="video-section" data-link="https://youtu.be/q47H3s7y_C4?si=PPmmPhdw4ZSahUn_">
-            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Caballo ? Tornadooo</h2>
-                <p>Clip de musique réalisé pour mon groupe de musique "T6" (mon frère et moi devant et derrière la caméra). J'ai aussi réalisé tous les clips sur la chaîne Youtube, c'est pas interdit de s'abonner ! 🤠</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/"><video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Trouble Makers !</h2><p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom</p></div>
         </section>
-
-        <!-- VIDEO 6 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
-            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Tekashi Tattoo</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo, pour du Japanese Tattoo modern vibe c'est la référence à Toulouse, et il n'en a pas l'air comme ça mais il est adorable 👹</p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Caballo ? Tornadooo</h2><p>Clip de musique réalisé pour mon propre groupe T6</p></div>
+        </section>
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo</p></div>
         </section>
 
         <!-- SECTION FINALE (VIDEO) -->
@@ -474,13 +469,32 @@
 
     <!-- 4. IMAGE FEED -->
     <main id="image-feed" class="layer">
-        <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
         
-        <div class="thumb-container" onclick="openImageModal(1)"><img src="img1_1.webp" class="thumb-img"></div>
-        <div class="thumb-container" onclick="openImageModal(2)"><img src="img2_1.webp" class="thumb-img"></div>
-        <div class="thumb-container" onclick="openImageModal(3)"><img src="img3_1.webp" class="thumb-img"></div>
-        <div class="thumb-container" onclick="openImageModal(4)"><img src="img4_1.webp" class="thumb-img"></div>
-        <div class="thumb-container" onclick="openImageModal(5)"><img src="img5_1.webp" class="thumb-img"></div>
+        <!-- IMG 1 -->
+        <div class="thumb-container" onclick="openImageModal(1)">
+            <img src="img1_1.webp" class="thumb-img">
+            <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
+        </div>
+        <!-- IMG 2 -->
+        <div class="thumb-container" onclick="openImageModal(2)">
+            <img src="img2_1.webp" class="thumb-img">
+            <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
+        </div>
+        <!-- IMG 3 -->
+        <div class="thumb-container" onclick="openImageModal(3)">
+            <img src="img3_1.webp" class="thumb-img">
+            <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
+        </div>
+        <!-- IMG 4 -->
+        <div class="thumb-container" onclick="openImageModal(4)">
+            <img src="img4_1.webp" class="thumb-img">
+            <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
+        </div>
+        <!-- IMG 5 -->
+        <div class="thumb-container" onclick="openImageModal(5)">
+            <img src="img5_1.webp" class="thumb-img">
+            <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
+        </div>
 
         <!-- FOOTER IMAGES -->
         <section class="final-section" style="margin-top: 50px; width: 100%;">
@@ -499,8 +513,8 @@
     <!-- 5. MODAL PLEIN ECRAN -->
     <div class="image-modal" id="image-modal">
         <div class="close-modal" onclick="closeImageModal()">❌</div>
-        <div class="tap-hint">TAP POUR TRANSFORMER</div>
         <img src="" id="full-img" class="modal-img" onclick="nextImageStep()">
+        <div class="tap-hint">TAP POUR TRANSFORMER</div>
     </div>
 
     <!-- 6. MODAL CONTACT -->
@@ -521,40 +535,23 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
-            // Reset ALL layers and modals
             document.querySelectorAll('.layer').forEach(el => {
                 el.classList.remove('active');
                 if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
                 else el.style.display = 'none';
             });
-            // Force reset modals
             document.getElementById('image-modal').classList.remove('active');
             document.getElementById('contact-modal').classList.remove('active');
 
-            // Find target layer
-            let elToShow = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
+            const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // Set correct display type
-            if (targetId === 'image-feed') {
-                elToShow.style.display = 'flex';
-                // Lancer Matrix Image
-                startM(imageFinalMatrix);
-            } else if (targetId === 'feed') {
-                elToShow.style.display = 'block';
-                const v = elToShow.querySelector('video');
-                if(v) { v.muted=true; v.play().catch(e=>{}); }
-                initObserver(); // Matrix Vidéo géré par observer
-            } else if (targetId === 'intro') {
-                elToShow.style.display = 'flex';
-                startM(introMatrix);
-            } else {
-                elToShow.style.display = 'flex'; // Bio
-            }
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'feed') target.style.display = 'block';
+            else target.style.display = 'flex';
 
-            // Show target
-            setTimeout(() => elToShow.classList.add('active'), 10);
+            setTimeout(() => target.classList.add('active'), 10);
 
-            // Gestion UI Layer
+            // GESTION UI LAYER
             const ui = document.getElementById('ui-layer');
             const soundBtn = document.getElementById('sound-btn');
             const eye = document.getElementById('eye-container');
@@ -568,7 +565,6 @@
                     soundBtn.style.display = 'block';
                     eye.classList.remove('hidden');
                     
-                    // Trigger Arrow Anim
                     scrollHint.style.animation = 'none';
                     scrollHint.offsetHeight; 
                     scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
@@ -579,12 +575,17 @@
                         void scrollHint.offsetHeight;
                         scrollHint.classList.add('play-anim');
                     }, 5000);
+
+                    const v = document.querySelector('#feed video');
+                    if(v) { v.muted=true; v.play().catch(e=>{}); }
+                    initObserver('feed'); 
                 } else {
-                    // Image Feed: Cache Son, Cache Oeil, Cache Fleche
                     soundBtn.style.display = 'none';
                     eye.classList.add('hidden');
                     scrollHint.style.opacity = '0';
                     if(scrollHintInterval) clearInterval(scrollHintInterval);
+                    startM(imageFinalMatrix);
+                    initObserver('image-feed');
                 }
             } else {
                 ui.classList.remove('active');
@@ -601,7 +602,6 @@
             if(page === 'intro') { 
                 document.getElementById('intro-layer').style.display='flex'; 
                 setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10);
-                // Hide UI on back to intro
                 document.getElementById('ui-layer').classList.remove('active');
                 document.getElementById('ui-layer').style.display = 'none';
             }
@@ -637,7 +637,7 @@
             }, 400);
         });
 
-        // --- PRELOAD ---
+        // --- PRELOAD & MATRIX & ANIMATIONS ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
@@ -647,7 +647,6 @@
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
-        // --- MATRIX ---
         function createMatrix(canvasId) {
             const canvas = document.getElementById(canvasId); if(!canvas) return null;
             const ctx = canvas.getContext('2d');
@@ -740,12 +739,14 @@
         }
 
         // --- OBSERVER ---
-        function initObserver() {
-            const sections = document.querySelectorAll('.video-section');
+        function initObserver(activeFeedId) {
+            const sections = document.querySelectorAll(`#${activeFeedId} .video-section, #${activeFeedId} .image-section, #${activeFeedId} .final-section`);
             const eyeBtn = document.getElementById('dynamic-eye-btn');
             const eyeContainer = document.getElementById('eye-container');
             const soundBtn = document.getElementById('sound-btn');
             const scrollHint = document.getElementById('scroll-hint');
+            
+            const matrixTarget = (activeFeedId === 'feed') ? videoFinalMatrix : imageFinalMatrix;
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -753,37 +754,30 @@
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); 
-                            startM(videoFinalMatrix);
-                            // CACHER LE SON QUAND ON ARRIVE EN BAS
-                            soundBtn.style.opacity = '0';
-                            setTimeout(() => soundBtn.style.display = 'none', 300);
-                            scrollHint.style.opacity = '0';
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
+                            startM(matrixTarget);
+                            soundBtn.style.opacity = '0'; setTimeout(() => soundBtn.style.display = 'none', 300);
+                            if(scrollHint) scrollHint.style.opacity = '0';
                         }
                         else { 
-                            stopM(videoFinalMatrix); 
-                            // REAFFICHER LE SON QUAND ON REMONTE
-                            soundBtn.style.display = 'block';
-                            setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            // Relance boucle flèche
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
-                            scrollHintInterval = setInterval(() => {
-                                scrollHint.classList.remove('play-anim');
-                                void scrollHint.offsetHeight;
-                                scrollHint.classList.add('play-anim');
-                            }, 5000);
+                            stopM(matrixTarget); 
+                            if(activeFeedId === 'feed') {
+                                soundBtn.style.display = 'block'; setTimeout(() => soundBtn.style.opacity = '1', 10);
+                            }
                         }
                         return;
                     }
 
-                    const video = entry.target.querySelector('video');
-                    if (!video) return;
-                    if (entry.isIntersecting) {
-                        eyeContainer.classList.remove('hidden');
-                        video.play().catch(e => {}); entry.target.classList.add('active');
-                        const link = entry.target.getAttribute('data-link'); eyeBtn.href = link ? link : "#";
-                    } else {
-                        video.pause(); video.currentTime = 0; entry.target.classList.remove('active');
+                    // GESTION VIDEO PLAY (SEULEMENT POUR FEED VIDEO)
+                    if(activeFeedId === 'feed') {
+                        const video = entry.target.querySelector('video');
+                        if (!video) return;
+                        if (entry.isIntersecting) {
+                            eyeContainer.classList.remove('hidden');
+                            video.play().catch(e => {}); entry.target.classList.add('active');
+                            const link = entry.target.getAttribute('data-link'); eyeBtn.href = link ? link : "#";
+                        } else {
+                            video.pause(); video.currentTime = 0; entry.target.classList.remove('active');
+                        }
                     }
                 });
             }, { threshold: 0.6 });
@@ -802,10 +796,3 @@
     </script>
 </body>
 </html>
-
-
-
-</html>
-
-
-
