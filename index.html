@@ -18,13 +18,10 @@
             --neon-purple: #bc13fe;
             --neon-pink: #ff007f;
             --neon-blue: #00f3ff;
-            /* Couleurs Bio */
             --bio-red: #ff0000;
             --bio-blue: #003dff;
-            
             --black: #000000;
             --white: #ffffff;
-            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
         }
@@ -40,7 +37,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -66,14 +63,17 @@
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; box-shadow: 0 0 20px red; }
             20%, 24%, 55% { opacity: 0.5; box-shadow: none; }
         }
-        @keyframes rare-flash {
-            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
-            93%, 95% { opacity: 0.3; text-shadow: none; }
-        }
+
         @keyframes precious-glow {
             0%, 100% { text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); opacity: 0.9; }
             50% { text-shadow: 0 0 25px rgba(57, 255, 20, 0.6); opacity: 1; }
         }
+
+        @keyframes rare-flash {
+            0%, 92%, 94%, 96%, 100% { opacity: 1; text-shadow: 0 0 10px var(--neon-green); }
+            93%, 95% { opacity: 0.3; text-shadow: none; }
+        }
+
         @keyframes eye-blink {
             0%, 100% { transform: scaleY(1); }
             50% { transform: scaleY(0.1); }
@@ -84,6 +84,7 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-5px); }
         }
+
         @keyframes scroll-hint-anim {
             0% { opacity: 0; transform: translateY(-20px); }
             20% { opacity: 1; transform: translateY(0); }
@@ -103,56 +104,75 @@
         }
         .layer.active { opacity: 1; pointer-events: auto; display: flex; z-index: 100; }
 
-        /* Feeds scrollables (Video & Image) */
+        /* Feeds scrollables */
         #feed, #image-feed {
             display: none; 
             overflow-y: auto !important; 
             -webkit-overflow-scrolling: touch; 
             touch-action: pan-y;
-            scroll-snap-type: y mandatory; /* Snap obligatoire */
-            background: #000;
         }
-        /* Pour le scroll, on utilise block, pas flex */
-        #feed.active, #image-feed.active { display: block; }
+        #feed.active { display: block; } 
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
 
         /* ========================
-           1. INTRO
+           1. INTRO LAYER
            ======================== */
-        #intro-layer { background-color: #000; flex-direction: column; justify-content: center; align-items: center; z-index: 200; }
+        #intro-layer { 
+            background-color: #000; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 500;
+        }
         .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
         .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
         @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
         #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
+        
         .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
         .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
+
         /* ========================
-           2. BIO
+           2. BIO LAYER
            ======================== */
-        #bio-layer { background-color: #000; flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px; z-index: 400; }
+        #bio-layer { 
+            background-color: #000; 
+            flex-direction: column; justify-content: space-evenly; align-items: center; text-align: center; padding: 10px;
+            z-index: 400;
+        }
+
         .bio-content { display: flex; flex-direction: column; gap: 1.5vh; width: 100%; max-width: 500px; }
         .bio-text { font-family: var(--font-title); text-transform: uppercase; line-height: 1.2; letter-spacing: 1px; font-size: 1.5rem; }
         @media (max-width: 600px) { .bio-text { font-size: 6vw; } }
-        .bio-title { font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; animation: precious-glow 4s ease-in-out infinite; }
+        
+        .bio-title { 
+            font-family: var(--font-title); font-size: 4rem; color: var(--neon-green); margin-bottom: 5px; 
+            animation: precious-glow 4s ease-in-out infinite; 
+        }
         @media (max-width: 600px) { .bio-title { font-size: 14vw; } }
+        
         .flicker-text { font-family: var(--font-title); color: var(--white); font-size: 2rem; margin-top: 15px; animation: text-flicker 3s infinite alternate; }
         @keyframes text-flicker { 0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.5); opacity: 1; } 20%, 24%, 55% { text-shadow: none; opacity: 0.3; } }
         
         .choice-container { display: flex; gap: 20px; width: 100%; justify-content: center; margin-top: 10px; }
         .choice-btn { padding: 15px 10px; width: 45%; max-width: 180px; font-family: var(--font-title); font-size: 1.8rem; background: black; border: 2px solid; cursor: pointer; color: white; animation: float-shake 3s ease-in-out infinite; }
         @keyframes float-shake { 0% { transform: translateY(0px) rotate(0deg); } 33% { transform: translateY(-3px) rotate(1deg); } 66% { transform: translateY(3px) rotate(-1deg); } 100% { transform: translateY(0px) rotate(0deg); } }
+        
         .btn-images { border-color: var(--bio-red); box-shadow: 0 0 15px var(--bio-red); }
         .btn-images:hover { background-color: var(--bio-red); color: white; }
+        
         .btn-videos { border-color: var(--bio-blue); box-shadow: 0 0 15px var(--bio-blue); animation-delay: 1.5s; }
         .btn-videos:hover { background-color: var(--bio-blue); color: white; }
+
 
         /* ========================
            3. UI LAYER (SIDEBAR)
            ======================== */
-        #ui-layer { z-index: 9000; pointer-events: none; display: none; }
+        #ui-layer { 
+            z-index: 9000; pointer-events: none; display: none;
+        }
         #ui-layer.active { display: block; opacity: 1; } 
         
         #scroll-hint {
@@ -167,6 +187,7 @@
             display: flex; flex-direction: column; gap: 25px; align-items: center; 
             pointer-events: auto; z-index: 9001; 
         }
+        
         .side-btn { width: 55px; height: 55px; border-radius: 50%; background: rgba(0, 0, 0, 0.4); border: 2px solid var(--white); color: var(--white); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px); box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .side-btn svg { width: 28px; height: 28px; fill: currentColor; }
         #phone-btn:hover { border-color: var(--neon-green); color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.15); }
@@ -202,41 +223,31 @@
 
 
         /* ========================
-           4. SECTIONS VIDEOS & IMAGES
+           4. FEEDS (SCROLLABLE)
            ======================== */
-        /* STYLE COMMUN POUR LE SCROLL SNAP */
-        .video-section, .image-section { 
-            height: 100vh; width: 100%; 
-            scroll-snap-align: start; 
-            position: relative; 
-            display: flex; justify-content: center; align-items: center; 
-            background: #000; 
-            border-bottom: 1px solid #111; 
-            overflow: hidden; 
-            flex-shrink: 0; 
+        #feed, #image-feed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            overflow-y: auto !important; 
+            -webkit-overflow-scrolling: touch; touch-action: pan-y;
+            z-index: 3000;
+            display: none; 
         }
+        #feed.active { display: block; }
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
-        /* --- VIDEO SPECIFIQUE --- */
+        /* VIDEO ITEMS */
+        #feed { scroll-snap-type: y mandatory; }
+        .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
         .video-section.active video { opacity: 1; }
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* --- IMAGE SPECIFIQUE --- */
-        .feed-img { 
-            position: absolute; width: 100%; height: 100%; z-index: 1; 
-            object-fit: cover; /* Remplit l'écran */
-            cursor: pointer; 
-            opacity: 0.8; transition: opacity 0.3s;
-        }
-        /* Hover image : glow vert */
-        .image-section:hover .feed-img { opacity: 1; box-shadow: inset 0 0 50px var(--neon-green); }
-
-
-        /* INFO OVERLAY */
+        /* INFO OVERLAY (TITRES VIDÉOS) */
         .info-overlay {
             position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 20px 80px 40px 20px; /* Padding droite pour éviter sidebar */
+            padding: 20px 80px 40px 20px; 
             background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             pointer-events: none; z-index: 2;
         }
@@ -249,31 +260,31 @@
             color: #fff; text-shadow: 1px 1px 2px black; font-weight: 500;
         }
 
-        /* OVERLAY IMAGE "CLIQUE SUR L'IMAGE" */
+        /* IMAGE ITEMS */
+        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
+        .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
+        .thumb-img { width: 100%; display: block; }
+
+        /* OVERLAY CLIQUE SUR L'IMAGE (RECTANGLE NOIR) */
         .overlay-center {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             z-index: 5; pointer-events: none;
-            
-            /* Box Style */
             background-color: #000;
             padding: 15px 30px;
             border: 2px solid var(--neon-green);
             box-shadow: 0 0 15px var(--neon-green);
-            
-            /* Text Style */
             font-family: var(--font-title); font-size: 2.5rem; color: var(--neon-green);
             text-align: center; line-height: 1;
-            
-            /* Anim */
             animation: overlay-flicker 2s infinite;
+            white-space: nowrap;
         }
         @keyframes overlay-flicker {
             0%, 100% { opacity: 1; text-shadow: 0 0 5px var(--neon-green); }
             50% { opacity: 0.7; text-shadow: none; }
         }
 
-
-        /* --- FIN --- */
+        /* FIN */
         .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0; }
         .matrix-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.3; pointer-events: none; }
         .final-container { display: flex; flex-direction: column; gap: 30px; align-items: center; z-index: 20; width: 100%; max-width: 320px; position: relative; pointer-events: auto; }
@@ -298,13 +309,26 @@
         }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
-        /* --- MODALS --- */
+        /* MODALS */
         .image-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 9500; display: none; flex-direction: column; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .image-modal.active { display: flex; opacity: 1; pointer-events: auto; }
+        
+        /* TAP HINT (RECTANGLE NOIR BAS) */
+        .tap-hint { 
+            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); 
+            color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; 
+            background-color: #000;
+            padding: 10px 20px;
+            border: 1px solid var(--neon-green);
+            text-shadow: 0 0 5px black; 
+            animation: text-flicker 2s infinite; 
+            pointer-events: none; 
+            white-space: nowrap;
+        }
+        
         .modal-img { max-width: 100%; max-height: 90vh; object-fit: contain; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.05) rotate(1deg); } 100% { transform: scale(1); } }
         .anim-bump { animation: bump-anim 0.2s; }
-        .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: white; font-family: var(--font-title); font-size: 1.5rem; letter-spacing: 2px; text-shadow: 0 0 5px black, 0 0 10px rgba(0,0,0,0.8); animation: text-flicker 2s infinite; pointer-events: none; width: 100%; text-align: center; }
         
         .close-modal { 
             position: absolute; top: 20px; right: 20px; z-index: 9501;
@@ -313,6 +337,7 @@
         }
         .close-modal:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); }
 
+        /* CONTACT MODAL */
         .contact-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; justify-content: center; align-items: center; }
         .contact-modal.active { display: flex; animation: fadeIn 0.3s; pointer-events: auto; }
         .contact-form { width: 90%; max-width: 400px; display: flex; flex-direction: column; gap: 15px; }
@@ -351,10 +376,10 @@
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
+            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄✨</p>
+            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT 🏄✨)</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -370,6 +395,7 @@
     <div id="ui-layer" class="ui-layer">
         <button id="sound-btn" class="sound-toggle" onclick="toggleMute()">🔇 SON OFF</button>
         
+        <!-- FLÈCHE DE SCROLL (GAUCHE) -->
         <div id="scroll-hint">
             <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
         </div>
@@ -395,59 +421,26 @@
 
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
-        
-        <!-- VIDEO 1 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
-            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Bienvenue à la Cour Des Miracles</h2>
-                <p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse, une équipe en or et du talent de partout ❤️</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Bienvenue à la Cour Des Miracles</h2><p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse</p></div>
         </section>
-
-        <!-- VIDEO 2 -->
-        <section class="video-section" data-link="https://youtube.com">
-            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Drag Show au FlashBack !</h2>
-                <p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor, DragQueen vraiment géniale au show rodé qui se représente partout en France et aussi en Europe s'il vous plait ! </p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Drag Show au FlashBack !</h2><p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor</p></div>
         </section>
-
-        <!-- VIDEO 3 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/">
-            <video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Rêve de gosse chez Warner Bros</h2>
-                <p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle pour Warner Music Group qui met en scène le célèbre chanteur Ozzy Osbourne, mieux connu sous le nom du "Prince des Tenèbres" 🦇</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Rêve de gosse chez Warner Bros</h2><p>Vidéo promotionnelle pour Warner Music Group</p></div>
         </section>
-
-        <!-- VIDEO 4 -->
-        <section class="video-section" data-link="https://youtu.be/9zjvYZG_kUc?si=nEC-pygepUW5_I_m">
-            <video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Entre Scooby-Doo et Mad Max</h2>
-                <p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother", du dessin animé entièrement réalisé par moi même, le groupe voulait une D.A entre Scooby-Doo & Mad Max, ça marche super bien !</p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Entre Scooby-Doo et Mad Max</h2><p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother"</p></div>
         </section>
-
-        <!-- VIDEO 5 -->
-        <section class="video-section" data-link="https://youtu.be/q47H3s7y_C4?si=PPmmPhdw4ZSahUn_">
-            <video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Caballo ? Tornadooo</h2>
-                <p>Clip de musique réalisé pour mon groupe de musique "T6" (mon frère et moi devant et derrière la caméra). J'ai aussi réalisé tous les clips sur la chaîne Youtube, c'est pas interdit de s'abonner ! 🤠</p>
-            </div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/"><video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Trouble Makers !</h2><p>Vidéo promotionnelle pour un t-shirt Malcom</p></div>
         </section>
-
-        <!-- VIDEO 6 -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
-            <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay">
-                <h2>Tekashi Tattoo</h2>
-                <p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo, pour du Japanese Tattoo modern vibe c'est la référence à Toulouse, et il n'en a pas l'air comme ça mais il est adorable 👹</p>
-            </div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Caballo ? Tornadooo</h2><p>Clip de musique réalisé pour mon groupe T6</p></div>
+        </section>
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promotionnelle pour Tekashi Tattoo</p></div>
         </section>
 
         <!-- SECTION FINALE (VIDEO) -->
@@ -521,8 +514,6 @@
     <!-- 6. MODAL CONTACT -->
     <div class="contact-modal" id="contact-modal">
         <div class="close-modal" onclick="closeContactForm()">❌</div>
-        
-        <!-- REMPLACE LE LIEN DANS 'ACTION' PAR TON LIEN FORMSPREE -->
         <form action="https://formspree.io/f/mwvpdgrg" method="POST" class="contact-form">
             <h2 style="color:white; font-family:var(--font-title); font-size:2rem; text-align:center;">TON PROJET ?</h2>
             <input type="email" name="email" placeholder="TON EMAIL" class="contact-input" required>
@@ -538,6 +529,7 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
+            // Reset
             document.querySelectorAll('.layer').forEach(el => {
                 el.classList.remove('active');
                 if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
@@ -548,7 +540,6 @@
 
             const target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // IMPORTANT: Feed et Image-feed doivent être "block" pour le scroll snap
             if (targetId === 'image-feed' || targetId === 'feed') {
                 target.style.display = 'block';
             } else {
