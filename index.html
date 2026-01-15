@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Le Work du Jeez - Vidéaste & Créatif Toulouse</title>
-    <meta name="description" content="Studio de production vidéo et design à Toulouse. Création de contenu, Clips, Motion Design, Sites Web, Communication Digitale.">
+    
+    <!-- SEO META -->
+    <title>Vidéaste Toulouse | Le Work du Jeez - Création Vidéo, Web & Design</title>
+    <meta name="description" content="Studio de création vidéo et design à Toulouse. Réalisation de clips, Reels Instagram, sites web et stratégie digitale. Expert IA et montage dynamique.">
+    <meta name="keywords" content="Vidéaste Toulouse, Agence de communication Toulouse, Création site web, Motion Design, Clip Rap, Vidéo Entreprise, Photographe Toulouse, Intelligence Artificielle">
     
     <!-- FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +24,6 @@
             --bio-blue: #003dff;
             --black: #000000;
             --white: #ffffff;
-            
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
             --font-code: 'Share Tech Mono', monospace;
@@ -38,7 +40,7 @@
             position: fixed;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- ANIMATIONS GLOBALES --- */
         @keyframes tv-turn-off {
             0% { transform: scale(1, 1); filter: brightness(1); }
             40% { transform: scale(1, 0.002); filter: brightness(3); }
@@ -130,16 +132,25 @@
            EASTER EGG (TERMINAL SEO MASSIVE)
            ======================== */
         #terminal-layer {
-            background: black; flex-direction: column; align-items: flex-start; padding: 20px; 
+            background: black; flex-direction: column; align-items: flex-start; padding: 20px; padding-bottom: 100px;
             font-family: var(--font-code); color: #0f0; overflow-y: auto; text-align: left;
             z-index: 9995;
         }
         #terminal-layer h2 { border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.2rem; }
         #terminal-layer p, #terminal-layer li { margin-bottom: 5px; font-size: 0.8rem; text-shadow: 0 0 5px #0f0; line-height: 1.4; }
+        #terminal-layer h3 { margin-top: 30px; margin-bottom: 10px; border-left: 3px solid #0f0; padding-left: 10px; color: white; }
         #terminal-layer strong { color: white; }
-        .keyword-block { color: #005f0a; font-size: 0.7rem; margin-top: 10px; }
-        #terminal-layer p:last-of-type::after { content: "_"; animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        
+        /* BOUTON CLOSE FIXED CENTER */
+        .close-terminal-btn {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8); border: 2px solid #0f0; color: #0f0;
+            padding: 20px 40px; font-family: var(--font-title); font-size: 2rem;
+            cursor: pointer; z-index: 10000;
+            box-shadow: 0 0 30px #0f0;
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green { 0% { box-shadow: 0 0 10px #0f0; } 50% { box-shadow: 0 0 30px #0f0; } 100% { box-shadow: 0 0 10px #0f0; } }
 
         /* ========================
            2. BIO
@@ -200,51 +211,30 @@
            ======================== */
         #feed, #image-feed { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; overflow-y: auto !important; -webkit-overflow-scrolling: touch; touch-action: pan-y; z-index: 3000; display: none; }
         #feed.active { display: block; }
-        #image-feed.active { display: block; } /* CORRECTION: Block pour permettre le scroll snap */
+        #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
-        /* VIDEO & IMAGE SECTIONS (COMMUN) */
-        #feed, #image-feed { scroll-snap-type: y mandatory; }
-        
-        .video-section, .image-section { 
-            height: 100vh; width: 100%; 
-            scroll-snap-align: start; 
-            position: relative; 
-            display: flex; justify-content: center; align-items: center; 
-            background: #000; border-bottom: 1px solid #111; 
-            overflow: hidden; flex-shrink: 0; 
-        }
-
-        /* Video Specifique */
+        /* VIDEO ITEMS */
+        #feed { scroll-snap-type: y mandatory; }
+        .video-section { height: 100vh; width: 100%; scroll-snap-align: start; position: relative; display: flex; justify-content: center; align-items: center; background: #000; border-bottom: 1px solid #111; overflow: hidden; flex-shrink: 0; }
         video { position: absolute; width: 100%; height: 100%; z-index: 1; opacity: 0; transition: opacity 0.5s; }
         .video-section.active video { opacity: 1; }
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* Image Specifique */
-        .feed-img { position: absolute; width: 100%; height: 100%; z-index: 1; object-fit: cover; opacity: 0.8; transition: all 0.3s; cursor: pointer; }
-        .image-section:hover .feed-img { opacity: 1; }
-
-        /* Overlay Bouton Image */
-        .overlay-center {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            z-index: 5; pointer-events: none;
-            background-color: rgba(0,0,0,0.7);
-            padding: 15px 30px;
-            border: 2px solid var(--neon-green);
-            box-shadow: 0 0 15px var(--neon-green);
-            font-family: var(--font-title); font-size: 2rem; color: var(--neon-green);
-            text-align: center; line-height: 1;
-            white-space: nowrap;
-        }
-
-        /* INFO OVERLAY (TITRES VIDÉOS) */
-        .info-overlay {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 20px 80px 40px 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            pointer-events: none; z-index: 2;
-        }
+        .info-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 80px 40px 20px; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); pointer-events: none; z-index: 2; }
         .info-overlay h2 { font-family: var(--font-title); font-size: 3rem; color: var(--neon-green); text-shadow: 2px 2px 0px var(--neon-purple); margin-bottom: 5px; transform: skew(-5deg); }
         .info-overlay p { font-family: var(--font-text); font-size: 1.1rem; max-width: 600px; color: #fff; text-shadow: 1px 1px 2px black; font-weight: 500; }
+
+        /* IMAGE ITEMS */
+        .feed-instruction { font-family: var(--font-title); font-size: 3rem; color: var(--white); text-align: center; margin-top: 10px; margin-bottom: 20px; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); animation: text-flicker 3s infinite alternate; flex-shrink: 0; }
+        
+        .thumb-container { width: 100%; max-width: 400px; border: 1px solid #333; cursor: pointer; transition: 0.3s; position: relative; flex-shrink: 0; pointer-events: auto; }
+        /* HOVER MINIATURE EN VERT */
+        .thumb-container:hover { border-color: var(--neon-green); box-shadow: 0 0 15px var(--neon-green); transform: scale(1.02); }
+        .thumb-img { width: 100%; display: block; }
+        
+        /* OVERLAY CLIQUE SUR L'IMAGE */
+        .overlay-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 5; pointer-events: none; background-color: rgba(0,0,0,0.7); padding: 15px 30px; border: 2px solid var(--neon-green); box-shadow: 0 0 15px var(--neon-green); font-family: var(--font-title); font-size: 2rem; color: var(--neon-green); text-align: center; line-height: 1; white-space: nowrap; }
 
         /* FIN */
         .final-section { position: relative; background-color: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; scroll-snap-align: start; width: 100%; flex-shrink: 0; }
@@ -253,7 +243,6 @@
         
         .btn-final-devis { width: 300px; height: 80px; border-color: var(--neon-green); background-color: rgba(57, 255, 20, 0.1); box-shadow: 0 0 20px var(--neon-green); text-decoration: none; display: flex; justify-content: center; align-items: center; border-style: solid; border-width: 2px; cursor: pointer; pointer-events: auto; }
         .btn-final-devis .center-text { color: var(--neon-green); animation: rare-flash 6s infinite; }
-        
         .btn-final-off { width: 80px; height: 80px; border-radius: 50%; border: 2px solid red; display: flex; justify-content: center; align-items: center; cursor: pointer; background: rgba(255,0,0,0.1); animation: neon-flicker 2s infinite; pointer-events: auto; margin-top: 40px; }
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
@@ -282,7 +271,6 @@
     <div id="intro-layer" class="layer active">
         <div class="intro-container">
             <img src="surfer.webp" class="hero-image">
-            <!-- CANVAS CLIQUABLE POUR EASTER EGG -->
             <canvas id="matrix-canvas"></canvas>
             <div id="enter-btn" class="center-box">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
@@ -292,22 +280,34 @@
 
     <!-- EASTER EGG TERMINAL -->
     <div id="terminal-layer" class="layer" style="background: black; flex-direction: column; align-items: flex-start; padding: 20px; font-family: 'Share Tech Mono', monospace; color: #0f0; overflow-y: auto; text-align: left; z-index: 9995;">
-        <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-            <h2 style="border-bottom: 1px solid #0f0; padding-bottom: 10px; margin-bottom: 20px;">> SYSTEM_ROOT_ACCESS // JEEZ_V1.0</h2>
-            <p>> INITIALIZING CORE SYSTEMS... [OK]</p>
-            <p>> LOADING LOCATION_MODULES: <br>
-                <span class="keyword-block">TOULOUSE_CENTRE // BLAGNAC_AIRBUS // COLOMIERS_BUSINESS // LABEGE_INNOPOLE // BALMA_GRAMONT // TOURNEFEUILLE_RESIDENT // ROQUES_SUR_GARONNE_COMMERCE // PORTET_SUR_GARONNE // MURET_SUD // CASTANET_TOLOSAN // SAINT_ORENS // L_UNION // RAMONVILLE // CUGNAUX // PLAISANCE_DU_TOUCH</span>
-            </p>
-            <p>> LOADING SKILL_MODULES: <br>
-                <span class="keyword-block">PRODUCTION_VIDEO // MONTAGE_DYNAMIQUE_TIKTOK // REALISATION_CLIP_RAP // VIDEO_CORPORATE // FILM_INSTITUTIONNEL // SHOOTING_DRONE_FPV // MOTION_DESIGN_AFTER_EFFECTS // ETALONNAGE_DAVINCI // DESIGN_GRAPHIQUE // CREATION_LOGO // IDENTITE_VISUELLE // WEBDESIGN // CREATION_SITE_WEB // LANDING_PAGE // INTELLIGENCE_ARTIFICIELLE_MIDJOURNEY // COMMUNITY_MANAGEMENT // STRATEGIE_DIGITALE // AGENCE_COMMUNICATION_TOULOUSE // FREELANCE_VIDEASTE // PHOTOGRAPHE_EVENT</span>
-            </p>
-            <p>> TARGET_SECTORS: <br>
-                <span class="keyword-block">RESTAURANT_FOOD_PORN // SALLE_DE_SPORT_FITNESS_CROSSFIT // BOITE_DE_NUIT_CLUBBING // FESTIVAL_MUSIQUE // ARTISANAT_LOCAL // IMMOBILIER_LUXE // AUTOMOBILE_COVERING_DETAILING // TATTOO_SHOP_INK</span>
-            </p>
-            <br>
-            <p>> STATUS: <strong>AVAILABLE_FOR_WORK</strong></p>
-            <p>> CONTACT PROTOCOL: OPEN</p>
-            <button onclick="closeTerminal()" style="background: #0f0; color: black; border: none; padding: 10px 20px; font-family: 'Share Tech Mono'; cursor: pointer; margin-top: 20px;">> CLOSE_TERMINAL_</button>
+        <button onclick="closeTerminal()" class="close-terminal-btn">CLOSE TERMINAL</button>
+        <div style="width: 100%; max-width: 800px; margin: 0 auto; margin-top: 80px;">
+            <h2>> SYSTEM_ROOT_ACCESS // SEO_MATRIX_V2.0</h2>
+            
+            <h3>> MODULE 1: PRODUCTION_VIDEO_ET_STRATEGIE</h3>
+            <p><strong>Vidéaste Toulouse Freelance</strong> : Création de contenu visuel haut de gamme. Réalisation de <strong>clips musicaux</strong> (Rap, Drill, Trap, Pop) et vidéos promotionnelles pour artistes.</p>
+            <p><strong>Agence de Communication Digitale</strong> : Accompagnement des entreprises pour booster leur visibilité. Stratégie de contenu <strong>Reels Instagram et TikTok</strong> viral. Montage dynamique (CapCut, Premiere Pro, After Effects).</p>
+            <p><strong>Film Institutionnel & Corporate</strong> : Vidéos de présentation d'entreprise, interviews dirigeants, couverture d'événements (séminaires, soirées de lancement, team building).</p>
+
+            <h3>> MODULE 2: DESIGN_GRAPHIQUE_ET_WEB</h3>
+            <p><strong>Graphiste Freelance Toulouse</strong> : Création d'identité visuelle forte. Conception de <strong>Logos</strong>, Chartes graphiques, Affiches, Flyers, Cartes de visite NFC.</p>
+            <p><strong>Webdesigner & Intégrateur</strong> : Création de <strong>Sites Web Vitrines</strong> modernes et responsives. Design de Landing Pages optimisées pour la conversion. Portfolio en ligne pour artistes.</p>
+            <p><strong>Intelligence Artificielle (IA)</strong> : Expert en génération d'images (Midjourney, Stable Diffusion) pour des visuels uniques et futuristes (Style Cyberpunk, Brutalist, Neon).</p>
+
+            <h3>> MODULE 3: PHOTOGRAPHIE_ET_DRONE</h3>
+            <p><strong>Photographe Toulouse</strong> : Shooting photo lifestyle, mode, culinaire (Food Porn pour restaurants), immobilier et architecture.</p>
+            <p><strong>Pilote de Drone FPV</strong> : Prises de vues aériennes spectaculaires pour l'immobilier de luxe, les festivals, les chantiers et le tourisme en Occitanie.</p>
+
+            <h3>> MODULE 4: ZONES_INTERVENTION_OCCITANIE</h3>
+            <p>Intervention rapide sur : <strong>Toulouse Centre (Capitole, Saint-Cyprien, Carmes)</strong>, Blagnac (Zone Aéroportuaire, Airbus), Colomiers, Labège (Innopole, IoT Valley), Balma (Gramont), Tournefeuille, Roques-sur-Garonne, Portet-sur-Garonne, Muret, Cugnaux, Plaisance-du-Touch, L'Union, Saint-Orens.</p>
+
+            <h3>> MODULE 5: SECTEURS_CIBLES</h3>
+            <p><strong>Restauration & Nightlife</strong> : Vidéos pour Bars, Boites de nuit (Clubs), Restaurants, Brasseries. Mise en avant de menus et cocktails.</p>
+            <p><strong>Art & Culture</strong> : Salons de Tatouage (Tattoo Shops), Salles de Concert, Festivals, Théâtres.</p>
+            <p><strong>Sport & Bien-être</strong> : Salles de CrossFit, Clubs de MMA/Boxe, Coachs sportifs, Spas, Barbiers.</p>
+            <p><strong>Automobile</strong> : Garages de luxe, Detailing, Covering, Concessionnaires.</p>
+
+            <br><p>> EOF_DATA_STREAM [COMPLETE]</p>
         </div>
     </div>
 
@@ -316,10 +316,10 @@
         <div class="bio-content">
             <h1 class="bio-title">BIENVENUE SUR MON FEED !</h1>
             <p class="bio-text">TU TROUVERAS ICI UNE PARTIE DE MON TRAVAIL,</p>
-            <p class="bio-text">PRODUCTION DE A à Z AVEC MON PROPRE MATÉRIEL</p>
-            <p class="bio-text" style="color: #888;">MACHINE DE GUERRE</p>
+            <p class="bio-text">PRODUCTION DE A À Z AVEC MON PROPRE MATÉRIEL</p>
+            <p class="bio-text" style="color: #888;">(MACHINE DE GUERRE)</p>
             <p class="bio-text">OPTIMISÉ AVEC DE L'I.A</p>
-            <p class="bio-text" style="color: #888;">ON GAGNE DU TEMPS ET DE L'ARGENT 🏄‍♂️✨</p>
+            <p class="bio-text" style="color: #888;">(ON GAGNE DU TEMPS ET DE L'ARGENT PAS MAL NON ?)</p>
             <div style="height: 10px;"></div>
             <p class="bio-text">N'HÉSITE PAS À ME CONTACTER POUR QU'ON RÉALISE TON PROJET !</p>
             <p class="bio-text">ON SE RETROUVE DE L'AUTRE CÔTÉ !</p>
@@ -396,10 +396,10 @@
 
         <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/">
             <video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promotionnelle pour la sortie d'un t-shirt du très talentueux tatoueur Tekashi Tattoo</p></div>
+            <div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promo pour Tekashi Tattoo, référence du Japanese Tattoo 👹</p></div>
         </section>
 
-        <!-- SECTION FINALE -->
+        <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
             <canvas id="matrix-canvas-final" class="matrix-bg"></canvas>
             <div class="final-container">
@@ -415,41 +415,33 @@
 
     <!-- 4. IMAGE FEED -->
     <main id="image-feed" class="layer">
+        <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
         
-        <!-- IMG 1 -->
-        <section class="image-section" onclick="openImageModal(1)">
+        <div class="thumb-container" onclick="openImageModal(1)">
             <img src="img1_1.webp" class="feed-img">
             <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
-        </section>
-
-        <!-- IMG 2 -->
-        <section class="image-section" onclick="openImageModal(2)">
+        </div>
+        <div class="thumb-container" onclick="openImageModal(2)">
             <img src="img2_1.webp" class="feed-img">
             <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
-        </section>
-
-        <!-- IMG 3 -->
-        <section class="image-section" onclick="openImageModal(3)">
+        </div>
+        <div class="thumb-container" onclick="openImageModal(3)">
             <img src="img3_1.webp" class="feed-img">
             <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
-        </section>
-
-        <!-- IMG 4 -->
-        <section class="image-section" onclick="openImageModal(4)">
+        </div>
+        <div class="thumb-container" onclick="openImageModal(4)">
             <img src="img4_1.webp" class="feed-img">
             <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
-        </section>
-
-        <!-- IMG 5 -->
-        <section class="image-section" onclick="openImageModal(5)">
+        </div>
+        <div class="thumb-container" onclick="openImageModal(5)">
             <img src="img5_1.webp" class="feed-img">
             <div class="overlay-center">CLIQUE SUR L'IMAGE</div>
-        </section>
+        </div>
 
         <!-- FOOTER IMAGES -->
-        <section class="video-section final-section">
+        <section class="final-section" style="margin-top: 50px; width: 100%;">
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
-            <div class="final-container">
+            <div class="final-container" style="padding: 100px 0;">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
                     <h1 class="center-text">DEVIS GRATUIT</h1>
                 </a>
@@ -485,6 +477,7 @@
         let scrollHintInterval;
 
         function handleNavigation(targetId) {
+            // Reset
             document.querySelectorAll('.layer').forEach(el => {
                 el.classList.remove('active');
                 if(el.id === 'feed' || el.id === 'image-feed') el.style.display = 'none';
@@ -497,12 +490,10 @@
 
             let target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // CORRECTION: image-feed est en BLOCK maintenant pour le scroll snap
-            if (targetId === 'image-feed' || targetId === 'feed') {
-                target.style.display = 'block';
-            } else {
-                target.style.display = 'flex';
-            }
+            // Set correct display type
+            if (targetId === 'image-feed') target.style.display = 'flex';
+            else if (targetId === 'feed') target.style.display = 'block';
+            else target.style.display = 'flex';
 
             setTimeout(() => target.classList.add('active'), 10);
 
@@ -516,7 +507,6 @@
                 ui.style.display = 'block'; setTimeout(() => ui.classList.add('active'), 10);
                 if(targetId === 'feed') {
                     soundBtn.style.display = 'block'; eye.classList.remove('hidden');
-                    scrollHint.style.opacity = '1'; /* Fix arrow visibility */
                     scrollHint.style.animation = 'none'; scrollHint.offsetHeight; scrollHint.style.animation = 'scroll-hint-flow 2.5s ease-in-out forwards';
                     if(scrollHintInterval) clearInterval(scrollHintInterval);
                     scrollHintInterval = setInterval(() => { scrollHint.classList.remove('play-anim'); void scrollHint.offsetHeight; scrollHint.classList.add('play-anim'); }, 5000);
@@ -536,7 +526,11 @@
 
         window.addEventListener('popstate', function(event) {
             const page = event.state ? event.state.page : 'intro';
-            if(page === 'intro') { document.getElementById('intro-layer').style.display='flex'; setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10); document.getElementById('ui-layer').style.display='none'; }
+            if(page === 'intro') { 
+                document.getElementById('intro-layer').style.display='flex'; 
+                setTimeout(()=>document.getElementById('intro-layer').classList.add('active'),10);
+                document.getElementById('ui-layer').style.display='none';
+            }
             else handleNavigation(page);
         });
 
@@ -555,7 +549,7 @@
             setTimeout(() => { bio.classList.remove('glitch-out'); handleNavigation('image-feed'); }, 400);
         });
 
-        // --- EASTER EGG ---
+        // --- EASTER EGG TRIGGER ---
         document.getElementById('matrix-canvas').addEventListener('click', function() {
             stopM(introMatrix);
             document.getElementById('intro-layer').style.display = 'none';
@@ -568,7 +562,7 @@
             setTimeout(() => { term.style.display = 'none'; document.getElementById('intro-layer').style.display = 'flex'; startM(introMatrix); }, 400);
         }
 
-        // --- PRELOAD & MATRIX ---
+        // --- PRELOAD & MATRIX & ANIMATIONS ---
         const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
@@ -611,6 +605,7 @@
         setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
         setInterval(() => { const eye = document.querySelector('.eye-btn-main svg'); if(eye) { eye.classList.add('blink-now'); setTimeout(() => eye.classList.remove('blink-now'), 300); } }, 4000);
         function animateBtn(btn, c) { btn.classList.add(c); setTimeout(() => btn.classList.remove(c), 1000); }
+        
         let heartClickCount = 0;
         function triggerHeart(btn) {
             btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
@@ -626,9 +621,14 @@
         }
 
         // --- CONTACT ---
-        function openContactForm(e) { e.preventDefault(); document.getElementById('contact-modal').classList.add('active'); const soundBtn = document.getElementById('sound-btn'); if(soundBtn) soundBtn.style.display = 'none'; }
-        function closeContactForm() { 
-            document.getElementById('contact-modal').classList.remove('active'); 
+        function openContactForm(e) {
+            e.preventDefault();
+            document.getElementById('contact-modal').classList.add('active');
+            const soundBtn = document.getElementById('sound-btn');
+            if(soundBtn) soundBtn.style.display = 'none';
+        }
+        function closeContactForm() {
+            document.getElementById('contact-modal').classList.remove('active');
             const feed = document.getElementById('feed');
             if(feed.classList.contains('active')) document.getElementById('sound-btn').style.display = 'block';
         }
