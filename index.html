@@ -213,7 +213,6 @@
         @keyframes shake { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg) scale(1.1); } 75% { transform: rotate(-10deg) scale(1.1); } 100% { transform: rotate(0deg) scale(1.1); } }
         .shaking { animation: shake 0.4s ease-in-out; }
 
-
         /* ========================
            4. FEEDS (SCROLLABLE)
            ======================== */
@@ -227,8 +226,8 @@
         }
         #feed.active { display: block; }
         
-        /* IMAGE FEED SPECIFIQUE POUR SCROLL SNAP */
-        #image-feed.active { display: block; } /* Passage en block pour le snap */
+        /* CORRECTION IMAGES: On veut un comportement similaire à la vidéo (Scroll Snap) */
+        #image-feed.active { display: block; }
 
         /* VIDEO & IMAGE SECTIONS (COMMUN) */
         #feed, #image-feed { scroll-snap-type: y mandatory; }
@@ -248,16 +247,15 @@
         @media (orientation: portrait) { video.vertical { object-fit: cover; } video.horizontal { object-fit: contain; } }
         @media (orientation: landscape) { video.vertical { object-fit: contain; } video.horizontal { object-fit: cover; } }
 
-        /* Image Specifique */
-        /* Miniature carrée au centre, pas d'object-fit cover pour ne pas cropper les formats bizarres */
+        /* Image Specifique (Plein écran centré) */
         .feed-img { 
-            max-width: 90%; max-height: 80vh; /* Garde proportions */
+            max-width: 100%; max-height: 100%; 
+            object-fit: contain; /* S'assure que l'image est entière */
             z-index: 1; 
             cursor: pointer; 
-            opacity: 0.8; transition: opacity 0.3s;
-            border: 1px solid #333; /* Cadre fin */
+            opacity: 0.8; transition: all 0.3s; 
         }
-        .image-section:hover .feed-img { opacity: 1; border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.3); }
+        .image-section:hover .feed-img { opacity: 1; transform: scale(1.02); }
 
         /* Overlay Bouton Image */
         .overlay-center {
@@ -330,8 +328,29 @@
         <div style="width: 100%; max-width: 800px; margin: 0 auto; margin-top: 80px;">
             <h2>> SYSTEM_ROOT_ACCESS // SEO_MATRIX_V2.0</h2>
             <h3>> MODULE 1: PRODUCTION_VIDEO_ET_STRATEGIE</h3>
-            <p><strong>Vidéaste Toulouse Freelance</strong> : Création de contenu visuel haut de gamme.</p>
-            <!-- CONTENU SEO -->
+            <p><strong>Vidéaste Toulouse Freelance</strong> : Création de contenu visuel haut de gamme. Réalisation de <strong>clips musicaux</strong> (Rap, Drill, Trap, Pop) et vidéos promotionnelles pour artistes.</p>
+            <p><strong>Agence de Communication Digitale</strong> : Accompagnement des entreprises pour booster leur visibilité. Stratégie de contenu <strong>Reels Instagram et TikTok</strong> viral. Montage dynamique (CapCut, Premiere Pro, After Effects).</p>
+            <p><strong>Film Institutionnel & Corporate</strong> : Vidéos de présentation d'entreprise, interviews dirigeants, couverture d'événements (séminaires, soirées de lancement, team building).</p>
+
+            <h3>> MODULE 2: DESIGN_GRAPHIQUE_ET_WEB</h3>
+            <p><strong>Graphiste Freelance Toulouse</strong> : Création d'identité visuelle forte. Conception de <strong>Logos</strong>, Chartes graphiques, Affiches, Flyers, Cartes de visite NFC.</p>
+            <p><strong>Webdesigner & Intégrateur</strong> : Création de <strong>Sites Web Vitrines</strong> modernes et responsives. Design de Landing Pages optimisées pour la conversion. Portfolio en ligne pour artistes.</p>
+            <p><strong>Intelligence Artificielle (IA)</strong> : Expert en génération d'images (Midjourney, Stable Diffusion) pour des visuels uniques et futuristes (Style Cyberpunk, Brutalist, Neon).</p>
+
+            <h3>> MODULE 3: PHOTOGRAPHIE_ET_DRONE</h3>
+            <p><strong>Photographe Toulouse</strong> : Shooting photo lifestyle, mode, culinaire (Food Porn pour restaurants), immobilier et architecture.</p>
+            <p><strong>Pilote de Drone FPV</strong> : Prises de vues aériennes spectaculaires pour l'immobilier de luxe, les festivals, les chantiers et le tourisme en Occitanie.</p>
+
+            <h3>> MODULE 4: ZONES_INTERVENTION_OCCITANIE</h3>
+            <p>Intervention rapide sur : <strong>Toulouse Centre (Capitole, Saint-Cyprien, Carmes)</strong>, Blagnac (Zone Aéroportuaire, Airbus), Colomiers, Labège (Innopole, IoT Valley), Balma (Gramont), Tournefeuille, Roques-sur-Garonne, Portet-sur-Garonne, Muret, Cugnaux, Plaisance-du-Touch, L'Union, Saint-Orens.</p>
+
+            <h3>> MODULE 5: SECTEURS_CIBLES</h3>
+            <p><strong>Restauration & Nightlife</strong> : Vidéos pour Bars, Boites de nuit (Clubs), Restaurants, Brasseries. Mise en avant de menus et cocktails.</p>
+            <p><strong>Art & Culture</strong> : Salons de Tatouage (Tattoo Shops), Salles de Concert, Festivals, Théâtres.</p>
+            <p><strong>Sport & Bien-être</strong> : Salles de CrossFit, Clubs de MMA/Boxe, Coachs sportifs, Spas, Barbiers.</p>
+            <p><strong>Automobile</strong> : Garages de luxe, Detailing, Covering, Concessionnaires.</p>
+
+            <br><p>> EOF_DATA_STREAM [COMPLETE]</p>
         </div>
     </div>
 
@@ -384,19 +403,27 @@
 
     <!-- 3. FEED VIDEO -->
     <main id="feed" class="layer">
-        
-        <!-- VIDEOS... -->
-        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/">
-            <video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay"><h2>Bienvenue à la Cour Des Miracles</h2><p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse...</p></div>
+        <section class="video-section" data-link="https://www.instagram.com/p/DKcU3Iko4uw/"><video class="vertical" src="video1.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Bienvenue à la Cour Des Miracles</h2><p>Vidéo de présentation du plus célèbre des Tattoo Shop de Toulouse, une équipe en or et du talent de partout ❤️</p></div>
         </section>
-        
-        <section class="video-section" data-link="https://youtube.com">
-            <video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
-            <div class="info-overlay"><h2>Drag Show au FlashBack !</h2><p>Tournage sur la scène du FlashBack à Toulouse...</p></div>
+        <section class="video-section" data-link="https://youtube.com"><video class="horizontal" src="video2.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Drag Show au FlashBack !</h2><p>Tournage sur la scène du FlashBack à Toulouse, l'intro du Show de Morgane Taylor, DragQueen vraiment géniale !</p></div>
         </section>
-
-        <!-- (Autres vidéos ici) -->
+        <section class="video-section" data-link="https://www.instagram.com/p/DMBXsd3s-01/"><video class="vertical" src="video3.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Rêve de gosse chez Warner Bros</h2><p>À l'occasion des 50ans du Single du célèbre groupe de Heavy Metal "Black Sabbath" j'ai réalisé cette vidéo promotionnelle pour Warner Music Group</p></div>
+        </section>
+        <section class="video-section" data-link="https://youtu.be/9zjvYZG_kUc?si=nEC-pygepUW5_I_m"><video class="horizontal" src="video4.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Entre Scooby-Doo et Mad Max</h2><p>Le clip du son "I Love You Baby" pour le groupe "Not Your Mother", du dessin animé entièrement réalisé par moi même</p></div>
+        </section>
+        <section class="video-section" data-link="https://www.instagram.com/p/DLSoJ7HIvjq/"><video class="vertical" src="video5.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Trouble Makers !</h2><p>Vidéo promotionnelle pour la sortie d'un t-shirt très stylé au thème de la série Malcom</p></div>
+        </section>
+        <section class="video-section" data-link="https://youtu.be/q47H3s7y_C4?si=PPmmPhdw4ZSahUn_"><video class="horizontal" src="video6.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Caballo ? Tornadooo</h2><p>Clip de musique réalisé pour mon propre groupe T6</p></div>
+        </section>
+        <section class="video-section" data-link="https://www.instagram.com/p/DJbWJ4PoPsY/"><video class="vertical" src="video7.mp4" loop muted playsinline preload="auto"></video>
+            <div class="info-overlay"><h2>Tekashi Tattoo</h2><p>Vidéo promo pour Tekashi Tattoo, référence du Japanese Tattoo 👹</p></div>
+        </section>
 
         <!-- SECTION FINALE (VIDEO) -->
         <section class="video-section final-section">
@@ -412,7 +439,7 @@
         </section>
     </main>
 
-    <!-- 4. IMAGE FEED (CORRIGÉ AVEC SCROLL SNAP) -->
+    <!-- 4. IMAGE FEED (CORRIGÉ: SECTION + SCROLL SNAP) -->
     <main id="image-feed" class="layer">
         
         <!-- IMG 1 -->
@@ -495,7 +522,7 @@
 
             let target = document.getElementById(targetId === 'intro' ? 'intro-layer' : (targetId === 'bio' ? 'bio-layer' : targetId));
             
-            // CORRECTION: Tout en BLOCK pour le scroll snap
+            // CORRECTION: BLOCK POUR SCROLL SNAP
             if (targetId === 'image-feed' || targetId === 'feed') {
                 target.style.display = 'block';
             } else {
@@ -656,6 +683,7 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
+                    // FINAL SECTION
                     if (entry.target.classList.contains('final-section')) {
                         if(entry.isIntersecting) { 
                             eyeContainer.classList.add('hidden'); startM(matrixTarget);
@@ -669,11 +697,15 @@
                         }
                         return;
                     }
+                    
+                    // VIDEO
                     if(activeFeedId === 'feed') {
                         const video = entry.target.querySelector('video'); if (!video) return;
                         if (entry.isIntersecting) { eyeContainer.classList.remove('hidden'); video.play().catch(e => {}); entry.target.classList.add('active'); const link = entry.target.getAttribute('data-link'); eyeBtn.href = link ? link : "#"; } 
                         else { video.pause(); video.currentTime = 0; entry.target.classList.remove('active'); }
                     }
+                    
+                    // IMAGE
                     if(activeFeedId === 'image-feed') {
                         if(entry.isIntersecting) { eyeContainer.classList.add('hidden'); }
                     }
