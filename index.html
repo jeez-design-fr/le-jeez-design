@@ -314,6 +314,32 @@
         .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
         .contact-submit { background: var(--neon-green); color: black; border: none; padding: 15px; font-family: var(--font-title); font-size: 1.5rem; cursor: pointer; }
 
+        /* --- STYLE FAQ (ACCORDÉON) --- */
+        #faq-layer details > summary { 
+            list-style: none; /* Enlève la flèche moche par défaut */
+            transition: 0.3s;
+        }
+        #faq-layer details > summary::-webkit-details-marker { 
+            display: none; /* Pour Chrome/Safari */
+        }
+        
+        /* Quand la question est ouverte */
+        #faq-layer details[open] {
+            border-color: var(--neon-pink) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+        }
+        #faq-layer details[open] summary { 
+            color: var(--neon-pink) !important; 
+            border-bottom: 1px dashed var(--neon-pink) !important; 
+            text-shadow: 0 0 5px var(--neon-pink);
+        }
+        
+        /* Quand on passe la souris sur la question */
+        #faq-layer details summary:hover { 
+            color: var(--neon-green) !important; 
+            padding-left: 25px; /* Petit effet de décalage */
+        }
+        
     </style>
       <!-- COLLE TON CODE DE DONNÉES STRUCTURÉES ICI -->
     <script type="application/ld+json">
@@ -372,6 +398,7 @@
    <!-- EASTER EGG TERMINAL -->
     <div id="terminal-layer" class="layer" style="background: black; flex-direction: column; align-items: flex-start; padding: 20px; font-family: 'Share Tech Mono', monospace; color: #0f0; overflow-y: auto; text-align: left; z-index: 9995;">
         <button onclick="closeTerminal()" class="close-terminal-btn">[ voir ] LE WORK DE JEEZ</button>
+        <button onclick="openFaq()" class="close-terminal-btn" style="top: 65%; border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 20px var(--neon-pink); animation: none; font-size: 1.5rem; padding: 15px 30px;">[ ? ] FAQ [ ? ]</button>
         
         <div style="width: 100%; max-width: 800px; margin: 0 auto; margin-top: 80px; line-height: 1.4;">
             <p style="opacity: 0.7; font-size: 0.8rem;">BOOT_SEQUENCE_INIT... OK</p>
@@ -446,6 +473,115 @@
             <p style="border-top: 1px dashed #0f0; padding-top: 10px;">> MEMORY_CHECK: OK</p>
             <p>> EOF_DATA_STREAM [COMPLETE]</p>
             <p class="matrix-cursor">> AWAITING_INPUT_</p>
+        </div>
+    </div>
+    <!-- FAQ LAYER (SEO PUISSANT) -->
+    <div id="faq-layer" class="layer" style="background: black; flex-direction: column; align-items: flex-start; padding: 20px; font-family: 'Share Tech Mono', monospace; color: #0f0; overflow-y: auto; text-align: left; z-index: 9998;">
+        
+        <div style="width: 100%; max-width: 800px; margin: 0 auto; margin-top: 50px; padding-bottom: 100px;">
+            <button onclick="closeFaq()" class="close-terminal-btn" style="border-color: var(--neon-pink); color: var(--neon-pink); box-shadow: 0 0 20px var(--neon-pink);">[ X ] RETOUR_TERMINAL</button>
+            
+            <h2 style="margin-top: 100px; border-bottom: 2px dashed var(--neon-pink); padding-bottom: 10px; margin-bottom: 30px; color: var(--neon-pink);">
+                > ACCES_BASE_DE_DONNEES_FAQ // QUESTIONS_FREQUENTES
+            </h2>
+
+            <!-- QUESTION 1 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 01_QUEL_EST_LE_PRIX_D_UNE_VIDEO_A_TOULOUSE ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Chaque projet est unique. Le tarif d'un vidéaste freelance dépend de la complexité du tournage (demi-journée ou journée complète), du matériel nécessaire (Drone, Caméra Cinéma), et du temps de montage. <br><br>
+                    Pour un <strong>Reel Instagram</strong> ou un <strong>TikTok</strong> (Snack Content), les prix démarrent généralement autour de 200€ - 300€. <br>
+                    Pour un <strong>Clip Musical</strong> ou un <strong>Film d'Entreprise</strong> complet, on est sur des budgets à partir de 800€. <br>
+                    Le mieux est de demander un devis gratuit via le bouton en bas du site. Réponse sous 24h.
+                </div>
+            </details>
+
+            <!-- QUESTION 2 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 02_FAIS_TU_DES_VIDEOS_POUR_LES_RESEAUX_SOCIAUX ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Oui, c'est ma spécialité. Je produis du contenu vertical (9:16) optimisé pour l'algorithme d'Instagram, TikTok et YouTube Shorts. <br>
+                    Montage dynamique, transitions fluides, sous-titres animés et choix musicaux tendances. Idéal pour les tatto shop, restaurants, salles de sport (CrossFit) et boutiques à Toulouse qui veulent gagner en visibilité.
+                </div>
+            </details>
+
+            <!-- QUESTION 3 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 03_QUELLES_SONT_TES_ZONES_D_INTERVENTION ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Je suis basé à <strong>Toulouse</strong> mais je suis mobile dans toute la Haute-Garonne et l'Occitanie. <br>
+                    J'interviens régulièrement sur : Blagnac (Zone Airbus), Colomiers, Labège (Innopole), Balma, Tournefeuille, Muret, Portet-sur-Garonne et Saint-Orens. <br>
+                    Pour les gros projets (Festivals, Publicité, Clip), je peux me déplacer dans toute la France.
+                </div>
+            </details>
+
+            <!-- QUESTION 4 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 04_UTILISES_TU_L_INTELLIGENCE_ARTIFICIELLE (IA) ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Affirmatif. L'IA (Midjourney, Stable Diffusion, Topaz AI, KlingAI) fait partie intégrante de mon workflow. <br>
+                    Je l'utilise pour : créer des moodboards uniques, générer des décors virtuels, améliorer la qualité d'anciennes vidéos (Upscaling 4K) ou créer des visuels graphiques impossibles à shooter en réel. C'est ce qui donne cette touche "Unique" à mon travail.
+                </div>
+            </details>
+
+            <!-- QUESTION 5 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 05_PEUX_TU_FILMER_EN_DRONE ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Non, je peux réaliser des prises de vues aériennes à partir de mes images que j'anime en IA. Je ne dispose pas de drones classiques (pour l'immobilier, l'architecture, les paysages) et de drones FPV (First Person View) pour des plans dynamiques et immersifs (parfait pour les festivals, les suivis de voiture ou les sports extrêmes).
+                </div>
+            </details>
+
+            <!-- QUESTION 6 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 06_QUELS_TYPES_DE_CLIENTS_ACCOMPAGNES_TU ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Je travaille avec tous ceux qui veulent une image forte et moderne : <br>
+                    - <strong>Artistes & Musiciens :</strong> Clips de Rap, Rock, Electro. <br>
+                    - <strong>Commerces Locaux :</strong> Salons de Tatouage, Barbiers, Restaurants, Bars. <br>
+                    - <strong>Entreprises & Startups :</strong> Vidéos de présentation, interviews, couvertures d'événements. <br>
+                    - <strong>Monde de la Nuit :</strong> Clubs, Boites de nuit, Organisateurs de soirées.
+                </div>
+            </details>
+
+            <!-- QUESTION 7 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 07_FAIS_TU_AUSSI_DU_GRAPHISME_ET_DES_SITES_WEB ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Oui. Je suis un créatif "Couteau Suisse". Je peux gérer votre identité visuelle complète : création de Logo, Charte Graphique, Design de cartes de visite et création de votre Site Web (comme celui-ci). <br>
+                    Avoir un seul interlocuteur pour la Vidéo, la Photo et le Web assure une cohérence parfaite de votre image de marque.
+                </div>
+            </details>
+
+            <!-- QUESTION 8 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 08_QUELS_SONT_TES_DELAIS_DE_LIVRAISON ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                    Je suis réputé pour ma rapidité. <br>
+                    Pour un Reel Instagram ou des photos : <strong>24h à 72h</strong> après le tournage. <br>
+                    Pour un Clip ou un film d'entreprise : <strong>5 à 10 jours</strong> selon la complexité du montage et des effets spéciaux. <br>
+                    Je m'engage toujours sur une date de livraison précise avant de commencer.
+                </div>
+            </details>
+            
+             <!-- QUESTION 9 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 09_COMMENT_RESERVER_UNE_DATE_DE_TOURNAGE ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                   C'est très simple. Envoyez-moi un message via le formulaire de contact (bouton "DEVIS GRATUIT") ou contactez-moi sur Instagram. On discute de votre projet, on valide le budget, et on bloque une date. Un acompte de 50% est demandé pour valider la réservation.
+                </div>
+            </details>
+            
+             <!-- QUESTION 10 -->
+            <details style="margin-bottom: 20px; border: 1px solid #333; background: #050505;">
+                <summary style="padding: 15px; cursor: pointer; color: white; font-weight: bold; list-style: none;">> 10_POURQUOI_CHOISIR_LE_WORK_DE_JEEZ ?</summary>
+                <div style="padding: 15px; color: #aaa; line-height: 1.6; border-top: 1px solid #333;">
+                   Parce que vous ne voulez pas une vidéo "comme tout le monde" où "filmée à l'iPhone". Vous voulez une identité visuelle marquée, impactante. Je n'utilise pas de templates tout faits. Je crée une ambiance sur-mesure qui marque les esprits, qui fait des millions de vues et convertit vos visiteurs en clients.
+                </div>
+            </details>
+
+            <br>
+            <p style="text-align: center; color: var(--neon-pink);">[ END_OF_FAQ_DATABASE ]</p>
         </div>
     </div>
     <!-- 2. BIO LAYER -->
@@ -850,9 +986,28 @@
             if (isMuted) { btn.innerText = "🔇 SON OFF"; btn.style.color = "var(--neon-green)"; btn.style.borderColor = "var(--neon-green)"; } 
             else { btn.innerText = "🔊 SON ON"; btn.style.color = "var(--neon-purple)"; btn.style.borderColor = "var(--neon-purple)"; }
         }
+        // --- GESTION FAQ ---
+        function openFaq() {
+            // On cache le terminal pour afficher la FAQ
+            document.getElementById('terminal-layer').style.display = 'none';
+            const faq = document.getElementById('faq-layer');
+            faq.style.display = 'flex';
+            setTimeout(() => faq.classList.add('active'), 10);
+        }
+
+        function closeFaq() {
+            // On ferme la FAQ pour revenir au terminal
+            const faq = document.getElementById('faq-layer');
+            faq.classList.remove('active');
+            setTimeout(() => {
+                faq.style.display = 'none';
+                document.getElementById('terminal-layer').style.display = 'flex'; // Retour Terminal
+            }, 400);
+        }
     </script>
 </body>
 </html>
+
 
 
 
