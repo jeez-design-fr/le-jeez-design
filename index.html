@@ -142,6 +142,27 @@
         .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
         .center-box:hover .center-text { color: var(--neon-green); }
 
+        /* ========================
+           1.5. MENU LAYER
+           ======================== */
+        #menu-layer { 
+            background-color: #000; 
+            flex-direction: column; justify-content: center; align-items: center; 
+            z-index: 450;
+        }
+        
+        #portfolio-btn {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.2);
+            width: 300px; height: 80px; /* Même taille que l'intro */
+        }
+        #portfolio-btn:hover { 
+            border-color: var(--neon-purple); 
+            box-shadow: 0 0 20px var(--neon-purple); 
+        }
+        #portfolio-btn:hover .center-text { 
+            color: var(--neon-purple); 
+        }
 
         /* ========================
            2. BIO LAYER
@@ -351,6 +372,14 @@
         </div>
     </div>
 
+<div id="menu-layer" class="layer">
+        <div class="menu-container" style="display: flex; flex-direction: column; gap: 30px; align-items: center;">
+            <div id="portfolio-btn" class="center-box">
+                <h1 class="center-text">PORTFOLIO</h1>
+            </div>
+            </div>
+    </div>
+    
     <!-- 2. BIO LAYER -->
     <div id="bio-layer" class="layer">
         <div class="bio-content">
@@ -627,13 +656,24 @@
         });
 
         // --- EVENTS CLICK ---
+       // 1. Clic sur le bouton d'accueil (Le work de Jeez) -> Envoie vers le nouveau MENU
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             intro.classList.add('glitch-out');
             stopM(introMatrix);
             setTimeout(() => {
                 intro.classList.remove('glitch-out');
-                handleNavigation('bio');
+                handleNavigation('menu-layer'); 
+            }, 400);
+        });
+
+        // 2. Clic sur le nouveau bouton PORTFOLIO -> Envoie vers la BIO
+        document.getElementById('portfolio-btn').addEventListener('click', function() {
+            const menu = document.getElementById('menu-layer');
+            menu.classList.add('glitch-out');
+            setTimeout(() => {
+                menu.classList.remove('glitch-out');
+                handleNavigation('bio'); 
             }, 400);
         });
 
@@ -820,6 +860,7 @@
     </script>
 </body>
 </html>
+
 
 
 
