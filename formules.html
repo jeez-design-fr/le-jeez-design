@@ -120,9 +120,20 @@
             background-color: rgba(188, 19, 254, 0.05);
         }
 
+        /* Respiration Blanche */
+        @keyframes pulse-white {
+            0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); border-color: rgba(255, 255, 255, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); border-color: rgba(255, 255, 255, 0.3); }
+        }
+        .accordion-btn.neon-white {
+            animation: pulse-white 3s infinite;
+            color: var(--white); 
+        }
         .accordion-btn.neon-white:hover, .accordion-btn.neon-white.active {
             border-color: var(--white);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.05);
             color: var(--white);
         }
 
@@ -241,6 +252,21 @@
         /* Prix en violet si dans la carte populaire du vert (pour l'harmonie) */
         .neon-green + .accordion-content .card.popular .card-price {
             color: var(--neon-purple);
+
+            /* --- DESIGN SPÉCIFIQUE SECTION CLIP VIDÉO (BLANC/ARGENT) --- */
+        .neon-white + .accordion-content .card-price { color: var(--white); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .neon-white + .accordion-content .card .pack-btn { color: var(--white); border-color: var(--white); }
+        .neon-white + .accordion-content .card .pack-btn:hover { background-color: var(--white); color: var(--black); box-shadow: 0 0 15px var(--white); }
+        .neon-white + .accordion-content .card:hover { border-color: var(--white); box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
+        
+        /* Carte Populaire en inversé (Blanc pur) */
+        .neon-white + .accordion-content .card.popular { border-color: #888; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
+        .neon-white + .accordion-content .card.popular:hover { box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); border-color: var(--white); }
+        .neon-white + .accordion-content .card.popular .popular-badge { background-color: var(--white); color: var(--black); box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); }
+        
+        .neon-white + .accordion-content .card-features li::before { color: var(--white); text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        .neon-white + .accordion-content .card-bonus { border-left-color: var(--white); }
+        .neon-white + .accordion-content .card.popular .card-bonus { border-left-color: #888; }
         }
         /* Prix en violet si dans la section WEB (où le thème principal est violet) */
         .neon-purple + .accordion-content .card-price {
@@ -626,12 +652,73 @@
         </div>
 
         <button class="accordion-btn neon-white">
-            CLIP VIDÉO & FICTION
+            CLIP VIDÉO
             <span class="accordion-icon">+</span>
         </button>
-        <div class="accordion-content">
+       <div class="accordion-content">
             <div class="content-inner">
-                <p class="temp-text">Les tarifs pour les réalisations musicales et fictions seront bientôt disponibles...</p>
+                
+                <div class="header-section">
+                    <p class="intro-text">Aujourd'hui, un bon son sans un visuel qui claque, c'est un son qui n'existe pas. Que vous ayez besoin de filmer la réalité brute en 4K ou de plonger votre audience dans un univers entièrement animé (3D, style Animé japonais, Stop-Motion ou Cartoon), je construis l'esthétique qui va faire exploser votre morceau.</p>
+                    <p class="intro-text">Je ne me contente pas de vous livrer un fichier pour YouTube. <span class="intro-highlight">Je vous fournis l'arsenal complet pour dominer TikTok et Instagram et teaser votre sortie comme une vraie major.</span></p>
+                    
+                    <p class="intro-text" style="margin-top: 30px; color: var(--white); font-weight: 700; font-size: 1.5rem;">CHOISISSEZ VOTRE CALIBRE :</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="card">
+                        <h2 class="card-title">LE VISUALIZER</h2>
+                        <div class="card-price">Dès 350 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Créer une boucle visuelle ultra-stylisée qui capte l'œil et retient l'attention sur le son.</div>
+                        <ul class="card-features">
+                            <li>L'arme hypnotique. Parfait pour YouTube, les sorties Spotify (Canvas) ou pour balancer un extrait sur les réseaux avec une DA intouchable.</li>
+                            <li>Animation en boucle (Loop) sur-mesure (au choix : 3D, Cartoon, Animé ou compositing réel).</li>
+                            <li><strong>Format horizontal (4K YouTube) + Format vertical (Spotify Canvas / Reels).</strong></li>
+                            <li>Colorimétrie cinéma et effets visuels (Glitch, VHS, Néon...).</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">LE BONUS PROMO :</div>
+                            <strong>2 extraits format vertical (15 sec)</strong> avec paroles dynamiques pour hyper votre sortie sur TikTok/Insta.
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Clip%20-%20Le%20Visualizer" class="pack-btn">RÉSERVER LE VISUALIZER</a>
+                    </div>
+
+                    <div class="card popular">
+                        <div class="popular-badge">LE STANDARD PREMIUM</div>
+                        <h2 class="card-title">LE CLIP OFFICIEL</h2>
+                        <div class="card-price">Dès 850 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Un vrai storytelling visuel qui donne une identité forte à votre morceau.</div>
+                        <ul class="card-features">
+                            <li>Le clip classique, mais avec ma Direction Artistique. On pose une vraie vibe, en tournage réel ou en animation poussée.</li>
+                            <li>Clip complet en 4K pour YouTube.</li>
+                            <li><strong>1 grosse journée de tournage réel</strong> (lumières, stabilisation, mise en scène) OU création d'un univers animé complet.</li>
+                            <li>Montage dynamique, <strong>étalonnage typé "Pellicule/Cinéma"</strong> et effets visuels marqués.</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">L'ARSENAL PROMO :</div>
+                            <strong>3 Teasers (Format vertical TikTok/Reels)</strong> tirés des meilleurs moments du clip + <strong>Cover Art généré par IA</strong> pour les plateformes de streaming.
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Clip%20-%20Le%20Clip%20Officiel" class="pack-btn">RÉSERVER CE CLIP</a>
+                    </div>
+
+                    <div class="card premium">
+                        <h2 class="card-title">LE BANGER</h2>
+                        <div class="card-price">Dès 1 600 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Créer une masterclass visuelle. Le clip que le public regarde en boucle pour la technique.</div>
+                        <ul class="card-features">
+                            <li>L'artillerie lourde. Le projet ambitieux où on mélange les mondes : réel, 3D, multivers. Le clip qui fait passer un cap à votre carrière.</li>
+                            <li><strong>Clip ultra-premium en 4K.</strong></li>
+                            <li><strong>Multiples lieux de tournage (jusqu'à 2 jours)</strong> ET/OU hybridation avec de l'animation complexe (incrustation 3D, Datamoshing).</li>
+                            <li>Direction Artistique totale (stylisme, moodboard, scénario détaillé).</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">LE ROLLOUT COMPLET :</div>
+                            <strong>Pack de 4 Teasers verticaux + 1 Vidéo "Behind The Scenes"</strong> (Coulisses) pour engager votre commu + Un set de photos HD retouchées.
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Clip%20-%20Le%20Banger" class="pack-btn">CRÉER UNE MASTERCLASS</a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
