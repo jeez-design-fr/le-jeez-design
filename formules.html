@@ -227,6 +227,91 @@
             line-height: 1.5;
         }
 
+        /* --- STYLE POUR METTRE EN GRAS/BLANC --- */
+        .card-features li strong, .card-bonus strong {
+            color: var(--white);
+            font-weight: 700;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- PACK 3 : TEXTURE PREMIUM (MÉTAL MAT/SHINE) --- */
+        .card.premium {
+            background: linear-gradient(135deg, #121212 0%, #050505 50%, #181818 100%);
+            border-color: #333;
+            position: relative;
+            overflow: hidden; /* Pour que le reflet ne sorte pas de la carte */
+        }
+        .card.premium:hover {
+            border-color: #666;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+        /* Le reflet de lumière animé */
+        .card.premium::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -150%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-25deg);
+            animation: premium-shine 6s infinite;
+            pointer-events: none;
+        }
+        @keyframes premium-shine {
+            0% { left: -150%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* --- BOUTONS DANS LES PACKS --- */
+        .pack-btn {
+            margin-top: auto; /* Pousse le bouton tout en bas de la carte */
+            display: block;
+            text-align: center;
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            text-decoration: none;
+            padding: 15px;
+            transition: 0.3s ease;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+        
+        /* Bouton Pack 1 (Vert) */
+        .card .pack-btn {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+        }
+        .card .pack-btn:hover {
+            background-color: var(--neon-green);
+            color: var(--black);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Bouton Pack 2 (Violet) */
+        .card.popular .pack-btn {
+            color: var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+        .card.popular .pack-btn:hover {
+            background-color: var(--neon-purple);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
+        /* Bouton Pack 3 (Premium Blanc/Argent) */
+        .card.premium .pack-btn {
+            color: var(--white);
+            border-color: #555;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .card.premium .pack-btn:hover {
+            background-color: var(--white);
+            color: var(--black);
+            border-color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+
         /* RESPONSIVE */
         @media (max-width: 768px) {
             .main-title { font-size: 3rem; }
@@ -254,7 +339,7 @@
             <div class="card-objective">OBJECTIF : Présence constante pour ancrer l'image de marque.</div>
             <ul class="card-features">
                 <li>L'essentiel pour maintenir l'algorithme sous perfusion avec une esthétique premium.</li>
-                <li>4 Vidéos Premium / mois (Reels dynamiques ou TikToks).</li>
+                <li><strong>4 Vidéos Premium / mois (Reels dynamiques ou TikToks).<strong></li>
                 <li>1 Session de tournage sur place.</li>
                 <li>Montage, Étalonnage cinéma et Sound Design.</li>
             </ul>
@@ -271,7 +356,7 @@
             <div class="card-objective">OBJECTIF : Croissance de l'audience et Direction Artistique affirmée.</div>
             <ul class="card-features">
                 <li>L'offre pour écraser la concurrence visuellement. On s'impose sur les réseaux en imposant votre univers.</li>
-                <li>8 Vidéos Premium / mois (Mix de Reels agressifs et vidéos d'ambiance).</li>
+                <li><strong>8 Vidéos Premium / mois (Mix de Reels agressifs et vidéos d'ambiance).<strong></li>
                 <li>2 Sessions de tournage sur place.</li>
                 <li>Post-production avancée (VFX subtils, intégration IA, Sound Design lourd).</li>
             </ul>
@@ -287,7 +372,7 @@
             <div class="card-objective">OBJECTIF : Domination totale de votre niche.</div>
             <ul class="card-features">
                 <li>L'arme lourde. Vous me confiez les clés de votre identité visuelle. Je deviens votre agence personnelle.</li>
-                <li>12 à 15 Vidéos / mois (Reels, Interviews/Coulisses, format immersif).</li>
+                <li><strong>12 à 15 Vidéos / mois (Reels, Interviews/Coulisses, format immersif).<strong></li>
                 <li>1 Journée complète de tournage (ou 2 grosses demi-journées).</li>
                 <li>Direction Artistique complète, gestion de l'esthétique globale de votre feed.</li>
             </ul>
