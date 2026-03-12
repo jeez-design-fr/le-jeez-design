@@ -425,6 +425,29 @@
             letter-spacing: 1px;
         }
 
+        /* Bouton Pack de base (Vert) */
+        .card .pack-btn {
+            background-color: transparent;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+        }
+        .card .pack-btn:hover {
+            background-color: var(--neon-green);
+            color: var(--black);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        /* Bouton Pack Populaire (Violet) */
+        .card.popular .pack-btn {
+            color: var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+        .card.popular .pack-btn:hover {
+            background-color: var(--neon-purple);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+
         /* BOUTON PREMIUM BLANC (Universel) */
         .card.premium .pack-btn {
             color: var(--white) !important;
