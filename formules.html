@@ -29,7 +29,7 @@
             font-family: var(--font-text);
             overflow-x: hidden;
             overflow-y: auto; 
-            padding: 20px;
+            padding: 20px 20px 100px 20px; /* Padding bas pour laisser respirer la fin de page */
         }
 
         /* BOUTON RETOUR */
@@ -50,10 +50,88 @@
             text-shadow: 0 0 15px var(--neon-green);
         }
 
-        /* HEADER SECTION */
+        /* TITRE PRINCIPAL DE LA PAGE */
+        .page-title {
+            text-align: center;
+            font-family: var(--font-title);
+            font-size: 5rem;
+            color: var(--white);
+            margin: 60px 0 40px 0;
+            letter-spacing: 3px;
+        }
+
+        /* --- SYSTÈME D'ACCORDÉON (SLIDE) --- */
+        .accordion-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .accordion-btn {
+            background-color: var(--dark-grey);
+            color: var(--white);
+            cursor: pointer;
+            padding: 25px 30px;
+            width: 100%;
+            border: 1px solid var(--border-grey);
+            text-align: left;
+            outline: none;
+            transition: 0.4s;
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-btn.neon-green:hover, .accordion-btn.neon-green.active {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+            color: var(--neon-green);
+        }
+
+        .accordion-btn.neon-purple:hover, .accordion-btn.neon-purple.active {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
+            color: var(--neon-purple);
+        }
+
+        .accordion-btn.neon-white:hover, .accordion-btn.neon-white.active {
+            border-color: var(--white);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            color: var(--white);
+        }
+
+        /* L'icône + qui se transforme en - */
+        .accordion-icon {
+            font-family: monospace;
+            font-size: 2rem;
+            transition: transform 0.4s ease;
+        }
+        .accordion-btn.active .accordion-icon {
+            transform: rotate(45deg); /* Transforme le + en croix/X */
+        }
+
+        /* Le contenu caché */
+        .accordion-content {
+            padding: 0 20px;
+            background-color: transparent;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease-in-out;
+        }
+
+        .content-inner {
+            padding: 40px 0; /* Espace intérieur quand c'est ouvert */
+        }
+
+        /* --- STYLES EXISTANTS POUR LES CARTES ET TEXTES --- */
         .header-section {
             max-width: 900px;
-            margin: 80px auto 40px auto;
+            margin: 0 auto 40px auto;
             text-align: center;
         }
         .main-title {
@@ -80,17 +158,15 @@
             font-weight: 700;
         }
 
-        /* PRICING GRID */
         .pricing-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 30px;
             justify-content: center;
             max-width: 1200px;
-            margin: 0 auto 60px auto;
+            margin: 0 auto 40px auto;
         }
 
-        /* CARD STYLE */
         .card {
             background-color: var(--dark-grey);
             border: 1px solid var(--border-grey);
@@ -108,7 +184,6 @@
             transform: translateY(-5px);
         }
 
-        /* CARD POPULAR (LE PLUS DEMANDE) */
         .card.popular {
             border-color: var(--neon-purple);
             box-shadow: 0 0 15px rgba(188, 19, 254, 0.1);
@@ -132,7 +207,6 @@
             white-space: nowrap;
         }
 
-        /* CARD CONTENT */
         .card-title {
             font-family: var(--font-title);
             font-size: 2.5rem;
@@ -206,10 +280,9 @@
             letter-spacing: 1px;
         }
 
-        /* CONDITIONS SECTION */
         .conditions-section {
             max-width: 900px;
-            margin: 0 auto 60px auto;
+            margin: 0 auto;
             padding: 40px;
             background: rgba(0, 0, 0, 0.5);
             border: 1px solid #222;
@@ -228,14 +301,12 @@
             line-height: 1.5;
         }
 
-        /* --- STYLE POUR METTRE EN GRAS/BLANC --- */
         .card-features li strong, .card-bonus strong {
             color: var(--white);
             font-weight: 700;
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
         }
 
-        /* --- PACK 3 : TEXTURE PREMIUM (MÉTAL MAT/SHINE) --- */
         .card.premium {
             background: linear-gradient(135deg, #121212 0%, #050505 50%, #181818 100%);
             border-color: #333;
@@ -246,7 +317,6 @@
             border-color: #666;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
-        /* Le reflet de lumière animé */
         .card.premium::after {
             content: "";
             position: absolute;
@@ -263,7 +333,6 @@
             100% { left: 200%; }
         }
 
-        /* --- BOUTONS DANS LES PACKS --- */
         .pack-btn {
             display: block;
             text-align: center;
@@ -276,7 +345,6 @@
             letter-spacing: 1px;
         }
         
-        /* Bouton Pack 1 (Vert) */
         .card .pack-btn {
             background-color: transparent;
             color: var(--neon-green);
@@ -288,7 +356,6 @@
             box-shadow: 0 0 15px var(--neon-green);
         }
 
-        /* Bouton Pack 2 (Violet) */
         .card.popular .pack-btn {
             color: var(--neon-purple);
             border-color: var(--neon-purple);
@@ -299,7 +366,6 @@
             box-shadow: 0 0 15px var(--neon-purple);
         }
 
-        /* Bouton Pack 3 (Premium Blanc/Argent) */
         .card.premium .pack-btn {
             color: var(--white);
             border-color: #555;
@@ -312,11 +378,19 @@
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
         }
 
-        /* RESPONSIVE */
+        /* TEXTE TEMPORAIRE POUR SECTIONS VIDES */
+        .temp-text {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #888;
+        }
+
         @media (max-width: 768px) {
             .main-title { font-size: 3rem; }
             .pricing-grid { flex-direction: column; align-items: center; }
             .card { max-width: 100%; }
+            .page-title { font-size: 3.5rem; }
+            .accordion-btn { font-size: 1.8rem; }
         }
     </style>
 </head>
@@ -324,73 +398,138 @@
 
     <a href="index.html" class="back-btn">RETOUR</a>
 
-    <div class="header-section">
-        <h1 class="main-title">DOMINEZ L'ALGORITHME<br><span>(ABONNEMENTS SANS ENGAGEMENT)</span></h1>
-        <p class="intro-text">Aujourd'hui, poster une "jolie vidéo" de temps en temps ne sert plus à rien. L'algorithme d'Instagram et TikTok est un monstre qui a faim. Si vous ne le nourrissez pas régulièrement avec du contenu visuellement percutant, il vous rend invisible.</p>
-        <p class="intro-text">Mon but n'est pas de vous vendre un clip éphémère. <span class="intro-highlight">Mon but est de prendre le contrôle de votre Direction Artistique.</span> Vous gérez votre business, je gère votre image et je m'assure que votre contenu frappe l'œil de vos clients tout au long du mois.</p>
-        <p class="intro-text" style="margin-top: 30px; color: var(--white); font-weight: 700; font-size: 1.5rem;">CHOISISSEZ VOTRE NIVEAU D'IMPACT :</p>
-    </div>
+    <h1 class="page-title">MES PRESTATIONS</h1>
 
-    <div class="pricing-grid">
-        
-        <div class="card">
-            <h2 class="card-title">L'INFILTRATION</h2>
-            <div class="card-price">400 € <span>HT / MOIS</span></div>
-            <div class="card-objective">OBJECTIF : Présence constante pour ancrer l'image de marque.</div>
-            <ul class="card-features">
-                <li>L'essentiel pour maintenir l'algorithme sous perfusion avec une esthétique premium.</li>
-                <li><strong>4 Vidéos Premium / mois (Reels dynamiques ou TikToks).</strong></li>
-                <li>1 Session de tournage sur place.</li>
-                <li>Montage, Étalonnage cinéma et Sound Design.</li>
-            </ul>
-            <div class="card-bonus">
-                <div class="bonus-title">LE BONUS :</div>
-                Set d'images premium retouchées (Idéal pour créer un post Carrousel bonus dans le mois).
+    <div class="accordion-wrapper">
+
+        <button class="accordion-btn neon-green">
+            DOMINEZ L'ALGORITHME (ABONNEMENTS)
+            <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                
+                <div class="header-section">
+                    <p class="intro-text">Aujourd'hui, poster une "jolie vidéo" de temps en temps ne sert plus à rien. L'algorithme d'Instagram et TikTok est un monstre qui a faim. Si vous ne le nourrissez pas régulièrement avec du contenu visuellement percutant, il vous rend invisible.</p>
+                    <p class="intro-text">Mon but n'est pas de vous vendre un clip éphémère. <span class="intro-highlight">Mon but est de prendre le contrôle de votre Direction Artistique.</span> Vous gérez votre business, je gère votre image et je m'assure que votre contenu frappe l'œil de vos clients tout au long du mois.</p>
+                    <p class="intro-text" style="margin-top: 30px; color: var(--white); font-weight: 700; font-size: 1.5rem;">CHOISISSEZ VOTRE NIVEAU D'IMPACT :</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="card">
+                        <h2 class="card-title">L'INFILTRATION</h2>
+                        <div class="card-price">400 € <span>HT / MOIS</span></div>
+                        <div class="card-objective">OBJECTIF : Présence constante pour ancrer l'image de marque.</div>
+                        <ul class="card-features">
+                            <li>L'essentiel pour maintenir l'algorithme sous perfusion avec une esthétique premium.</li>
+                            <li><strong>4 Vidéos Premium / mois (Reels dynamiques ou TikToks).</strong></li>
+                            <li>1 Session de tournage sur place.</li>
+                            <li>Montage, Étalonnage cinéma et Sound Design.</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">LE BONUS :</div>
+                            Set d'images premium retouchées (Idéal pour créer un post Carrousel bonus dans le mois).
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20Infiltration" class="pack-btn">CHOISIR CE PACK</a>
+                    </div>
+
+                    <div class="card popular">
+                        <div class="popular-badge">LE PLUS DEMANDÉ</div>
+                        <h2 class="card-title">L'OMNIPRÉSENCE</h2>
+                        <div class="card-price">800 € <span>HT / MOIS</span></div>
+                        <div class="card-objective">OBJECTIF : Croissance de l'audience et Direction Artistique affirmée.</div>
+                        <ul class="card-features">
+                            <li>L'offre pour écraser la concurrence visuellement. On s'impose sur les réseaux en imposant votre univers.</li>
+                            <li><strong>8 Vidéos Premium / mois (Mix de Reels agressifs et vidéos d'ambiance).</strong></li>
+                            <li>2 Sessions de tournage sur place.</li>
+                            <li>Post-production avancée (VFX subtils, intégration IA, Sound Design lourd).</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">LES BONUS :</div>
+                            Pack étendu d'images premium retouchées pour vos Carrousels + Création de vos vignettes (covers) personnalisées pour un feed esthétique.
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20Omniprésence" class="pack-btn">CHOISIR CE PACK</a>
+                    </div>
+
+                    <div class="card premium">
+                        <h2 class="card-title">DIRECTION ARTISTIQUE TOTALE</h2>
+                        <div class="card-price">1 600 € <span>HT / MOIS</span></div>
+                        <div class="card-objective">OBJECTIF : Domination totale de votre niche.</div>
+                        <ul class="card-features">
+                            <li>L'arme lourde. Vous me confiez les clés de votre identité visuelle. Je deviens votre agence personnelle.</li>
+                            <li><strong>12 à 15 Vidéos / mois (Reels, Interviews/Coulisses, format immersif).</strong></li>
+                            <li>1 Journée complète de tournage (ou 2 grosses demi-journées).</li>
+                            <li>Direction Artistique complète, gestion de l'esthétique globale de votre feed.</li>
+                        </ul>
+                        <div class="card-bonus">
+                            <div class="bonus-title">LES BONUS :</div>
+                            Shooting photo complet pour alimenter vos Carrousels mensuels + 1 "Hero Content" (La vidéo cinématographique ultime à épingler en haut de votre profil).
+                        </div>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20D.A%20Totale" class="pack-btn">CHOISIR CE PACK</a>
+                    </div>
+                </div>
+
+                <div class="conditions-section">
+                    <h3 class="conditions-title">LES CONDITIONS & CONSEILS DU JEEZ</h3>
+                    <p class="conditions-text">L'impact visuel et le domptage de l'algorithme se construisent sur la durée.<br><br>Chaque contenu livré bénéficie de mon standard de qualité : colorimétrie cinéma, transitions invisibles et design sonore immersif.</p>
+                </div>
+
             </div>
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20Infiltration" class="pack-btn">CHOISIR CE PACK</a>
         </div>
 
-        <div class="card popular">
-            <div class="popular-badge">LE PLUS DEMANDÉ</div>
-            <h2 class="card-title">L'OMNIPRÉSENCE</h2>
-            <div class="card-price">800 € <span>HT / MOIS</span></div>
-            <div class="card-objective">OBJECTIF : Croissance de l'audience et Direction Artistique affirmée.</div>
-            <ul class="card-features">
-                <li>L'offre pour écraser la concurrence visuellement. On s'impose sur les réseaux en imposant votre univers.</li>
-                <li><strong>8 Vidéos Premium / mois (Mix de Reels agressifs et vidéos d'ambiance).</strong></li>
-                <li>2 Sessions de tournage sur place.</li>
-                <li>Post-production avancée (VFX subtils, intégration IA, Sound Design lourd).</li>
-            </ul>
-            <div class="card-bonus">
-                <div class="bonus-title">LES BONUS :</div>
-                Pack étendu d'images premium retouchées pour vos Carrousels + Création de vos vignettes (covers) personnalisées pour un feed esthétique.
+        <button class="accordion-btn neon-purple">
+            DÉVELOPPEMENT WEB
+            <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p class="temp-text">Les offres de création de sites web immersifs arrivent très vite...</p>
             </div>
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20Omniprésence" class="pack-btn">CHOISIR CE PACK</a>
         </div>
 
-        <div class="card premium">
-            <h2 class="card-title">DIRECTION ARTISTIQUE TOTALE</h2>
-            <div class="card-price">1 600 € <span>HT / MOIS</span></div>
-            <div class="card-objective">OBJECTIF : Domination totale de votre niche.</div>
-            <ul class="card-features">
-                <li>L'arme lourde. Vous me confiez les clés de votre identité visuelle. Je deviens votre agence personnelle.</li>
-                <li><strong>12 à 15 Vidéos / mois (Reels, Interviews/Coulisses, format immersif).</strong></li>
-                <li>1 Journée complète de tournage (ou 2 grosses demi-journées).</li>
-                <li>Direction Artistique complète, gestion de l'esthétique globale de votre feed.</li>
-            </ul>
-            <div class="card-bonus">
-                <div class="bonus-title">LES BONUS :</div>
-                Shooting photo complet pour alimenter vos Carrousels mensuels + 1 "Hero Content" (La vidéo cinématographique ultime à épingler en haut de votre profil).
+        <button class="accordion-btn neon-white">
+            CLIP VIDÉO & FICTION
+            <span class="accordion-icon">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="content-inner">
+                <p class="temp-text">Les tarifs pour les réalisations musicales et fictions seront bientôt disponibles...</p>
             </div>
-            <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Réservation%20Pack%20D.A%20Totale" class="pack-btn">CHOISIR CE PACK</a>
         </div>
 
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const accordions = document.querySelectorAll(".accordion-btn");
 
-    <div class="conditions-section">
-        <h3 class="conditions-title">LES CONDITIONS & CONSEILS DU JEEZ</h3>
-        <p class="conditions-text">L'impact visuel et le domptage de l'algorithme se construisent sur la durée.<br><br>Chaque contenu livré bénéficie de mon standard de qualité : colorimétrie cinéma, transitions invisibles et design sonore immersif.</p>
-    </div>
+            accordions.forEach(acc => {
+                acc.addEventListener("click", function() {
+                    // Optionnel : Si tu veux qu'un seul menu soit ouvert à la fois, décommente les 3 lignes ci-dessous
+                    /*
+                    accordions.forEach(btn => {
+                        if(btn !== this) {
+                            btn.classList.remove("active");
+                            btn.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+                    */
 
+                    // Toggle la classe active sur le bouton cliqué
+                    this.classList.toggle("active");
+
+                    // Sélectionner le contenu associé (la div juste en dessous)
+                    const panel = this.nextElementSibling;
+                    
+                    if (panel.style.maxHeight) {
+                        // Si c'est ouvert, on ferme
+                        panel.style.maxHeight = null;
+                    } else {
+                        // Si c'est fermé, on calcule la hauteur du contenu pour glisser proprement
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    } 
+                });
+            });
+        });
+    </script>
 </body>
 </html>
