@@ -29,7 +29,7 @@
             font-family: var(--font-text);
             overflow-x: hidden;
             overflow-y: auto; 
-            padding: 20px 20px 100px 20px; /* Padding bas pour laisser respirer la fin de page */
+            padding: 20px 20px 100px 20px;
         }
 
         /* BOUTON RETOUR */
@@ -50,7 +50,7 @@
             text-shadow: 0 0 15px var(--neon-green);
         }
 
-        /* TITRE PRINCIPAL DE LA PAGE */
+        /* TITRE PRINCIPAL */
         .page-title {
             text-align: center;
             font-family: var(--font-title);
@@ -60,7 +60,7 @@
             letter-spacing: 3px;
         }
 
-        /* --- SYSTÈME D'ACCORDÉON (SLIDE) --- */
+        /* --- SYSTÈME D'ACCORDÉON --- */
         .accordion-wrapper {
             max-width: 1200px;
             margin: 0 auto;
@@ -87,16 +87,37 @@
             align-items: center;
         }
 
-        .accordion-btn.neon-green:hover, .accordion-btn.neon-green.active {
-            border-color: var(--neon-green);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
-            color: var(--neon-green);
+        /* GLOW PERMANENT (Respiration) POUR LES BOUTONS PRINCIPAUX */
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.2); border-color: rgba(57, 255, 20, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(57, 255, 20, 0.5); border-color: rgba(57, 255, 20, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(57, 255, 20, 0.2); border-color: rgba(57, 255, 20, 0.3); }
+        }
+        @keyframes pulse-purple {
+            0% { box-shadow: 0 0 5px rgba(188, 19, 254, 0.2); border-color: rgba(188, 19, 254, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(188, 19, 254, 0.5); border-color: rgba(188, 19, 254, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(188, 19, 254, 0.2); border-color: rgba(188, 19, 254, 0.3); }
         }
 
+        /* Application du glow permanent et du hover/active */
+        .accordion-btn.neon-green {
+            animation: pulse-green 3s infinite;
+            color: var(--neon-green); /* Texte vert par défaut */
+        }
+        .accordion-btn.neon-green:hover, .accordion-btn.neon-green.active {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.8);
+            background-color: rgba(57, 255, 20, 0.05);
+        }
+
+        .accordion-btn.neon-purple {
+            animation: pulse-purple 3s infinite;
+            color: var(--neon-purple); /* Texte violet par défaut */
+        }
         .accordion-btn.neon-purple:hover, .accordion-btn.neon-purple.active {
             border-color: var(--neon-purple);
-            box-shadow: 0 0 15px rgba(188, 19, 254, 0.2);
-            color: var(--neon-purple);
+            box-shadow: 0 0 25px rgba(188, 19, 254, 0.8);
+            background-color: rgba(188, 19, 254, 0.05);
         }
 
         .accordion-btn.neon-white:hover, .accordion-btn.neon-white.active {
@@ -105,17 +126,17 @@
             color: var(--white);
         }
 
-        /* L'icône + qui se transforme en - */
+        /* Icône Accordéon */
         .accordion-icon {
             font-family: monospace;
             font-size: 2rem;
             transition: transform 0.4s ease;
         }
         .accordion-btn.active .accordion-icon {
-            transform: rotate(45deg); /* Transforme le + en croix/X */
+            transform: rotate(45deg);
         }
 
-        /* Le contenu caché */
+        /* Contenu Accordéon */
         .accordion-content {
             padding: 0 20px;
             background-color: transparent;
@@ -123,28 +144,15 @@
             overflow: hidden;
             transition: max-height 0.6s ease-in-out;
         }
-
         .content-inner {
-            padding: 40px 0; /* Espace intérieur quand c'est ouvert */
+            padding: 40px 0;
         }
 
-        /* --- STYLES EXISTANTS POUR LES CARTES ET TEXTES --- */
+        /* --- STYLES CARTES & TEXTES --- */
         .header-section {
             max-width: 900px;
             margin: 0 auto 40px auto;
             text-align: center;
-        }
-        .main-title {
-            font-family: var(--font-title);
-            font-size: 4rem;
-            color: var(--white);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            letter-spacing: 2px;
-            margin-bottom: 20px;
-        }
-        .main-title span {
-            color: var(--neon-green);
-            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
         }
         .intro-text {
             font-size: 1.3rem;
@@ -156,6 +164,16 @@
         .intro-highlight {
             color: var(--white);
             font-weight: 700;
+        }
+        /* Style spécifique pour la mention de l'Horoscope */
+        .matrix-example {
+            background: rgba(188, 19, 254, 0.05);
+            border-left: 4px solid var(--neon-purple);
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            font-style: italic;
+            color: #ddd;
         }
 
         .pricing-grid {
@@ -220,9 +238,54 @@
             color: var(--neon-green);
             margin-bottom: 20px;
         }
-        .card.popular .card-price {
+        /* Prix en violet si dans la carte populaire du vert (pour l'harmonie) */
+        .neon-green + .accordion-content .card.popular .card-price {
             color: var(--neon-purple);
         }
+        /* Prix en violet si dans la section WEB (où le thème principal est violet) */
+        .neon-purple + .accordion-content .card-price {
+            color: var(--neon-purple);
+        }
+        .neon-purple + .accordion-content .card .pack-btn {
+            color: var(--neon-purple);
+            border-color: var(--neon-purple);
+        }
+        .neon-purple + .accordion-content .card .pack-btn:hover {
+            background-color: var(--neon-purple);
+            color: var(--white);
+            box-shadow: 0 0 15px var(--neon-purple);
+        }
+        .neon-purple + .accordion-content .card:hover {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.15);
+        }
+        /* Pour le pack Web populaire, on garde le violet dominant mais on force la couleur pour le distinguer */
+        .neon-purple + .accordion-content .card.popular {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.1);
+        }
+        .neon-purple + .accordion-content .card.popular:hover {
+            box-shadow: 0 0 30px rgba(57, 255, 20, 0.3);
+            border-color: var(--neon-green);
+        }
+        .neon-purple + .accordion-content .card.popular .card-price {
+            color: var(--neon-green);
+        }
+        .neon-purple + .accordion-content .card.popular .popular-badge {
+            background-color: var(--neon-green);
+            color: var(--black);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.6);
+        }
+        .neon-purple + .accordion-content .card.popular .pack-btn {
+            color: var(--neon-green);
+            border-color: var(--neon-green);
+        }
+        .neon-purple + .accordion-content .card.popular .pack-btn:hover {
+            background-color: var(--neon-green);
+            color: var(--black);
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
         .card-price span {
             font-size: 1.2rem;
             color: #888;
@@ -259,6 +322,14 @@
         .card.popular .card-features li::before {
             color: var(--neon-purple);
         }
+        /* Puces pour la section web */
+        .neon-purple + .accordion-content .card-features li::before {
+            color: var(--neon-purple);
+        }
+        .neon-purple + .accordion-content .card.popular .card-features li::before {
+            color: var(--neon-green);
+        }
+
 
         .card-bonus {
             background: rgba(255, 255, 255, 0.03);
@@ -271,6 +342,13 @@
         }
         .card.popular .card-bonus {
             border-left-color: var(--neon-purple);
+        }
+        /* Bonus pour la section web */
+        .neon-purple + .accordion-content .card-bonus {
+            border-left-color: var(--neon-purple);
+        }
+        .neon-purple + .accordion-content .card.popular .card-bonus {
+            border-left-color: var(--neon-green);
         }
         .bonus-title {
             font-family: var(--font-title);
@@ -307,6 +385,7 @@
             text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
         }
 
+        /* TEXTURE PREMIUM */
         .card.premium {
             background: linear-gradient(135deg, #121212 0%, #050505 50%, #181818 100%);
             border-color: #333;
@@ -333,6 +412,7 @@
             100% { left: 200%; }
         }
 
+        /* BOUTON PRESTATION GENERIQUE */
         .pack-btn {
             display: block;
             text-align: center;
@@ -344,38 +424,18 @@
             cursor: pointer;
             letter-spacing: 1px;
         }
-        
-        .card .pack-btn {
-            background-color: transparent;
-            color: var(--neon-green);
-            border: 1px solid var(--neon-green);
-        }
-        .card .pack-btn:hover {
-            background-color: var(--neon-green);
-            color: var(--black);
-            box-shadow: 0 0 15px var(--neon-green);
-        }
 
-        .card.popular .pack-btn {
-            color: var(--neon-purple);
-            border-color: var(--neon-purple);
-        }
-        .card.popular .pack-btn:hover {
-            background-color: var(--neon-purple);
-            color: var(--white);
-            box-shadow: 0 0 15px var(--neon-purple);
-        }
-
+        /* BOUTON PREMIUM BLANC (Universel) */
         .card.premium .pack-btn {
-            color: var(--white);
-            border-color: #555;
-            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white) !important;
+            border-color: #555 !important;
+            background-color: rgba(255, 255, 255, 0.05) !important;
         }
         .card.premium .pack-btn:hover {
-            background-color: var(--white);
-            color: var(--black);
-            border-color: var(--white);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+            background-color: var(--white) !important;
+            color: var(--black) !important;
+            border-color: var(--white) !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.4) !important;
         }
 
         /* TEXTE TEMPORAIRE POUR SECTIONS VIDES */
@@ -403,7 +463,7 @@
     <div class="accordion-wrapper">
 
         <button class="accordion-btn neon-green">
-            DOMINEZ L'ALGORITHME
+            DOMINEZ L'ALGORITHME (ABONNEMENTS)
             <span class="accordion-icon">+</span>
         </button>
         <div class="accordion-content">
@@ -473,17 +533,72 @@
                     <h3 class="conditions-title">LES CONDITIONS & CONSEILS DU JEEZ</h3>
                     <p class="conditions-text">L'impact visuel et le domptage de l'algorithme se construisent sur la durée.<br><br>Chaque contenu livré bénéficie de mon standard de qualité : colorimétrie cinéma, transitions invisibles et design sonore immersif.</p>
                 </div>
-
             </div>
         </div>
 
         <button class="accordion-btn neon-purple">
-            DÉVELOPPEMENT WEB
+            DÉVELOPPEMENT WEB & AUTOMATISATION
             <span class="accordion-icon">+</span>
         </button>
         <div class="accordion-content">
             <div class="content-inner">
-                <p class="temp-text">Les offres de création de sites web immersifs arrivent très vite...</p>
+                
+                <div class="header-section">
+                    <p class="intro-text">Avoir un feed Instagram visuellement parfait, c'est l'hameçon. Mais si votre site web ressemble à celui de tout le monde, la magie redescend instantanément. Le "template" générique est un tueur de vibe.</p>
+                    <p class="intro-text">Je code des sites web ultra-esthétiques, optimisés pour Google (SEO), et surtout : <span class="intro-highlight">je les connecte au futur. Je construis des machines autonomes.</span></p>
+                    
+                    <div class="matrix-example">
+                        <strong>👁️ L'exemple de la Matrice : Horoscope-Authentique.fr</strong><br>
+                        Ce site tourne 100% en pilote automatique. Je l'ai branché sur l'API d'Intelligence Artificielle Google Gemini. Chaque nuit, l'IA rédige, met en page et publie l'horoscope du jour, sans aucune intervention humaine. C'est ça, la puissance de l'automatisation.
+                    </div>
+
+                    <p class="intro-text" style="margin-top: 30px; color: var(--white); font-weight: 700; font-size: 1.5rem;">CHOISISSEZ VOTRE INFRASTRUCTURE :</p>
+                </div>
+
+                <div class="pricing-grid">
+                    <div class="card">
+                        <h2 class="card-title">LE QG DIGITAL</h2>
+                        <div class="card-price">Dès 800 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Convertir vos visiteurs avec une esthétique irréprochable et un site ultra-rapide.</div>
+                        <ul class="card-features">
+                            <li>Votre carte de visite 2.0. Un design radical pour les commerces et indépendants qui veulent se démarquer de la concurrence locale.</li>
+                            <li><strong>Site Vitrine</strong> (1 à 3 pages type Accueil, Services, Contact).</li>
+                            <li><strong>Design sur-mesure et animations fluides</strong> (La patte D.A).</li>
+                            <li>Optimisation Mobile (Responsive design parfait).</li>
+                            <li><strong>Base SEO</strong> (Pour être trouvé sur Google dans votre ville).</li>
+                        </ul>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Site%20Web%20-%20Le%20QG%20Digital" class="pack-btn">OBTENIR UN DEVIS</a>
+                    </div>
+
+                    <div class="card popular">
+                        <div class="popular-badge">LA SIGNATURE DU JEEZ</div>
+                        <h2 class="card-title">LA MACHINE I.A</h2>
+                        <div class="card-price">Dès 1 400 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Un site qui travaille tout seul grâce à l'Intelligence Artificielle.</div>
+                        <ul class="card-features">
+                            <li>Le site dynamique intelligent. Parfait pour les créateurs, blogs ou commerces qui ont besoin de contenu frais tous les jours.</li>
+                            <li><strong>Tout le Pack 1 inclus.</strong></li>
+                            <li><strong>Intégration d'une API d'Intelligence Artificielle</strong> (type Google Gemini).</li>
+                            <li><strong>Automatisation du contenu</strong> (Génération d'articles, de fiches produits ou de textes mis à jour quotidiennement).</li>
+                            <li>SEO Avancé : L'IA génère du contenu optimisé pour faire exploser votre référencement Google.</li>
+                        </ul>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Site%20Web%20-%20La%20Machine%20IA" class="pack-btn">DÉMARRER LE PROJET</a>
+                    </div>
+
+                    <div class="card premium">
+                        <h2 class="card-title">LE MULTIVERS</h2>
+                        <div class="card-price">Dès 2 500 € <span>HT</span></div>
+                        <div class="card-objective">OBJECTIF : Créer une plateforme sur-mesure qui reflète à 100% votre Direction Artistique.</div>
+                        <ul class="card-features">
+                            <li>L'écosystème absolu. Je synchronise votre création de contenu vidéo et votre plateforme web pour une domination totale.</li>
+                            <li><strong>Site multi-pages complexe.</strong></li>
+                            <li><strong>Automatisation IA sur-mesure</strong> (selon vos besoins spécifiques).</li>
+                            <li><strong>Intégration de vidéos en arrière-plan</strong> (sans ralentir le site) et galeries dynamiques.</li>
+                        </ul>
+                        <a href="mailto:gabriel.ortiz.pro31@gmail.com?subject=Devis%20Site%20Web%20-%20Le%20Multivers" class="pack-btn">CONCEVOIR LA PLATEFORME</a>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -504,28 +619,27 @@
 
             accordions.forEach(acc => {
                 acc.addEventListener("click", function() {
-                    // Optionnel : Si tu veux qu'un seul menu soit ouvert à la fois, décommente les 3 lignes ci-dessous
-                    /*
+                    
+                    // ON VERROUILLE : UN SEUL MENU OUVERT À LA FOIS (C'est plus propre)
                     accordions.forEach(btn => {
                         if(btn !== this) {
                             btn.classList.remove("active");
                             btn.nextElementSibling.style.maxHeight = null;
                         }
                     });
-                    */
-
-                    // Toggle la classe active sur le bouton cliqué
+                    
                     this.classList.toggle("active");
-
-                    // Sélectionner le contenu associé (la div juste en dessous)
                     const panel = this.nextElementSibling;
                     
                     if (panel.style.maxHeight) {
-                        // Si c'est ouvert, on ferme
                         panel.style.maxHeight = null;
                     } else {
-                        // Si c'est fermé, on calcule la hauteur du contenu pour glisser proprement
                         panel.style.maxHeight = panel.scrollHeight + "px";
+                        
+                        // Scroll automatique pour que la section s'aligne bien
+                        setTimeout(() => {
+                            this.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 300);
                     } 
                 });
             });
