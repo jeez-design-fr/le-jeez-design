@@ -12,8 +12,10 @@
     <style>
         :root {
             --neon-green: #39ff14;
-            --neon-blue: #00f3ff;
+            --neon-purple: #bc13fe;
             --black: #000000;
+            --dark-grey: #0a0a0a;
+            --border-grey: #222222;
             --white: #ffffff;
             --font-title: 'Bebas Neue', sans-serif;
             --font-text: 'Rajdhani', sans-serif;
@@ -25,7 +27,6 @@
             background-color: var(--black);
             color: var(--white);
             font-family: var(--font-text);
-            /* Ici on remet le scroll normal pour pouvoir descendre sur la page */
             overflow-x: hidden;
             overflow-y: auto; 
             padding: 20px;
@@ -42,38 +43,266 @@
             font-size: 1.5rem;
             z-index: 100;
             transition: 0.3s;
+            text-shadow: 0 0 5px rgba(57, 255, 20, 0.3);
         }
         .back-btn:hover {
             color: var(--white);
-            text-shadow: 0 0 10px var(--neon-green);
+            text-shadow: 0 0 15px var(--neon-green);
         }
 
-        /* CONTAINER PRINCIPAL */
-        .container {
-            max-width: 1000px;
-            margin: 80px auto;
+        /* HEADER SECTION */
+        .header-section {
+            max-width: 900px;
+            margin: 80px auto 40px auto;
             text-align: center;
         }
-
         .main-title {
             font-family: var(--font-title);
             font-size: 4rem;
-            color: var(--neon-blue);
-            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
-            margin-bottom: 20px;
+            color: var(--white);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
             letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+        .main-title span {
+            color: var(--neon-green);
+            text-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        .intro-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #cccccc;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+        .intro-highlight {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* PRICING GRID */
+        .pricing-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+        }
+
+        /* CARD STYLE */
+        .card {
+            background-color: var(--dark-grey);
+            border: 1px solid var(--border-grey);
+            width: 100%;
+            max-width: 350px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+        .card:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+            transform: translateY(-5px);
+        }
+
+        /* CARD POPULAR (LE PLUS DEMANDE) */
+        .card.popular {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.1);
+        }
+        .card.popular:hover {
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
+            border-color: var(--neon-purple);
+        }
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--neon-purple);
+            color: var(--white);
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            padding: 5px 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.6);
+            white-space: nowrap;
+        }
+
+        /* CARD CONTENT */
+        .card-title {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .card-price {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: var(--neon-green);
+            margin-bottom: 20px;
+        }
+        .card.popular .card-price {
+            color: var(--neon-purple);
+        }
+        .card-price span {
+            font-size: 1.2rem;
+            color: #888;
+        }
+        
+        .card-objective {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--white);
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .card-features {
+            list-style: none;
+            flex-grow: 1;
+            margin-bottom: 30px;
+        }
+        .card-features li {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #bbb;
+            display: flex;
+            align-items: flex-start;
+        }
+        .card-features li::before {
+            content: "/>";
+            color: var(--neon-green);
+            font-family: var(--font-title);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        .card.popular .card-features li::before {
+            color: var(--neon-purple);
+        }
+
+        .card-bonus {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--neon-green);
+            padding: 15px;
+            font-size: 1rem;
+            color: #ddd;
+        }
+        .card.popular .card-bonus {
+            border-left-color: var(--neon-purple);
+        }
+        .bonus-title {
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* CONDITIONS SECTION */
+        .conditions-section {
+            max-width: 900px;
+            margin: 0 auto 60px auto;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #222;
+            text-align: center;
+        }
+        .conditions-title {
+            font-family: var(--font-title);
+            font-size: 2rem;
+            color: var(--neon-green);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .conditions-text {
+            font-size: 1.2rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .main-title { font-size: 3rem; }
+            .pricing-grid { flex-direction: column; align-items: center; }
+            .card { max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
-    <a href="index.html" class="back-btn">⬅ RETOUR</a>
+    <a href="index.html" class="back-btn">RETOUR</a>
 
-    <div class="container">
-        <h1 class="main-title">MES FORMULES</h1>
-        <p style="font-size: 1.5rem; color: #888;">(Cette page est en cours de construction...)</p>
+    <div class="header-section">
+        <h1 class="main-title">DOMINEZ L'ALGORITHME<br><span>(ABONNEMENTS SANS ENGAGEMENT)</span></h1>
+        <p class="intro-text">Aujourd'hui, poster une "jolie vidéo" de temps en temps ne sert plus à rien. L'algorithme d'Instagram et TikTok est un monstre qui a faim. Si vous ne le nourrissez pas régulièrement avec du contenu visuellement percutant, il vous rend invisible.</p>
+        <p class="intro-text">Mon but n'est pas de vous vendre un clip éphémère. <span class="intro-highlight">Mon but est de prendre le contrôle de votre Direction Artistique.</span> Vous gérez votre business, je gère votre image et je m'assure que votre contenu frappe l'œil de vos clients tout au long du mois.</p>
+        <p class="intro-text" style="margin-top: 30px; color: var(--white); font-weight: 700; font-size: 1.5rem;">CHOISISSEZ VOTRE NIVEAU D'IMPACT :</p>
+    </div>
+
+    <div class="pricing-grid">
         
+        <div class="card">
+            <h2 class="card-title">PACK 1 : L'INFILTRATION</h2>
+            <div class="card-price">400 € <span>HT / MOIS</span></div>
+            <div class="card-objective">OBJECTIF : Présence constante pour ancrer l'image de marque.</div>
+            <ul class="card-features">
+                <li>L'essentiel pour maintenir l'algorithme sous perfusion avec une esthétique premium.</li>
+                <li>4 Vidéos Premium / mois (Reels dynamiques ou TikToks).</li>
+                <li>1 Session de tournage sur place.</li>
+                <li>Montage, Étalonnage cinéma et Sound Design.</li>
+            </ul>
+            <div class="card-bonus">
+                <div class="bonus-title">LE BONUS :</div>
+                Set d'images premium retouchées (Idéal pour créer un post Carrousel bonus dans le mois).
+            </div>
         </div>
+
+        <div class="card popular">
+            <div class="popular-badge">LE PLUS DEMANDÉ</div>
+            <h2 class="card-title">PACK 2 : L'OMNIPRÉSENCE</h2>
+            <div class="card-price">800 € <span>HT / MOIS</span></div>
+            <div class="card-objective">OBJECTIF : Croissance de l'audience et Direction Artistique affirmée.</div>
+            <ul class="card-features">
+                <li>L'offre pour écraser la concurrence visuellement. On s'impose sur les réseaux en imposant votre univers.</li>
+                <li>8 Vidéos Premium / mois (Mix de Reels agressifs et vidéos d'ambiance).</li>
+                <li>2 Sessions de tournage sur place.</li>
+                <li>Post-production avancée (VFX subtils, intégration IA, Sound Design lourd).</li>
+            </ul>
+            <div class="card-bonus">
+                <div class="bonus-title">LES BONUS :</div>
+                Pack étendu d'images premium retouchées pour vos Carrousels + Création de vos vignettes (covers) personnalisées pour un feed esthétique.
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title">PACK 3 : D.A TOTALE</h2>
+            <div class="card-price">1 600 € <span>HT / MOIS</span></div>
+            <div class="card-objective">OBJECTIF : Domination totale de votre niche.</div>
+            <ul class="card-features">
+                <li>L'arme lourde. Vous me confiez les clés de votre identité visuelle. Je deviens votre agence personnelle.</li>
+                <li>12 à 15 Vidéos / mois (Reels, Interviews/Coulisses, format immersif).</li>
+                <li>1 Journée complète de tournage (ou 2 grosses demi-journées).</li>
+                <li>Direction Artistique complète, gestion de l'esthétique globale de votre feed.</li>
+            </ul>
+            <div class="card-bonus">
+                <div class="bonus-title">LES BONUS :</div>
+                Shooting photo complet pour alimenter vos Carrousels mensuels + 1 "Hero Content" (La vidéo cinématographique ultime à épingler en haut de votre profil).
+            </div>
+        </div>
+
+    </div>
+
+    <div class="conditions-section">
+        <h3 class="conditions-title">LES CONDITIONS & CONSEILS DU JEEZ</h3>
+        <p class="conditions-text">L'impact visuel et le domptage de l'algorithme se construisent sur la durée.<br><br>Chaque contenu livré bénéficie de mon standard de qualité : colorimétrie cinéma, transitions invisibles et design sonore immersif.</p>
+    </div>
 
 </body>
 </html>
