@@ -252,13 +252,14 @@
         /* Prix en violet si dans la carte populaire du vert (pour l'harmonie) */
         .neon-green + .accordion-content .card.popular .card-price {
             color: var(--neon-purple);
-
+        }
             /* --- DESIGN SPÉCIFIQUE SECTION CLIP VIDÉO (BLANC/ARGENT) --- */
         .neon-white + .accordion-content .card-price { color: var(--white); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
         .neon-white + .accordion-content .card .pack-btn { color: var(--white); border-color: var(--white); }
         .neon-white + .accordion-content .card .pack-btn:hover { background-color: var(--white); color: var(--black); box-shadow: 0 0 15px var(--white); }
         .neon-white + .accordion-content .card:hover { border-color: var(--white); box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); }
-        
+        /* Prix en violet pour le Clip Officiel (Carte Populaire) */
+        .neon-white + .accordion-content .card.popular .card-price { color: var(--neon-purple); text-shadow: 0 0 10px rgba(188, 19, 254, 0.3); }
         /* Carte Populaire en inversé (Blanc pur) */
         .neon-white + .accordion-content .card.popular { border-color: #888; box-shadow: 0 0 15px rgba(255, 255, 255, 0.1); }
         .neon-white + .accordion-content .card.popular:hover { box-shadow: 0 0 30px rgba(255, 255, 255, 0.3); border-color: var(--white); }
@@ -363,7 +364,6 @@
             padding: 15px;
             font-size: 1rem;
             color: #ddd;
-            margin-top: auto;
             margin-bottom: 20px;
         }
         .card.popular .card-bonus {
@@ -449,6 +449,7 @@
             transition: 0.3s ease;
             cursor: pointer;
             letter-spacing: 1px;
+            margin-top: auto;
         }
 
         /* Bouton Pack de base (Vert) */
