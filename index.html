@@ -320,7 +320,7 @@
             animation: neon-flicker 2s infinite; 
             pointer-events: auto;
             margin-top: 40px; /* Plus d'espace */
-        }
+        }   
         .btn-final-off svg { width: 35px; height: 35px; fill: red; }
 
         /* MODALS */
@@ -364,7 +364,7 @@
     <!-- 1. INTRO -->
     <div id="intro-layer" class="layer active">
         <div class="intro-container">
-            <img src="surfer.webp" class="hero-image">
+            <img src="surfer.webp" class="hero-image" alt="Création de Contenu, Vidéo, Pub, Design & Web à Toulouse">
             <canvas id="matrix-canvas"></canvas>
             <div id="enter-btn" class="center-box">
                 <h1 class="center-text">LE WORK DE JEEZ</h1>
@@ -375,15 +375,15 @@
 <div id="menu-layer" class="layer">
         <div class="menu-container" style="display: flex; flex-direction: column; gap: 30px; align-items: center;">
             <div id="portfolio-btn" class="center-box">
-                <h1 class="center-text">PORTFOLIO</h1>
+                <div class="center-text">PORTFOLIO</div>
             </div>
 
             <a href="formules.html" class="center-box" style="text-decoration: none; border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); width: 300px; height: 80px;">
-                <h1 class="center-text" style="color: var(--white);">FORMULES</h1>
+                <div class="center-text" style="color: var(--white);">FORMULES</div>
             </a>
 
             <a href="articles.html" class="center-box" style="text-decoration: none; border-color: var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); width: 300px; height: 80px;">
-                <h1 class="center-text" style="color: var(--neon-green);">ARTICLES & FAQ</h1>
+                <div class="center-text" style="color: var(--neon-green);">ARTICLES & FAQ</div>
             </a>
             
             </div>
@@ -392,7 +392,7 @@
     <!-- 2. BIO LAYER -->
     <div id="bio-layer" class="layer">
         <div class="bio-content">
-    <h1 class="bio-title">BIENVENUE SUR MON PORTFOLIO !</h1>
+    <h2 class="bio-title">BIENVENUE SUR MON PORTFOLIO !</h2>
     <p class="bio-text">EXPLORE MES DERNIÈRES PRODUCTIONS VISUELLES,</p>
     <p class="bio-text">RÉALISATION COMPLÈTE AVEC UN ÉQUIPEMENT DE POINTE</p>
     <p class="bio-text" style="color: #888;">(MATÉRIEL CINÉMA HAUT DE GAMME)</p>
@@ -519,7 +519,7 @@
             <canvas id="matrix-canvas-final" class="matrix-bg"></canvas>
             <div class="final-container">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
-                    <h1 class="center-text">DEVIS GRATUIT</h1>
+                    <div class="center-text">DEVIS GRATUIT</div>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
@@ -543,7 +543,7 @@
             <canvas id="matrix-canvas-images" class="matrix-bg"></canvas>
             <div class="final-container" style="padding: 100px 0;">
                 <a href="#" class="center-box btn-final-devis" onclick="openContactForm(event)">
-                    <h1 class="center-text">DEVIS GRATUIT</h1>
+                    <div class="center-text">DEVIS GRATUIT</div>
                 </a>
                 <div class="btn-final-off" onclick="turnOffTv()">
                     <svg viewBox="0 0 24 24"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>
@@ -869,6 +869,7 @@
     </script>
 </body>
 </html>
+
 
 
 
