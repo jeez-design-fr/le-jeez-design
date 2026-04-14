@@ -541,6 +541,18 @@
     <!-- 4. IMAGE FEED -->
     <main id="image-feed" class="layer">
         <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
+
+        <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_2.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_3.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_4.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_5.webp" class="thumb-img"></div>
+
+        <div class="thumb-container" onclick="openImageModal(7)"><img src="img7_1.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(7)"><img src="img7_2.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(7)"><img src="img7_3.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(7)"><img src="img7_4.webp" class="thumb-img"></div>
+        <div class="thumb-container" onclick="openImageModal(7)"><img src="img7_5.webp" class="thumb-img"></div>
         
         <div class="thumb-container" onclick="openImageModal(1)"><img src="img1_1.webp" class="thumb-img"></div>
         <div class="thumb-container" onclick="openImageModal(2)"><img src="img2_1.webp" class="thumb-img"></div>
@@ -715,12 +727,15 @@
         });
 
         // --- PRELOAD ---
-        const galleries = {
+const galleries = {
             1: ['img1_1.webp', 'img1_2.webp', 'img1_3.webp', 'img1_4.webp', 'img1_5.webp', 'img1_6.webp', 'img1_7.webp', 'img1_8.webp', 'img1_9.webp', 'img1_10.webp'],
             2: ['img2_1.webp', 'img2_2.webp', 'img2_3.webp', 'img2_4.webp'],
             3: ['img3_1.webp', 'img3_2.webp', 'img3_3.webp', 'img3_4.webp', 'img3_5.webp'],
             4: ['img4_1.webp', 'img4_2.webp', 'img4_3.webp', 'img4_4.webp', 'img4_5.webp'],
-            5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp']
+            5: ['img5_1.webp', 'img5_2.webp', 'img5_3.webp', 'img5_4.webp', 'img5_5.webp', 'img5_6.webp'],
+            // AJOUT DES NOUVELLES SECTIONS ICI :
+            6: ['img6_1.webp', 'img6_2.webp', 'img6_3.webp', 'img6_4.webp', 'img6_5.webp'],
+            7: ['img7_1.webp', 'img7_2.webp', 'img7_3.webp', 'img7_4.webp', 'img7_5.webp']
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
