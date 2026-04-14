@@ -542,6 +542,8 @@
     <main id="image-feed" class="layer">
         <h2 class="feed-instruction">TAP SUR UNE IMAGE</h2>
 
+         <div class="thumb-container" onclick="openImageModal(9)"><img src="img9_1.webp" class="thumb-img"></div>
+
         <div class="thumb-container" onclick="openImageModal(8)"><img src="img8_8.webp" class="thumb-img"></div>
 
         <div class="thumb-container" onclick="openImageModal(6)"><img src="img6_1.webp" class="thumb-img"></div>
@@ -730,7 +732,8 @@ const galleries = {
             // AJOUT DES NOUVELLES SECTIONS ICI :
             6: ['img6_1.webp', 'img6_2.webp', 'img6_3.webp', 'img6_4.webp', 'img6_5.webp'],
             7: ['img7_1.webp', 'img7_2.webp', 'img7_3.webp', 'img7_4.webp', 'img7_5.webp'],
-            8: ['img8_1.webp', 'img8_2.webp', 'img8_3.webp', 'img8_4.webp', 'img8_5.webp', 'img8_6.webp', 'img8_7.webp', 'img8_8.webp', 'img8_9.webp']
+            8: ['img8_1.webp', 'img8_2.webp', 'img8_3.webp', 'img8_4.webp', 'img8_5.webp', 'img8_6.webp', 'img8_7.webp', 'img8_8.webp', 'img8_9.webp'],
+            9: ['img9_1.webp', 'img9_2.webp', 'img9_3.webp', 'img9_4.webp', 'img9_5.webp', 'img9_6.webp', 'img9_7.webp', 'img9_8.webp', 'img9_9.webp', 'img9_10.webp', 'img9_11.webp', 'img9_12.webp', 'img9_13.webp']
         };
         for (const key in galleries) { galleries[key].forEach(src => { const i = new Image(); i.src = src; }); }
 
