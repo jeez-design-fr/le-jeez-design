@@ -165,6 +165,40 @@
             color: var(--neon-purple); 
         }
 
+        /* BOUTON FORMULES */
+        #formules-btn {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.2);
+            width: 300px; height: 80px;
+        }
+        #formules-btn .center-text {
+            color: var(--white);
+        }
+        #formules-btn:hover {
+            border-color: var(--white);
+            box-shadow: 0 0 20px var(--white);
+        }
+        #formules-btn:hover .center-text {
+            color: var(--neon-green);
+        }
+
+        /* BOUTON ARTICLES & FAQ */
+        #articles-btn {
+            border-color: var(--white);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            width: 300px; height: 80px;
+        }
+        #articles-btn .center-text {
+            color: var(--neon-green);
+        }
+        #articles-btn:hover {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        #articles-btn:hover .center-text {
+            color: var(--white);
+        }
+
         /* ========================
            2. BIO LAYER
            ======================== */
@@ -379,12 +413,12 @@
                 <div class="center-text">PORTFOLIO</div>
             </div>
 
-            <a href="formules.html" class="center-box" style="text-decoration: none; border-color: var(--neon-green); box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); width: 300px; height: 80px;">
-                <div class="center-text" style="color: var(--white);">FORMULES</div>
+            <a href="formules.html" id="formules-btn" class="center-box" style="text-decoration: none;">
+                <div class="center-text">FORMULES</div>
             </a>
 
-            <a href="articles.html" class="center-box" style="text-decoration: none; border-color: var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); width: 300px; height: 80px;">
-                <div class="center-text" style="color: var(--neon-green);">ARTICLES & FAQ</div>
+            <a href="articles.html" id="articles-btn" class="center-box" style="text-decoration: none;">
+                <div class="center-text">ARTICLES & FAQ</div>
             </a>
             
             </div>
