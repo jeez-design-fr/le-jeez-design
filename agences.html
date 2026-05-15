@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sous-traitance IA & Prod | Le Work du Jeez</title>
+    <meta name="description" content="Création de contenus IA, post-production et captation en full remote pour les agences. Dégagez du temps, confiez votre prod à un Directeur Artistique.">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --neon-green: #39ff14;
+            --black: #000000;
+            --white: #ffffff;
+            --font-title: 'Bebas Neue', sans-serif;
+            --font-text: 'Rajdhani', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--black); color: var(--white);
+            font-family: var(--font-text); overflow-x: hidden;
+            line-height: 1.6; padding: 20px;
+        }
+
+        /* BOUTON RETOUR */
+        .back-btn {
+            position: fixed; top: 20px; left: 20px; color: var(--white); text-decoration: none;
+            font-family: var(--font-title); font-size: 1.5rem; z-index: 100; transition: 0.3s;
+        }
+        .back-btn:hover { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+        .page-container { max-width: 800px; margin: 80px auto 100px auto; }
+        
+        /* HEADER SECTION */
+        .fat-title { 
+            font-family: var(--font-title); font-size: 4.5rem; color: var(--neon-green); 
+            line-height: 1; text-transform: uppercase; text-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+            text-align: center; margin-bottom: 20px;
+        }
+        .subtitle { 
+            font-family: var(--font-text); font-size: 1.5rem; color: #ddd; 
+            text-align: center; font-weight: 500; margin-bottom: 40px;
+        }
+
+        /* IMAGE SECTION */
+        .hero-img-container { width: 100%; max-width: 600px; margin: 0 auto 50px auto; position: relative; }
+        .hero-img { 
+            width: 100%; display: block; border: 2px solid #333; 
+            box-shadow: 0 0 30px rgba(0,0,0,0.8); transition: 0.3s;
+        }
+        .hero-img-container:hover .hero-img { border-color: var(--neon-green); box-shadow: 0 0 20px rgba(57, 255, 20, 0.2); }
+
+        /* CONTENT SECTION */
+        .content p { font-size: 1.3rem; color: #ddd; margin-bottom: 25px; }
+        
+        /* HACK BOX (Citation importante) */
+        .hack-box {
+            background: rgba(57, 255, 20, 0.05); border-left: 4px solid var(--neon-green);
+            padding: 25px; margin: 40px 0;
+        }
+        .hack-box p { 
+            font-family: var(--font-title); font-size: 2rem; color: var(--neon-green); 
+            margin: 0; line-height: 1.2; letter-spacing: 1px;
+        }
+
+        /* LISTE "POURQUOI BOSSER AVEC MOI" */
+        .content h2 { font-family: var(--font-title); font-size: 2.5rem; color: var(--white); margin: 60px 0 30px 0; text-align: center; }
+        .feature-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .feature-list li { 
+            font-size: 1.2rem; color: #ccc; margin-bottom: 25px; 
+            padding-left: 30px; position: relative;
+        }
+        .feature-list li::before { 
+            content: "/>"; color: var(--neon-green); position: absolute; 
+            left: 0; top: 2px; font-family: var(--font-title); font-size: 1.4rem; 
+        }
+        .feature-list strong { color: var(--white); font-weight: 700; font-size: 1.3rem; }
+
+        /* CTA SECTION */
+        .cta-box { margin-top: 60px; padding: 50px 20px; background: #0a0a0a; text-align: center; border: 1px solid #222; }
+        .cta-text { font-family: var(--font-title); font-size: 2.2rem; color: var(--white); margin-bottom: 30px; }
+        .cta-btn {
+            display: inline-block; background: transparent; color: var(--neon-green);
+            font-family: var(--font-title); font-size: 2.5rem; padding: 15px 60px;
+            text-decoration: none; border: 2px solid var(--neon-green); transition: 0.3s;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+        }
+        .cta-btn:hover { background: var(--neon-green); color: var(--black); box-shadow: 0 0 30px var(--neon-green); transform: scale(1.05); }
+
+        @media (max-width: 768px) { 
+            .fat-title { font-size: 3.2rem; } 
+            .subtitle { font-size: 1.2rem; }
+            .cta-btn { font-size: 2rem; padding: 15px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">RETOUR ACCUEIL</a>
+
+    <div class="page-container">
+        
+        <h1 class="fat-title">Dégagez du temps. Sous-traitez votre prod' IA à un pro de l'image.</h1>
+        <h2 class="subtitle">Création de contenus IA (Image & Vidéo) • Post-production • Captation.<br>En full remote pour les agences qui veulent respirer.</h2>
+
+        <div class="hero-img-container">
+            <img src="agences-img.webp" alt="Direction Artistique et Création IA pour Agences" class="hero-img">
+        </div>
+
+        <div class="content">
+            <p>Aujourd'hui, n'importe qui sait taper "beau paysage" dans Chat GPT ou Gemini.</p>
+            
+            <p>Déléguer la génération de vos visuels à l'alternant de 19 ans entre deux TikToks parce qu'il est "né avec le digital", c'est tentant. Mais quand il faut sortir une campagne e-commerce hyper réaliste et que le mannequin IA a 6 doigts, une lumière plate et le regard vide... c'est vous qui transpirez devant le client.</p>
+
+            <div class="hack-box">
+                <p>LE PROMPTING EST UN OUTIL. L'ŒIL CINÉMATOGRAPHIQUE EST UN MÉTIER.</p>
+            </div>
+
+            <p>Moi, c'est Gabriel (Le Jeez pour les intimes). Je suis freelance expert en IA générative et production audiovisuelle. Mon job ? Absorber votre surplus de production pour alléger votre agence.</p>
+            
+            <p>Je n'utilise pas la machine pour faire du remplissage, je l'utilise pour transformer vos idées en émotion pure. Si on génère un profil pour un site e-commerce, je le rapproche visuellement de votre cible. Je lui donne une gueule, une attitude, un grain de peau et une lumière de plateau de cinéma. L'outil est artificiel, mais le rendu doit être viscéral et plein d'émotion.</p>
+
+            <h2>Pourquoi bosser avec moi ?</h2>
+            
+            <ul class="feature-list">
+                <li><strong>La fiabilité :</strong> J'ai des années de métier derrière la caméra et sur les bancs de montage. Les délais impossibles, les briefs qui changent, les "c'est pour hier", je connais. Je rends les livrables à l'heure, point.</li>
+                <li><strong>La flexibilité :</strong> Je travaille 100 % en full remote (avec possibilité de me déplacer pour de la captation vidéo réelle si le projet l'exige).</li>
+                <li><strong>Sur-mesure :</strong> J'accompagne déjà plusieurs agences au quotidien. Je suis disponible pour du one-shot (pour vous sauver la mise sur un pitch) ou au forfait régulier (pour intégrer votre workflow 2 à 3 jours par semaine).</li>
+            </ul>
+
+            <div class="cta-box">
+                <div class="cta-text">Gagnez du temps, augmentez votre marge, et offrez à vos clients une vraie direction artistique IA.</div>
+                <a href="index.html" class="cta-btn">PORTFOLIO</a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
