@@ -380,6 +380,44 @@
         .contact-input, .contact-msg { background: #111; border: 1px solid var(--neon-green); color: white; padding: 15px; font-family: var(--font-text); font-size: 1rem; }
         .contact-submit { background: var(--neon-green); color: black; border: none; padding: 15px; font-family: var(--font-title); font-size: 1.5rem; cursor: pointer; }
 
+/* ANIMATION DES REFLETS PREMIUM */
+        @keyframes premium-shine {
+            0% { left: -150%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* BOUTON AGENCES & FREELANCE */
+        #agences-btn {
+            background-color: var(--neon-green);
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.4);
+            width: 300px; height: 80px;
+            overflow: hidden; /* Indispensable pour bloquer les reflets dans le cadre */
+            position: relative;
+            transition: 0.3s ease;
+        }
+        #agences-btn .center-text {
+            color: var(--black);
+            font-weight: 700;
+            text-shadow: none; /* On enlève l'ombre pour plus de lisibilité en noir */
+        }
+        /* Le reflet animé */
+        #agences-btn::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -150%;
+            width: 60%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.7), rgba(0,0,0,0.3), transparent);
+            transform: skewX(-25deg);
+            animation: premium-shine 4s infinite;
+        }
+        #agences-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 35px var(--neon-green);
+        }
+
+        
     </style>
 </head>
 <body>
@@ -413,6 +451,10 @@
                 <div class="center-text">PORTFOLIO</div>
             </div>
 
+            <a href="agences.html" id="agences-btn" class="center-box" style="text-decoration: none; margin-top: 10px;">
+                <div class="center-text">AGENCES & FREELANCE</div>
+            </a>
+            
             <a href="formules.html" id="formules-btn" class="center-box" style="text-decoration: none;">
                 <div class="center-text">FORMULES</div>
             </a>
