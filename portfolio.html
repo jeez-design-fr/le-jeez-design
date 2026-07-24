@@ -636,7 +636,7 @@
 
     <script>
         // --- GESTION NAVIGATION ---
-        window.history.replaceState({page: 'intro'}, "", "");
+        window.history.replaceState({page: 'bio'}, "", "");
 
         let scrollHintInterval;
 
@@ -729,27 +729,25 @@
         });
 
         // --- EVENTS CLICK ---
-       // 1. Clic sur le bouton d'accueil (Le work de Jeez) -> Envoie vers le nouveau MENU
-        document.getElementById('enter-btn').addEventListener('click', function() {
-            const intro = document.getElementById('intro-layer');
-            intro.classList.add('glitch-out');
-            stopM(introMatrix);
+        
+        document.getElementById('video-access-btn').addEventListener('click', function() {
+            const bio = document.getElementById('bio-layer');
+            bio.classList.add('glitch-out');
             setTimeout(() => {
-                intro.classList.remove('glitch-out');
-                handleNavigation('menu-layer'); 
+                bio.classList.remove('glitch-out');
+                handleNavigation('feed');
             }, 400);
         });
 
-        // 2. Clic sur le nouveau bouton PORTFOLIO -> Envoie vers la BIO
-        document.getElementById('portfolio-btn').addEventListener('click', function() {
-            const menu = document.getElementById('menu-layer');
-            menu.classList.add('glitch-out');
+        document.getElementById('image-access-btn').addEventListener('click', function() {
+            const bio = document.getElementById('bio-layer');
+            bio.classList.add('glitch-out');
             setTimeout(() => {
-                menu.classList.remove('glitch-out');
-                handleNavigation('bio'); 
+                bio.classList.remove('glitch-out');
+                handleNavigation('image-feed');
             }, 400);
         });
-
+        
         document.getElementById('video-access-btn').addEventListener('click', function() {
             const bio = document.getElementById('bio-layer');
             bio.classList.add('glitch-out');
