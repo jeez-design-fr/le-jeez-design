@@ -480,23 +480,26 @@
         </section>
     </main>
 
-
-    <script>
-
-
-        // --- MATRIX ---
+<script>
+        // --- ANIMATION MATRIX DE FOND ---
         function createMatrix(canvasId) {
-            const canvas = document.getElementById(canvasId); if(!canvas) return null;
+            const canvas = document.getElementById(canvasId); 
+            if(!canvas) return null;
             const ctx = canvas.getContext('2d');
             const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-            resize(); window.addEventListener('resize', resize);
-            const fontSize = 12; let columns = canvas.width / fontSize; let drops = [];
+            resize(); 
+            window.addEventListener('resize', resize);
+            const fontSize = 12; 
+            let columns = canvas.width / fontSize; 
+            let drops = [];
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             function initDrops() { columns = canvas.width / fontSize; drops = []; for(let i=0; i<columns; i++) drops[i] = 1; }
             initDrops();
             function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#39ff14'; ctx.font = fontSize + 'px monospace';
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#39ff14'; 
+                ctx.font = fontSize + 'px monospace';
                 for(let i=0; i<drops.length; i++) {
                     const text = characters.charAt(Math.floor(Math.random()*characters.length));
                     ctx.fillText(text, i*fontSize, drops[i]*fontSize);
@@ -506,137 +509,33 @@
             }
             return { draw, interval: null };
         }
+
         const introMatrix = createMatrix('matrix-canvas');
-        const videoFinalMatrix = createMatrix('matrix-canvas-final');
-        const imageFinalMatrix = createMatrix('matrix-canvas-images');
         function startM(inst) { if(inst && !inst.interval) inst.interval = setInterval(inst.draw, 50); }
         function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
+        
         startM(introMatrix); 
 
-        // UI ANIMATIONS
-        setInterval(() => { const p=document.getElementById('phone-btn'); if(p){ p.classList.add('icon-ringing'); setTimeout(()=>p.classList.remove('icon-ringing'),1000); } }, 8000);
-        setInterval(() => { const m=document.getElementById('mail-btn'); if(m){ m.classList.add('icon-hopping'); setTimeout(()=>m.classList.remove('icon-hopping'),1000); } }, 10000);
-        setInterval(() => { const eye = document.querySelector('.eye-btn-main svg'); if(eye) { eye.classList.add('blink-now'); setTimeout(() => eye.classList.remove('blink-now'), 300); } }, 4000);
-        function animateBtn(btn, c) { btn.classList.add(c); setTimeout(() => btn.classList.remove(c), 1000); }
-        
-        let heartClickCount = 0;
-        function triggerHeart(btn) {
-            btn.classList.remove('shaking'); void btn.offsetWidth; btn.classList.add('shaking');
-            btn.classList.add('glow-active-red'); setTimeout(() => btn.classList.remove('glow-active-red'), 1000);
-            heartClickCount++; const cycle = heartClickCount % 10;
-            let msg = "", dur = 1200;
-            if(cycle===1) msg="merci !!"; else if(cycle===2) msg="💃 Owyeaaa"; else if(cycle===3) msg="🤩🤩🤩";
-            else if(cycle===4) msg="hmmm... 😒"; else if(cycle===5) { msg="😴💤"; dur=3000; } else if(cycle===0) msg="🤠";
-            else return;
-            const el = document.createElement('span'); el.innerText=msg; el.classList.add('floating-msg'); el.style.animationDuration=(dur/1000)+"s";
-            const rect = btn.getBoundingClientRect(); el.style.left=(rect.left-20)+'px'; el.style.top=rect.top+(rect.height/2)+'px';
-            document.body.appendChild(el); setTimeout(()=>el.remove(), dur);
-        }
-
-        // --- CONTACT ---
-        function openContactForm(e) {
-            e.preventDefault();
-            document.getElementById('contact-modal').classList.add('active');
-            const soundBtn = document.getElementById('sound-btn');
-            if(soundBtn) soundBtn.style.display = 'none';
-        }
-        function closeContactForm() {
-            document.getElementById('contact-modal').classList.remove('active');
-            const feed = document.getElementById('feed');
-            if(feed.classList.contains('active')) {
-                // Restore sound btn only if we are in video feed
-                document.getElementById('sound-btn').style.display = 'block';
-            }
-        }
-
-        // --- IMAGES LOGIC ---
-        let currentImgIndex = 0; let currentGallery = [];
-        function openImageModal(id) {
-            currentGallery = galleries[id];
-            const img = document.getElementById('full-img');
-            currentImgIndex = 0; img.src = currentGallery[0];
-            document.getElementById('image-modal').classList.add('active');
-            history.pushState({page: 'image-modal'}, "", "");
-        }
-        function closeImageModal() { 
-            document.getElementById('image-modal').classList.remove('active');
-            history.back();
-        }
-        function nextImageStep() {
-            const img = document.getElementById('full-img'); img.classList.add('anim-bump');
-            setTimeout(() => { currentImgIndex = (currentImgIndex + 1) % currentGallery.length; img.src = currentGallery[currentImgIndex]; }, 100); 
-            setTimeout(() => { img.classList.remove('anim-bump'); }, 250);
-        }
-
-        // --- RESET TV ---
-        function turnOffTv() {
-            document.body.classList.add('turn-off-anim');
+        // --- CLIC SUR "LE WORK DE JEEZ" (OUVERTURE DU MENU) ---
+        document.getElementById('enter-btn').addEventListener('click', function() {
+            const intro = document.getElementById('intro-layer');
+            const menu = document.getElementById('menu-layer');
+            
+            intro.classList.add('glitch-out');
+            stopM(introMatrix);
+            
             setTimeout(() => {
-                window.location.reload(); 
-            }, 600); 
-        }
-
-        // --- OBSERVER ---
-        function initObserver() {
-            const sections = document.querySelectorAll('.video-section');
-            const eyeBtn = document.getElementById('dynamic-eye-btn');
-            const eyeContainer = document.getElementById('eye-container');
-            const soundBtn = document.getElementById('sound-btn');
-            const scrollHint = document.getElementById('scroll-hint');
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    // SI C'EST LA SECTION FINALE
-                    if (entry.target.classList.contains('final-section')) {
-                        if(entry.isIntersecting) { 
-                            eyeContainer.classList.add('hidden'); 
-                            startM(videoFinalMatrix);
-                            // CACHER LE SON QUAND ON ARRIVE EN BAS
-                            soundBtn.style.opacity = '0';
-                            setTimeout(() => soundBtn.style.display = 'none', 300);
-                            scrollHint.style.opacity = '0';
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
-                        }
-                        else { 
-                            stopM(videoFinalMatrix); 
-                            // REAFFICHER LE SON QUAND ON REMONTE
-                            soundBtn.style.display = 'block';
-                            setTimeout(() => soundBtn.style.opacity = '1', 10);
-                            // Relance boucle flèche
-                            if(scrollHintInterval) clearInterval(scrollHintInterval);
-                            scrollHintInterval = setInterval(() => {
-                                scrollHint.classList.remove('play-anim');
-                                void scrollHint.offsetHeight;
-                                scrollHint.classList.add('play-anim');
-                            }, 5000);
-                        }
-                        return;
-                    }
-
-                    const video = entry.target.querySelector('video');
-                    if (!video) return;
-                    if (entry.isIntersecting) {
-                        eyeContainer.classList.remove('hidden');
-                        video.play().catch(e => {}); entry.target.classList.add('active');
-                        const link = entry.target.getAttribute('data-link'); eyeBtn.href = link ? link : "#";
-                    } else {
-                        video.pause(); video.currentTime = 0; entry.target.classList.remove('active');
-                    }
-                });
-            }, { threshold: 0.6 });
-            sections.forEach(section => { observer.observe(section); });
-        }
-
-        let isMuted = true;
-        function toggleMute() {
-            const videos = document.querySelectorAll('video');
-            const btn = document.querySelector('.sound-toggle');
-            isMuted = !isMuted;
-            videos.forEach(v => { v.muted = isMuted; });
-            if (isMuted) { btn.innerText = "🔇 SON OFF"; btn.style.color = "var(--neon-green)"; btn.style.borderColor = "var(--neon-green)"; } 
-            else { btn.innerText = "🔊 SON ON"; btn.style.color = "var(--neon-purple)"; btn.style.borderColor = "var(--neon-purple)"; }
-        }
+                intro.classList.remove('active', 'glitch-out');
+                intro.style.display = 'none';
+                
+                menu.style.display = 'flex';
+                setTimeout(() => {
+                    menu.classList.add('active');
+                }, 10);
+            }, 400);
+        });
     </script>
+    
 </body>
 </html>
 
