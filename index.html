@@ -128,21 +128,55 @@
         /* ========================
            1. INTRO LAYER
            ======================== */
+       /* ========================
+           1. INTRO LAYER (NOUVEAU)
+           ======================== */
         #intro-layer { 
             background-color: #000; 
-            flex-direction: column; justify-content: center; align-items: center; 
-            z-index: 500; /* Toujours au dessus si actif */
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 500; 
+            overflow: hidden;
         }
-        .intro-container { position: relative; width: 320px; height: 80px; display: flex; justify-content: center; align-items: center; }
-        .hero-image { position: absolute; z-index: 1; width: 250px; bottom: 50%; left: 50%; transform: translateX(-50%); animation: floatTop 4s ease-in-out infinite; pointer-events: none; }
-        @keyframes floatTop { 0% { transform: translateX(-50%) translateY(-35px); } 50% { transform: translateX(-50%) translateY(-50px); } 100% { transform: translateX(-50%) translateY(-35px); } }
-        #matrix-canvas { position: absolute; top: 80px; left: 0; width: 320px; height: 50vh; z-index: 5; pointer-events: none; opacity: 0.8; -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
         
-        .center-box { position: relative; z-index: 10; width: 100%; height: 100%; background-color: #000; border: 2px solid var(--white); box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
-        .center-text { color: var(--white); font-family: var(--font-title); font-size: 2.5rem; letter-spacing: 2px; margin: 0; pointer-events: none; transition: 0.3s; }
-        .center-box:hover { border-color: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
-        .center-box:hover .center-text { color: var(--neon-green); }
+        #grid-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
+        }
 
+        #enter-btn {
+            position: relative;
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 10;
+        }
+
+        .logo-lework {
+            position: absolute;
+            width: 70%; max-width: 600px;
+            animation: floatSlow 6s ease-in-out infinite, pixelGlitch 4s infinite;
+            filter: drop-shadow(0 0 10px rgba(188, 19, 254, 0.4)); /* Glow Violet */
+        }
+
+        .logo-jeez {
+            position: absolute;
+            width: 35%; max-width: 350px;
+            animation: floatFast 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px var(--neon-green)) brightness(1.2) contrast(1.2); /* CRT Glow Vert */
+        }
+
+        /* Animations de flottement et glitch */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(-10px); }
+            50% { transform: translateY(10px); }
+        }
+        @keyframes floatFast {
+            0%, 100% { transform: translateY(-25px) scale(1); }
+            50% { transform: translateY(25px) scale(1.02); }
+        }
+        @keyframes pixelGlitch {
+            0%, 95%, 100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
+            96% { clip-path: inset(10% 0 80% 0); transform: translateX(-3px); }
+            97% { clip-path: inset(60% 0 10% 0); transform: translateX(3px); }
+        }
         /* ========================
            1.5. MENU LAYER
            ======================== */
@@ -436,12 +470,10 @@
 
     <!-- 1. INTRO -->
     <div id="intro-layer" class="layer active">
-        <div class="intro-container">
-            <img src="surfer.webp" class="hero-image" alt="Création de Contenu, Vidéo, Pub, Design & Web à Toulouse">
-            <canvas id="matrix-canvas"></canvas>
-            <div id="enter-btn" class="center-box">
-                <h1 class="center-text">LE WORK DE JEEZ</h1>
-            </div>
+        <canvas id="grid-canvas"></canvas>
+        <div id="enter-btn">
+            <img src="lework-logo.png" class="logo-lework" alt="LE WORK">
+            <img src="jeez-logo.png" class="logo-jeez" alt="DE JEEZ">
         </div>
     </div>
 
@@ -466,36 +498,79 @@
 
 <script>
         // --- ANIMATION MATRIX DE FOND ---
-        function createMatrix(canvasId) {
-            const canvas = document.getElementById(canvasId); 
-            if(!canvas) return null;
-            const ctx = canvas.getContext('2d');
-            const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-            resize(); 
-            window.addEventListener('resize', resize);
-            const fontSize = 12; 
-            let columns = canvas.width / fontSize; 
-            let drops = [];
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            function initDrops() { columns = canvas.width / fontSize; drops = []; for(let i=0; i<columns; i++) drops[i] = 1; }
-            initDrops();
-            function draw() {
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.1)'; 
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#39ff14'; 
-                ctx.font = fontSize + 'px monospace';
-                for(let i=0; i<drops.length; i++) {
-                    const text = characters.charAt(Math.floor(Math.random()*characters.length));
-                    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-                    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975) drops[i]=0;
-                    drops[i]++;
+        // --- ANIMATION GRILLE CHROMATIQUE (Style Incredibles.dev) ---
+        const canvas = document.getElementById('grid-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        
+        let targetX = w/2, targetY = h/2;
+        let mouseX = w/2, mouseY = h/2;
+        let velX = 0, velY = 0;
+
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        });
+
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX; mouseY = e.clientY;
+        });
+
+        // Fonction pour dessiner la grille avec déformation
+        function drawGrid(color, xOffset, yOffset, warpForce) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            const gridSize = 60;
+            ctx.beginPath();
+            
+            // Lignes verticales
+            for(let x = 0; x <= w; x += gridSize) {
+                ctx.moveTo(x, 0);
+                for(let y = 0; y <= h; y += 40) {
+                    let dx = x - targetX; let dy = y - targetY;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    let pull = Math.max(0, 250 - dist) / 250; // Rayon de déformation
+                    ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
                 }
             }
-            return { draw, interval: null };
+            // Lignes horizontales
+            for(let y = 0; y <= h; y += gridSize) {
+                ctx.moveTo(0, y);
+                for(let x = 0; x <= w; x += 40) {
+                    let dx = x - targetX; let dy = y - targetY;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    let pull = Math.max(0, 250 - dist) / 250;
+                    ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
+                }
+            }
+            ctx.stroke();
         }
 
-        const introMatrix = createMatrix('matrix-canvas');
-        function startM(inst) { if(inst && !inst.interval) inst.interval = setInterval(inst.draw, 50); }
+        let animationId;
+        function animGrid() {
+            // Calcul de la vélocité avec inertie
+            velX = (mouseX - targetX) * 0.15;
+            velY = (mouseY - targetY) * 0.15;
+            targetX += velX; targetY += velY;
+
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, w, h);
+            
+            // EFFET ABERRATION CHROMATIQUE (Screen blend mode)
+            ctx.globalCompositeOperation = 'screen';
+            
+            // Grille Rouge (décalée par la vitesse)
+            drawGrid('rgba(255, 0, 0, 0.5)', velX * 0.8, velY * 0.8, 1.5);
+            // Grille Verte (Centre)
+            drawGrid('rgba(0, 255, 0, 0.3)', 0, 0, 1.0);
+            // Grille Bleue (décalée dans l'autre sens)
+            drawGrid('rgba(0, 100, 255, 0.5)', -velX * 0.8, -velY * 0.8, 0.5);
+            
+            ctx.globalCompositeOperation = 'source-over';
+            animationId = requestAnimationFrame(animGrid);
+        }
+        animGrid();
         function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
         
         startM(introMatrix); 
