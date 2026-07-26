@@ -125,14 +125,15 @@
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
 
-      /* ========================
-           1. INTRO LAYER (NOUVEAU)
+     /* ========================
+           1. INTRO LAYER
            ======================== */
         #intro-layer { 
             background-color: #000; 
             display: flex; justify-content: center; align-items: center; 
             z-index: 500; 
             overflow: hidden;
+            width: 100vw; height: 100vh;
         }
         
         #grid-canvas {
@@ -150,37 +151,51 @@
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 100vw; height: 100vh;
+            width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            pointer-events: none; /* Le clic passe à travers pour atteindre enter-btn */
+            pointer-events: none;
         }
 
+        /* --- 1. LOGO FOND "LE WORK" (VIOLET - SANS GLOW) --- */
         .logo-lework {
             position: absolute;
-            width: 80%; max-width: 650px;
-            opacity: 0.8;
+            /* TAILLE DE "LE WORK" : modifie width et max-width ici */
+            width: 75%; max-width: 600px;
+            
+            /* POSITIONMENT DE "LE WORK" (Par défaut centré) */
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            
+            opacity: 0.85;
             z-index: 2;
+            transition: filter 0.1s ease-out;
         }
 
+        /* --- 2. LOGO PREMIER PLAN "JEEZ" (VERT - AVEC GLOW & FLOTTAISON PIXEL) --- */
         .logo-jeez {
             position: absolute;
-            width: 45%; max-width: 350px;
+            /* TAILLE DE "JEEZ" : modifie width et max-width ici */
+            width: 40%; max-width: 320px;
+            
+            /* POSITIONNEMENT DE "JEEZ" : modifie top et left pour ajuster son placement */
+            top: 50%; 
+            left: 50%;
+            
             z-index: 3;
+            /* GLOW UNIQUEMENT SUR JEEZ EN VERT (#30ff66) */
+            filter: drop-shadow(0 0 18px #30ff66) brightness(1.2);
+            
+            /* ANIMATION FLOTTAISON PIXEL RÉTRO (Mouvement saccadé) */
+            animation: pixelFloat 2.5s steps(5) infinite;
         }
 
-        /* Animations de flottement et glitch */
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(-10px); }
-            50% { transform: translateY(10px); }
-        }
-        @keyframes floatFast {
-            0%, 100% { transform: translateY(-25px) scale(1); }
-            50% { transform: translateY(25px) scale(1.02); }
-        }
-        @keyframes pixelGlitch {
-            0%, 95%, 100% { clip-path: inset(0 0 0 0); transform: translateX(0); }
-            96% { clip-path: inset(10% 0 80% 0); transform: translateX(-3px); }
-            97% { clip-path: inset(60% 0 10% 0); transform: translateX(3px); }
+        /* Animation de flottaison rétro/pixel (utilisant steps() pour l'effet saccadé) */
+        @keyframes pixelFloat {
+            0%   { transform: translate(-50%, -50%) translateY(0px); }
+            25%  { transform: translate(-50%, -50%) translateY(-8px); }
+            50%  { transform: translate(-50%, -50%) translateY(0px); }
+            75%  { transform: translate(-50%, -50%) translateY(8px); }
+            100% { transform: translate(-50%, -50%) translateY(0px); }
         }
         /* ========================
            1.5. MENU LAYER
@@ -479,7 +494,7 @@
         <div id="enter-btn">
             <div class="logo-container">
                 <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
-                <img src="jeez-logo.webp" class="logo-jeez" alt="DE JEEZ">
+                <img src="jeez-logo.webp" class="logo-jeez" alt="JEEZ">
             </div>
         </div>
     </div>
@@ -504,14 +519,14 @@
     
 
 <script>
-        // --- ANIMATION : GRILLE INVISIBLE & ABERRATION SUR LOGO ---
+        // --- ANIMATION : MATRICE DE POINTS (DOTS) & ABERRATION VIOLET / VERT ---
         const canvas = document.getElementById('grid-canvas');
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
         
-        let targetX = w/2, targetY = h/2;
-        let mouseX = w/2, mouseY = h/2;
+        let targetX = w / 2, targetY = h / 2;
+        let mouseX = w / 2, mouseY = h / 2;
         let velX = 0, velY = 0;
 
         window.addEventListener('resize', () => {
@@ -520,95 +535,97 @@
         });
 
         document.addEventListener('mousemove', e => {
-            mouseX = e.clientX; mouseY = e.clientY;
+            mouseX = e.clientX; 
+            mouseY = e.clientY;
         });
 
-        function drawGrid(color, xOffset, yOffset, warpForce) {
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 0.3; /* ULTRA FIN */
-            const gridSize = 20; /* TRES RAPPROCHÉ */
-            ctx.beginPath();
-            for(let x = 0; x <= w; x += gridSize) {
-                ctx.moveTo(x, 0);
-                for(let y = 0; y <= h; y += 20) {
-                    let dx = x - targetX; let dy = y - targetY;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    let pull = Math.max(0, 200 - dist) / 200;
-                    ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
+        // Dessin des points minuscules et rapprochés
+        function drawDots(color, xOffset, yOffset, warpForce) {
+            ctx.fillStyle = color;
+            const dotSpacing = 16; // Espacement très rapproché
+            const dotRadius = 0.9;  // Taille minuscule des points
+            
+            for (let x = 0; x <= w; x += dotSpacing) {
+                for (let y = 0; y <= h; y += dotSpacing) {
+                    let dx = x - targetX; 
+                    let dy = y - targetY;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let pull = Math.max(0, 180 - dist) / 180; // Zone d'influence
+                    
+                    let drawX = x + velX * pull * warpForce + xOffset;
+                    let drawY = y + velY * pull * warpForce + yOffset;
+                    
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, dotRadius, 0, Math.PI * 2);
+                    ctx.fill();
                 }
             }
-            for(let y = 0; y <= h; y += gridSize) {
-                ctx.moveTo(0, y);
-                for(let x = 0; x <= w; x += 20) {
-                    let dx = x - targetX; let dy = y - targetY;
-                    let dist = Math.sqrt(dx*dx + dy*dy);
-                    let pull = Math.max(0, 200 - dist) / 200;
-                    ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
-                }
-            }
-            ctx.stroke();
         }
 
         let animationId;
-        function animGrid() {
-            velX = (mouseX - targetX) * 0.15;
-            velY = (mouseY - targetY) * 0.15;
-            targetX += velX; targetY += velY;
+        function animMatrix() {
+            velX = (mouseX - targetX) * 0.12;
+            velY = (mouseY - targetY) * 0.12;
+            targetX += velX; 
+            targetY += velY;
 
-            ctx.fillStyle = '#000';
+            ctx.fillStyle = '#000000';
             ctx.fillRect(0, 0, w, h);
             
             ctx.globalCompositeOperation = 'screen';
             
-            let speed = Math.sqrt(velX*velX + velY*velY);
-            let effectIntensity = Math.min(speed * 0.04, 0.5); 
+            let speed = Math.sqrt(velX * velX + velY * velY);
+            let intensity = Math.min(speed * 0.05, 0.6); 
             
-            // Grille de base presque invisible (gris très sombre 2% d'opacité)
-            drawGrid('rgba(255, 255, 255, 0.02)', 0, 0, 0.5);
+            // 1. Points de base quasi invisibles (fond sombre)
+            drawDots('rgba(255, 255, 255, 0.03)', 0, 0, 0.3);
             
-            // La grille s'allume légèrement en RGB uniquement quand on bouge
-            if (effectIntensity > 0.01) {
-                drawGrid(`rgba(255, 0, 40, ${effectIntensity})`, velX*0.5, velY*0.5, 1.5);
-                drawGrid(`rgba(0, 255, 255, ${effectIntensity})`, -velX*0.5, -velY*0.5, 0.5);
+            // 2. Points révélés par le mouvement
+            if (intensity > 0.01) {
+                // Violet #721fff (rgba: 114, 31, 255)
+                drawDots(`rgba(114, 31, 255, ${intensity})`, velX * 0.6, velY * 0.6, 1.2);
+                // Vert #30ff66 (rgba: 48, 255, 102)
+                drawDots(`rgba(48, 255, 102, ${intensity})`, -velX * 0.6, -velY * 0.6, 0.6);
             }
+            
             ctx.globalCompositeOperation = 'source-over';
 
-            // --- LA MAGIE : L'EFFET S'APPLIQUE SUR LES LOGOS ---
+            // --- ABERRATION CHROMATIQUE SUR LES LOGOS (VIOLET #721fff ET VERT #30ff66) ---
             const jeezLogo = document.querySelector('.logo-jeez');
             const leworkLogo = document.querySelector('.logo-lework');
             
             if (jeezLogo && leworkLogo) {
-                // 1. Le Parallax (Les logos suivent la souris)
-                const xPos = (mouseX / w - 0.5) * 40;
-                const yPos = (mouseY / h - 0.5) * 40;
-                leworkLogo.style.transform = `translate(${xPos * 0.5}px, ${yPos * 0.5}px)`;
-                jeezLogo.style.transform = `translate(${xPos * 1.5}px, ${yPos * 1.5}px)`;
+                let rX = velX * 0.4; 
+                let rY = velY * 0.4;
 
-                // 2. L'Aberration Chromatique CSS dynamique (les logos "saignent" en rouge et bleu)
-                let rX = velX * 0.4; let rY = velY * 0.4;
-                jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(255,0,0,0.8)) drop-shadow(${-rX}px ${-rY}px 0 rgba(0,255,255,0.8)) drop-shadow(0 0 15px var(--neon-green)) brightness(1.2)`;
-                leworkLogo.style.filter = `drop-shadow(${rX*0.6}px ${rY*0.6}px 0 rgba(255,0,0,0.5)) drop-shadow(${-rX*0.6}px ${-rY*0.6}px 0 rgba(0,255,255,0.5)) drop-shadow(0 0 15px rgba(188, 19, 254, 0.4))`;
+                // Aberration Violet / Vert + Glow préservé UNIQUEMENT sur Jeez
+                jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(114,31,255,0.85)) drop-shadow(${-rX}px ${-rY}px 0 rgba(48,255,102,0.85)) drop-shadow(0 0 18px #30ff66) brightness(1.2)`;
+                
+                // Aberration légère sur "LE WORK" sans aucun Glow
+                leworkLogo.style.filter = `drop-shadow(${rX * 0.5}px ${rY * 0.5}px 0 rgba(114,31,255,0.5)) drop-shadow(${-rX * 0.5}px ${-rY * 0.5}px 0 rgba(48,255,102,0.5))`;
             }
             
-            animationId = requestAnimationFrame(animGrid);
+            animationId = requestAnimationFrame(animMatrix);
         }
-        animGrid();
-        
-        // Fonction pour stopper l'animation au clic
-        function stopM() { if(animationId) cancelAnimationFrame(animationId); }
-        // --- CLIC SUR "LE WORK DE JEEZ" (OUVERTURE DU MENU) ---
+        animMatrix();
+
+        // --- CORRECTION DU CLIC DE TRANSITION VERS LE MENU ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             const menu = document.getElementById('menu-layer');
             
+            // Arrêt de l'animation canvas
+            if (animationId) cancelAnimationFrame(animationId);
+            
             intro.classList.add('glitch-out');
-            stopM(introMatrix);
             
             setTimeout(() => {
                 intro.classList.remove('active', 'glitch-out');
                 intro.style.display = 'none';
                 
+                // Activation du menu principal
                 menu.style.display = 'flex';
+                menu.style.zIndex = '999';
                 setTimeout(() => {
                     menu.classList.add('active');
                 }, 10);
