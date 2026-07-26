@@ -125,10 +125,7 @@
         #image-feed.active { display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 40px; }
 
 
-        /* ========================
-           1. INTRO LAYER
-           ======================== */
-       /* ========================
+      /* ========================
            1. INTRO LAYER (NOUVEAU)
            ======================== */
         #intro-layer { 
@@ -149,18 +146,26 @@
             cursor: pointer; z-index: 10;
         }
 
+        .logo-container {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            pointer-events: none; /* Le clic passe à travers pour atteindre enter-btn */
+        }
+
         .logo-lework {
             position: absolute;
-            width: 70%; max-width: 600px;
-            animation: floatSlow 6s ease-in-out infinite, pixelGlitch 4s infinite;
-            filter: drop-shadow(0 0 10px rgba(188, 19, 254, 0.4)); /* Glow Violet */
+            width: 80%; max-width: 650px;
+            opacity: 0.8;
+            z-index: 2;
         }
 
         .logo-jeez {
             position: absolute;
-            width: 35%; max-width: 350px;
-            animation: floatFast 4s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px var(--neon-green)) brightness(1.2) contrast(1.2); /* CRT Glow Vert */
+            width: 45%; max-width: 350px;
+            z-index: 3;
         }
 
         /* Animations de flottement et glitch */
@@ -472,8 +477,10 @@
     <div id="intro-layer" class="layer active">
         <canvas id="grid-canvas"></canvas>
         <div id="enter-btn">
-            <img src="lework-logo.png" class="logo-lework" alt="LE WORK">
-            <img src="jeez-logo.png" class="logo-jeez" alt="DE JEEZ">
+            <div class="logo-container">
+                <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
+                <img src="jeez-logo.webp" class="logo-jeez" alt="DE JEEZ">
+            </div>
         </div>
     </div>
 
@@ -497,8 +504,7 @@
     
 
 <script>
-        // --- ANIMATION MATRIX DE FOND ---
-        // --- ANIMATION GRILLE CHROMATIQUE (Style Incredibles.dev) ---
+        // --- ANIMATION : GRILLE INVISIBLE & ABERRATION SUR LOGO ---
         const canvas = document.getElementById('grid-canvas');
         const ctx = canvas.getContext('2d');
         let w = canvas.width = window.innerWidth;
@@ -517,30 +523,26 @@
             mouseX = e.clientX; mouseY = e.clientY;
         });
 
-        // Fonction pour dessiner la grille avec déformation
         function drawGrid(color, xOffset, yOffset, warpForce) {
             ctx.strokeStyle = color;
-            ctx.lineWidth = 1.5;
-            const gridSize = 60;
+            ctx.lineWidth = 0.3; /* ULTRA FIN */
+            const gridSize = 20; /* TRES RAPPROCHÉ */
             ctx.beginPath();
-            
-            // Lignes verticales
             for(let x = 0; x <= w; x += gridSize) {
                 ctx.moveTo(x, 0);
-                for(let y = 0; y <= h; y += 40) {
+                for(let y = 0; y <= h; y += 20) {
                     let dx = x - targetX; let dy = y - targetY;
                     let dist = Math.sqrt(dx*dx + dy*dy);
-                    let pull = Math.max(0, 250 - dist) / 250; // Rayon de déformation
+                    let pull = Math.max(0, 200 - dist) / 200;
                     ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
                 }
             }
-            // Lignes horizontales
             for(let y = 0; y <= h; y += gridSize) {
                 ctx.moveTo(0, y);
-                for(let x = 0; x <= w; x += 40) {
+                for(let x = 0; x <= w; x += 20) {
                     let dx = x - targetX; let dy = y - targetY;
                     let dist = Math.sqrt(dx*dx + dy*dy);
-                    let pull = Math.max(0, 250 - dist) / 250;
+                    let pull = Math.max(0, 200 - dist) / 200;
                     ctx.lineTo(x + velX * pull * warpForce + xOffset, y + velY * pull * warpForce + yOffset);
                 }
             }
@@ -549,32 +551,51 @@
 
         let animationId;
         function animGrid() {
-            // Calcul de la vélocité avec inertie
             velX = (mouseX - targetX) * 0.15;
             velY = (mouseY - targetY) * 0.15;
             targetX += velX; targetY += velY;
 
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = '#000';
             ctx.fillRect(0, 0, w, h);
             
-            // EFFET ABERRATION CHROMATIQUE (Screen blend mode)
             ctx.globalCompositeOperation = 'screen';
             
-            // Grille Rouge (décalée par la vitesse)
-            drawGrid('rgba(255, 0, 0, 0.5)', velX * 0.8, velY * 0.8, 1.5);
-            // Grille Verte (Centre)
-            drawGrid('rgba(0, 255, 0, 0.3)', 0, 0, 1.0);
-            // Grille Bleue (décalée dans l'autre sens)
-            drawGrid('rgba(0, 100, 255, 0.5)', -velX * 0.8, -velY * 0.8, 0.5);
+            let speed = Math.sqrt(velX*velX + velY*velY);
+            let effectIntensity = Math.min(speed * 0.04, 0.5); 
             
+            // Grille de base presque invisible (gris très sombre 2% d'opacité)
+            drawGrid('rgba(255, 255, 255, 0.02)', 0, 0, 0.5);
+            
+            // La grille s'allume légèrement en RGB uniquement quand on bouge
+            if (effectIntensity > 0.01) {
+                drawGrid(`rgba(255, 0, 40, ${effectIntensity})`, velX*0.5, velY*0.5, 1.5);
+                drawGrid(`rgba(0, 255, 255, ${effectIntensity})`, -velX*0.5, -velY*0.5, 0.5);
+            }
             ctx.globalCompositeOperation = 'source-over';
+
+            // --- LA MAGIE : L'EFFET S'APPLIQUE SUR LES LOGOS ---
+            const jeezLogo = document.querySelector('.logo-jeez');
+            const leworkLogo = document.querySelector('.logo-lework');
+            
+            if (jeezLogo && leworkLogo) {
+                // 1. Le Parallax (Les logos suivent la souris)
+                const xPos = (mouseX / w - 0.5) * 40;
+                const yPos = (mouseY / h - 0.5) * 40;
+                leworkLogo.style.transform = `translate(${xPos * 0.5}px, ${yPos * 0.5}px)`;
+                jeezLogo.style.transform = `translate(${xPos * 1.5}px, ${yPos * 1.5}px)`;
+
+                // 2. L'Aberration Chromatique CSS dynamique (les logos "saignent" en rouge et bleu)
+                let rX = velX * 0.4; let rY = velY * 0.4;
+                jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(255,0,0,0.8)) drop-shadow(${-rX}px ${-rY}px 0 rgba(0,255,255,0.8)) drop-shadow(0 0 15px var(--neon-green)) brightness(1.2)`;
+                leworkLogo.style.filter = `drop-shadow(${rX*0.6}px ${rY*0.6}px 0 rgba(255,0,0,0.5)) drop-shadow(${-rX*0.6}px ${-rY*0.6}px 0 rgba(0,255,255,0.5)) drop-shadow(0 0 15px rgba(188, 19, 254, 0.4))`;
+            }
+            
             animationId = requestAnimationFrame(animGrid);
         }
         animGrid();
-        function stopM(inst) { if(inst && inst.interval) { clearInterval(inst.interval); inst.interval = null; } }
         
-        startM(introMatrix); 
-
+        // Fonction pour stopper l'animation au clic
+        function stopM() { if(animationId) cancelAnimationFrame(animationId); }
         // --- CLIC SUR "LE WORK DE JEEZ" (OUVERTURE DU MENU) ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
