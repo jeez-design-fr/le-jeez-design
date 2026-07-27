@@ -511,8 +511,7 @@
 
     <!-- 1. INTRO -->
     <div id="intro-layer" class="layer active">
-        <!-- Canvas invisible uniquement dédié à l'effet de particules Lama Lama -->
-        <canvas id="particle-canvas"></canvas>
+        
         
         <div id="enter-btn">
             <div class="logo-container">
@@ -620,17 +619,16 @@
 
             // --- 2. ABERRATION CHROMATIQUE SUR LES LOGOS (SANS DECOR DE FOND) ---
             const jeezLogo = document.querySelector('.logo-jeez');
-            const leworkWrapper = document.querySelector('.lework-wrapper');
+            
 
-            if (jeezLogo && leworkWrapper) {
+            if (jeezLogo) {
                 let rX = velX * 0.4;
                 let rY = velY * 0.4;
 
                 // Aberration Violet / Vert + Glow sur Jeez
                 jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(114,31,255,0.85)) drop-shadow(${-rX}px ${-rY}px 0 rgba(48,255,102,0.85)) drop-shadow(0 0 18px #30ff66) brightness(1.2)`;
                 
-                // Aberration sur Le Work (les scanlines CRT suivent l'effet car elles sont dans le wrapper)
-                leworkWrapper.style.filter = `drop-shadow(${rX * 0.5}px ${rY * 0.5}px 0 rgba(114,31,255,0.5)) drop-shadow(${-rX * 0.5}px ${-rY * 0.5}px 0 rgba(48,255,102,0.5))`;
+        
             }
 
             animId = requestAnimationFrame(renderLoop);
