@@ -49,10 +49,8 @@
         .turn-off-anim { animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; pointer-events: none; z-index: 9999; position: fixed; top:0; left:0; width:100%; height:100%; background:black;}
 
         .glitch-out {
-            /* Animation rallongée à 0.8s */
-            animation: glitch-anim 0.8s cubic-bezier(.25, .46, .45, .94) both forwards;
-            /* Injections de Vert Fluo (#30ff66) et Violet Fluo (#721fff) pendant le glitch */
-            filter: drop-shadow(10px 10px 0 #30ff66) drop-shadow(-10px -10px 0 #721fff) contrast(200%) brightness(150%);
+            animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+            filter: contrast(200%) brightness(150%);
         }
         @keyframes glitch-anim {
             0% { transform: translate(0); }
@@ -138,9 +136,8 @@
             width: 100vw; height: 100vh;
         }
         
-        /* Canvas dédié uniquement aux micro-pixels de la souris */
-        #particle-canvas {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none;
+        #grid-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
         }
 
         #enter-btn {
@@ -159,58 +156,40 @@
             pointer-events: none;
         }
 
-        /* --- 1. WRAPPER "LE WORK" + EFFET CRT DESSCANLINES SUR L'IMAGE --- */
-        .lework-wrapper {
+        /* --- 1. LOGO FOND "LE WORK" (VIOLET - SANS GLOW) --- */
+        .logo-lework {
             position: absolute;
-            /* 📍 POUR MODIFIER LA TAILLE DE LE WORK : Ajuste width et max-width */
+            /* TAILLE DE "LE WORK" : modifie width et max-width ici */
             width: 75%; max-width: 600px;
+            
+            /* POSITIONMENT DE "LE WORK" (Par défaut centré) */
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 2;
-            opacity: 0.85;
             
-            /* 📍 POUR MODIFIER LA VITESSE DU ZOOM : Modifie '3s' ci-dessous (ex: 2s pour + rapide) */
-            animation: crtZoom 3s ease-in-out infinite alternate;
+            opacity: 0.85;
+            z-index: 2;
+            transition: filter 0.6s ease-out;
         }
 
-        .logo-lework {
-            width: 100%; display: block;
-        }
-
-        /* Lignes horizontales ultra-fines imprimées directement sur Le Work */
-        .scanlines {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* 📍 POUR MODIFIER L'ÉPAISSEUR DES LIGNES CRT : 
-               '2px' = espace transparent, '3px' = épaisseur de la ligne noire */
-            background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.7) 3px);
-            pointer-events: none;
-        }
-
-        /* Animation de Zoom/Déformation haut en bas */
-        @keyframes crtZoom {
-            0% { 
-                /* 📍 DEBUT DU ZOOM : Taille normale */
-                transform: translate(-50%, -50%) scale(1) translateY(0px); 
-            }
-            100% { 
-                /* 📍 FIN DU ZOOM : Modifie scale(1.04) pour amplifier le zoom et translateY(5px) pour la descente */
-                transform: translate(-50%, -50%) scale(1.04) translateY(5px); 
-                filter: brightness(1.15); 
-            }
-        }
-
-        /* --- 2. LOGO "JEEZ" --- */
+        /* --- 2. LOGO PREMIER PLAN "JEEZ" (VERT - AVEC GLOW & FLOTTAISON PIXEL) --- */
         .logo-jeez {
             position: absolute;
-            /* 📍 POUR MODIFIER LA TAILLE DE JEEZ : Ajuste width et max-width */
+            /* TAILLE DE "JEEZ" : modifie width et max-width ici */
             width: 75%; max-width: 660px;
-            top: 50%; left: 50%;
+            
+            /* POSITIONNEMENT DE "JEEZ" : modifie top et left pour ajuster son placement */
+            top: 50%; 
+            left: 50%;
+            
             z-index: 3;
-            /* Glow vert fluo */
+            /* GLOW UNIQUEMENT SUR JEEZ EN VERT (#30ff66) */
             filter: drop-shadow(0 0 18px #30ff66) brightness(1.2);
+            
+            /* ANIMATION FLOTTAISON PIXEL RÉTRO (Mouvement saccadé) */
             animation: pixelFloat 2.5s steps(5) infinite;
         }
 
+        /* Animation de flottaison rétro/pixel (utilisant steps() pour l'effet saccadé) */
         @keyframes pixelFloat {
             0%   { transform: translate(-50%, -50%) translateY(0px); }
             25%  { transform: translate(-50%, -50%) translateY(-8px); }
@@ -511,16 +490,10 @@
 
     <!-- 1. INTRO -->
     <div id="intro-layer" class="layer active">
-        
-        
+        <canvas id="grid-canvas"></canvas>
         <div id="enter-btn">
             <div class="logo-container">
-                <!-- Wrapper CRT autour de Le Work -->
-                <div class="lework-wrapper">
-                    <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
-                    <div class="scanlines"></div>
-                </div>
-                <!-- Jeez au premier plan -->
+                <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
                 <img src="jeez-logo.webp" class="logo-jeez" alt="JEEZ">
             </div>
         </div>
@@ -546,121 +519,122 @@
     
 
 <script>
-        // --- 1. MOTEUR DE PARTICULES PIXEL SOURIS (Style Lama Lama) ---
-        const pCanvas = document.getElementById('particle-canvas');
-        const pCtx = pCanvas.getContext('2d');
-        let w = pCanvas.width = window.innerWidth;
-        let h = pCanvas.height = window.innerHeight;
-
-        window.addEventListener('resize', () => {
-            w = pCanvas.width = window.innerWidth;
-            h = pCanvas.height = window.innerHeight;
-        });
-
-        let particles = [];
-        let mouseX = w / 2, mouseY = h / 2;
+        // --- ANIMATION : MATRICE DE POINTS (DOTS) & ABERRATION VIOLET / VERT ---
+        const canvas = document.getElementById('grid-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        
         let targetX = w / 2, targetY = h / 2;
+        let mouseX = w / 2, mouseY = h / 2;
         let velX = 0, velY = 0;
 
-        document.addEventListener('mousemove', e => {
-            let prevX = mouseX;
-            let prevY = mouseY;
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            // Spawner des micro-pixels quand la souris bouge
-            let distMoved = Math.hypot(mouseX - prevX, mouseY - prevY);
-            if (distMoved > 2) {
-                let count = Math.min(Math.floor(distMoved / 3), 6);
-                for (let i = 0; i < count; i++) {
-                    particles.push({
-                        x: mouseX + (Math.random() - 0.5) * 10,
-                        y: mouseY + (Math.random() - 0.5) * 10,
-                        vx: (Math.random() - 0.5) * 3,
-                        vy: (Math.random() - 0.5) * 3 - 1, // Légère poussée vers le haut
-                        size: Math.random() > 0.5 ? 2 : 3,  // Taille carrée pixel
-                        /* Alternance de couleurs : Violet #721fff ou Vert #30ff66 */
-                        color: Math.random() > 0.5 ? '#721fff' : '#30ff66',
-                        life: 1.0,
-                        decay: Math.random() * 0.03 + 0.02
-                    });
-                }
-            }
+        window.addEventListener('resize', () => {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
         });
 
-        let animId;
-        function renderLoop() {
-            // Calcul de vélocité pour l'aberration
+        document.addEventListener('mousemove', e => {
+            mouseX = e.clientX; 
+            mouseY = e.clientY;
+        });
+
+        // Dessin des points minuscules et rapprochés
+        function drawDots(color, xOffset, yOffset, warpForce) {
+            ctx.fillStyle = color;
+            const dotSpacing = 16; // Espacement très rapproché
+            const dotRadius = 0.9;  // Taille minuscule des points
+            
+            for (let x = 0; x <= w; x += dotSpacing) {
+                for (let y = 0; y <= h; y += dotSpacing) {
+                    let dx = x - targetX; 
+                    let dy = y - targetY;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let pull = Math.max(0, 180 - dist) / 180; // Zone d'influence
+                    
+                    let drawX = x + velX * pull * warpForce + xOffset;
+                    let drawY = y + velY * pull * warpForce + yOffset;
+                    
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, dotRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
+        let animationId;
+        function animMatrix() {
             velX = (mouseX - targetX) * 0.12;
             velY = (mouseY - targetY) * 0.12;
             targetX += velX; 
             targetY += velY;
 
-            // Effacer le canvas de particules
-            pCtx.clearRect(0, 0, w, h);
-
-            // Dessiner et mettre à jour les micro-pixels
-            for (let i = particles.length - 1; i >= 0; i--) {
-                let p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= p.decay;
-
-                if (p.life <= 0) {
-                    particles.splice(i, 1);
-                } else {
-                    pCtx.fillStyle = p.color;
-                    pCtx.globalAlpha = p.life;
-                    /* Dessin de micro-carrés (pixels) */
-                    pCtx.fillRect(p.x, p.y, p.size, p.size);
-                }
-            }
-            pCtx.globalAlpha = 1.0;
-
-            // --- 2. ABERRATION CHROMATIQUE SUR LES LOGOS (SANS DECOR DE FOND) ---
-            const jeezLogo = document.querySelector('.logo-jeez');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
             
+            ctx.globalCompositeOperation = 'screen';
+            
+            let speed = Math.sqrt(velX * velX + velY * velY);
+            let intensity = Math.min(speed * 0.05, 0.6); 
+            
+            // 1. Points de base quasi invisibles (fond sombre)
+            drawDots('rgba(255, 255, 255, 0.03)', 0, 0, 0.3);
+            
+            // 2. Points révélés par le mouvement
+            if (intensity > 0.01) {
+                // Violet #721fff (rgba: 114, 31, 255)
+                drawDots(`rgba(114, 31, 255, ${intensity})`, velX * 0.6, velY * 0.6, 1.2);
+                // Vert #30ff66 (rgba: 48, 255, 102)
+                drawDots(`rgba(48, 255, 102, ${intensity})`, -velX * 0.6, -velY * 0.6, 0.6);
+            }
+            
+            ctx.globalCompositeOperation = 'source-over';
 
-            if (jeezLogo) {
-                let rX = velX * 0.4;
+            // --- ABERRATION CHROMATIQUE SUR LES LOGOS (VIOLET #721fff ET VERT #30ff66) ---
+            const jeezLogo = document.querySelector('.logo-jeez');
+            const leworkLogo = document.querySelector('.logo-lework');
+            
+            if (jeezLogo && leworkLogo) {
+                let rX = velX * 0.4; 
                 let rY = velY * 0.4;
 
-                // Aberration Violet / Vert + Glow sur Jeez
+                // Aberration Violet / Vert + Glow préservé UNIQUEMENT sur Jeez
                 jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(114,31,255,0.85)) drop-shadow(${-rX}px ${-rY}px 0 rgba(48,255,102,0.85)) drop-shadow(0 0 18px #30ff66) brightness(1.2)`;
                 
-        
+                // Aberration légère sur "LE WORK" sans aucun Glow
+                leworkLogo.style.filter = `drop-shadow(${rX * 0.5}px ${rY * 0.5}px 0 rgba(114,31,255,0.5)) drop-shadow(${-rX * 0.5}px ${-rY * 0.5}px 0 rgba(48,255,102,0.5))`;
             }
-
-            animId = requestAnimationFrame(renderLoop);
+            
+            animationId = requestAnimationFrame(animMatrix);
         }
-        renderLoop();
+        animMatrix();
 
-        // --- 3. CLIC ET TRANSITION GLITCH VERS LE MENU ---
+        // --- CORRECTION DU CLIC DE TRANSITION VERS LE MENU ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             const menu = document.getElementById('menu-layer');
             
-            if (animId) cancelAnimationFrame(animId);
+            // Arrêt de l'animation canvas
+            if (animationId) cancelAnimationFrame(animationId);
             
             intro.classList.add('glitch-out');
             
-            /* Délai augmenté à 800ms pour correspondre au nouveau glitch */
             setTimeout(() => {
                 intro.classList.remove('active', 'glitch-out');
                 intro.style.display = 'none';
                 
+                // Activation du menu principal
                 menu.style.display = 'flex';
                 menu.style.zIndex = '999';
                 setTimeout(() => {
                     menu.classList.add('active');
                 }, 10);
-            }, 800);
+            }, 400);
         });
     </script>
     
 </body>
 </html>
-
 
 
 
