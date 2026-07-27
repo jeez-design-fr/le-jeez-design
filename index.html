@@ -49,10 +49,8 @@
         .turn-off-anim { animation: tv-turn-off 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; pointer-events: none; z-index: 9999; position: fixed; top:0; left:0; width:100%; height:100%; background:black;}
 
         .glitch-out {
-            /* Glitch allongé à 0.8s */
-            animation: glitch-anim 0.8s cubic-bezier(.25, .46, .45, .94) both forwards;
-            /* Éclairage Vert et Violet pendant la transition */
-            filter: drop-shadow(8px 8px 0 #30ff66) drop-shadow(-8px -8px 0 #721fff) contrast(200%) brightness(150%);
+            animation: glitch-anim 0.4s cubic-bezier(.25, .46, .45, .94) both infinite;
+            filter: contrast(200%) brightness(150%);
         }
         @keyframes glitch-anim {
             0% { transform: translate(0); }
@@ -128,68 +126,49 @@
 
 
      /* ========================
-           0. EFFETS GLOBAUX (GRAIN & BLUR)
-           ======================== */
-        .global-grain {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            /* Image de bruit ultra-légère en Base64 */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            opacity: 0.12; /* Modifie cette valeur pour rendre le grain + ou - fort */
-            pointer-events: none; z-index: 9998; mix-blend-mode: overlay;
-        }
-
-        .scroll-blur {
-            position: fixed; left: 0; width: 100vw; height: 12vh;
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            pointer-events: none; z-index: 8000;
-        }
-        .scroll-blur-top {
-            top: 0; mask-image: linear-gradient(to bottom, black 20%, transparent); -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent);
-        }
-        .scroll-blur-bottom {
-            bottom: 0; mask-image: linear-gradient(to top, black 20%, transparent); -webkit-mask-image: linear-gradient(to top, black 20%, transparent);
-        }
-
-        /* ========================
            1. INTRO LAYER
            ======================== */
         #intro-layer { 
-            background-color: #000; display: flex; justify-content: center; align-items: center; 
-            z-index: 500; overflow: hidden; width: 100vw; height: 100vh;
+            background-color: #000; 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 500; 
+            overflow: hidden;
+            width: 100vw; height: 100vh;
+        }
+        
+        #grid-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;
         }
 
         #enter-btn {
-            position: relative; width: 100vw; height: 100vh;
-            display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 10;
+            position: relative;
+            width: 100vw; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 10;
         }
 
         .logo-container {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; pointer-events: none;
-        }
-
-        /* --- LOGO "LE WORK" & EFFET CRT --- */
-        .lework-wrapper {
-            position: absolute; top: 50%; left: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
-            width: 75%; max-width: 600px;
-            z-index: 2; opacity: 0.85;
-            /* 📍 POUR MODIFIER LA VITESSE DU ZOOM : Modifie '3s' ci-dessous */
-            animation: crtZoom 3s infinite ease-in-out alternate;
-        }
-        .logo-lework { width: 100%; display: block; }
-        
-        /* 📍 POUR MODIFIER L'ÉPAISSEUR DES LIGNES HORIZONTALES : Modifie le '3px' */
-        .scanlines {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(0,0,0,0.6) 3px);
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
             pointer-events: none;
         }
 
-        @keyframes crtZoom {
-            0% { transform: translate(-50%, -50%) scale(1) translateY(0); }
-            /* 📍 POUR MODIFIER LA PUISSANCE DU ZOOM : Modifie scale(1.03) et translateY(3px) */
-            100% { transform: translate(-50%, -50%) scale(1.03) translateY(3px); filter: brightness(1.1); }
+        /* --- 1. LOGO FOND "LE WORK" (VIOLET - SANS GLOW) --- */
+        .logo-lework {
+            position: absolute;
+            /* TAILLE DE "LE WORK" : modifie width et max-width ici */
+            width: 75%; max-width: 600px;
+            
+            /* POSITIONMENT DE "LE WORK" (Par défaut centré) */
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            
+            opacity: 0.85;
+            z-index: 2;
+            transition: filter 0.6s ease-out;
         }
 
         /* --- 2. LOGO PREMIER PLAN "JEEZ" (VERT - AVEC GLOW & FLOTTAISON PIXEL) --- */
@@ -497,13 +476,6 @@
 </head>
 <body>
 
-
-    <!-- CALQUES GLOBAUX : GRAIN & BLUR (Style byld.dev) -->
-    <div id="grain-overlay" class="global-grain"></div>
-    <div class="scroll-blur scroll-blur-top"></div>
-    <div class="scroll-blur scroll-blur-bottom"></div>
-    
-    
     <!-- FILTRES SVG -->
     <svg style="position: absolute; width: 0; height: 0;">
         <defs>
@@ -516,16 +488,12 @@
         </defs>
     </svg>
 
-    <!-- 1. INTRO (SANS CANVAS, AVEC WRAPPER CRT) -->
+    <!-- 1. INTRO -->
     <div id="intro-layer" class="layer active">
+        <canvas id="grid-canvas"></canvas>
         <div id="enter-btn">
             <div class="logo-container">
-                <!-- Wrapper pour appliquer les lignes CRT sur LE WORK -->
-                <div class="lework-wrapper">
-                    <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
-                    <div class="scanlines"></div>
-                </div>
-                <!-- JEEZ au premier plan -->
+                <img src="lework-logo.webp" class="logo-lework" alt="LE WORK">
                 <img src="jeez-logo.webp" class="logo-jeez" alt="JEEZ">
             </div>
         </div>
@@ -551,15 +519,19 @@
     
 
 <script>
-        // --- ABERRATION CHROMATIQUE AU SURVOL (SANS CANVAS NI POINTS) ---
-        let w = window.innerWidth;
-        let h = window.innerHeight;
+        // --- ANIMATION : MATRICE DE POINTS (DOTS) & ABERRATION VIOLET / VERT ---
+        const canvas = document.getElementById('grid-canvas');
+        const ctx = canvas.getContext('2d');
+        let w = canvas.width = window.innerWidth;
+        let h = canvas.height = window.innerHeight;
+        
         let targetX = w / 2, targetY = h / 2;
         let mouseX = w / 2, mouseY = h / 2;
         let velX = 0, velY = 0;
 
         window.addEventListener('resize', () => {
-            w = window.innerWidth; h = window.innerHeight;
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
         });
 
         document.addEventListener('mousemove', e => {
@@ -567,43 +539,86 @@
             mouseY = e.clientY;
         });
 
+        // Dessin des points minuscules et rapprochés
+        function drawDots(color, xOffset, yOffset, warpForce) {
+            ctx.fillStyle = color;
+            const dotSpacing = 16; // Espacement très rapproché
+            const dotRadius = 0.9;  // Taille minuscule des points
+            
+            for (let x = 0; x <= w; x += dotSpacing) {
+                for (let y = 0; y <= h; y += dotSpacing) {
+                    let dx = x - targetX; 
+                    let dy = y - targetY;
+                    let dist = Math.sqrt(dx * dx + dy * dy);
+                    let pull = Math.max(0, 180 - dist) / 180; // Zone d'influence
+                    
+                    let drawX = x + velX * pull * warpForce + xOffset;
+                    let drawY = y + velY * pull * warpForce + yOffset;
+                    
+                    ctx.beginPath();
+                    ctx.arc(drawX, drawY, dotRadius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+
         let animationId;
-        function animAberration() {
-            // Calcul inertiel fluide
+        function animMatrix() {
             velX = (mouseX - targetX) * 0.12;
             velY = (mouseY - targetY) * 0.12;
             targetX += velX; 
             targetY += velY;
 
-            const jeezLogo = document.querySelector('.logo-jeez');
-            const leworkWrapper = document.querySelector('.lework-wrapper');
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, w, h);
             
-            if (jeezLogo && leworkWrapper) {
+            ctx.globalCompositeOperation = 'screen';
+            
+            let speed = Math.sqrt(velX * velX + velY * velY);
+            let intensity = Math.min(speed * 0.05, 0.6); 
+            
+            // 1. Points de base quasi invisibles (fond sombre)
+            drawDots('rgba(255, 255, 255, 0.03)', 0, 0, 0.3);
+            
+            // 2. Points révélés par le mouvement
+            if (intensity > 0.01) {
+                // Violet #721fff (rgba: 114, 31, 255)
+                drawDots(`rgba(114, 31, 255, ${intensity})`, velX * 0.6, velY * 0.6, 1.2);
+                // Vert #30ff66 (rgba: 48, 255, 102)
+                drawDots(`rgba(48, 255, 102, ${intensity})`, -velX * 0.6, -velY * 0.6, 0.6);
+            }
+            
+            ctx.globalCompositeOperation = 'source-over';
+
+            // --- ABERRATION CHROMATIQUE SUR LES LOGOS (VIOLET #721fff ET VERT #30ff66) ---
+            const jeezLogo = document.querySelector('.logo-jeez');
+            const leworkLogo = document.querySelector('.logo-lework');
+            
+            if (jeezLogo && leworkLogo) {
                 let rX = velX * 0.4; 
                 let rY = velY * 0.4;
 
                 // Aberration Violet / Vert + Glow préservé UNIQUEMENT sur Jeez
                 jeezLogo.style.filter = `drop-shadow(${rX}px ${rY}px 0 rgba(114,31,255,0.85)) drop-shadow(${-rX}px ${-rY}px 0 rgba(48,255,102,0.85)) drop-shadow(0 0 18px #30ff66) brightness(1.2)`;
                 
-                // Aberration légère sur "LE WORK" + lignes CRT incluses dans le wrapper
-                leworkWrapper.style.filter = `drop-shadow(${rX * 0.5}px ${rY * 0.5}px 0 rgba(114,31,255,0.5)) drop-shadow(${-rX * 0.5}px ${-rY * 0.5}px 0 rgba(48,255,102,0.5))`;
+                // Aberration légère sur "LE WORK" sans aucun Glow
+                leworkLogo.style.filter = `drop-shadow(${rX * 0.5}px ${rY * 0.5}px 0 rgba(114,31,255,0.5)) drop-shadow(${-rX * 0.5}px ${-rY * 0.5}px 0 rgba(48,255,102,0.5))`;
             }
             
-            animationId = requestAnimationFrame(animAberration);
+            animationId = requestAnimationFrame(animMatrix);
         }
-        animAberration();
+        animMatrix();
 
-        // --- GESTION DU CLIC ET DU GLITCH VERS LE MENU ---
+        // --- CORRECTION DU CLIC DE TRANSITION VERS LE MENU ---
         document.getElementById('enter-btn').addEventListener('click', function() {
             const intro = document.getElementById('intro-layer');
             const menu = document.getElementById('menu-layer');
             
-            // On arrête les calculs d'aberration
+            // Arrêt de l'animation canvas
             if (animationId) cancelAnimationFrame(animationId);
             
             intro.classList.add('glitch-out');
             
-            // Délai rallongé à 800ms pour profiter de l'animation
             setTimeout(() => {
                 intro.classList.remove('active', 'glitch-out');
                 intro.style.display = 'none';
@@ -614,13 +629,12 @@
                 setTimeout(() => {
                     menu.classList.add('active');
                 }, 10);
-            }, 800);
+            }, 400);
         });
     </script>
     
 </body>
 </html>
-
 
 
 
